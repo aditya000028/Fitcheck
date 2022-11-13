@@ -1,4 +1,4 @@
-package com.example.fitcheck
+package com.cmpt362.fitcheck
 
 import org.junit.Test
 

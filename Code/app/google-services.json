@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "740321189039",
+    "project_id": "fitcheck-ffe5e",
+    "storage_bucket": "fitcheck-ffe5e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:740321189039:android:9ab101162c52e5c5b0c85a",
+        "android_client_info": {
+          "package_name": "com.cmpt362.fitcheck"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "740321189039-4a4onfc7tk7fnr0spvbuqol81e6gj177.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYpzYru6NswAwKUle3pFcImSaLYRU9lVM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "740321189039-4a4onfc7tk7fnr0spvbuqol81e6gj177.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
