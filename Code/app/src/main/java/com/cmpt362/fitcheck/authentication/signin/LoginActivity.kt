@@ -3,7 +3,6 @@ package com.cmpt362.fitcheck.authentication.signin
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Patterns
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -16,7 +15,6 @@ import com.cmpt362.fitcheck.authentication.signup.SignUpActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import java.util.regex.Pattern
 
 class LoginActivity : AppCompatActivity() {
 
