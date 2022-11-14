@@ -3,6 +3,7 @@ package com.cmpt362.fitcheck
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.cmpt362.fitcheck.authentication.signin.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -23,7 +24,7 @@ class SplashScreenActivity : AppCompatActivity() {
         val currentUser = auth.currentUser
         if(currentUser == null){
             // User not logged in so go to Login activity
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, LoginActivity::class.java))
         }else {
             // User logged in so go to "Main" activity
             startActivity(Intent(this, MainActivity::class.java))
