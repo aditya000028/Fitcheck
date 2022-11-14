@@ -8,7 +8,11 @@ object AuthenticationUtil {
     const val MIN_PASSWORD_LENGTH = 6
 
     fun isValidEmail(email: CharSequence?): Boolean {
-        val emailPattern: Pattern = Patterns.EMAIL_ADDRESS
-        return emailPattern.matcher(email!!).matches()
+        return if (email.isNullOrBlank()) {
+            false
+        } else {
+            val emailPattern: Pattern = Patterns.EMAIL_ADDRESS
+            emailPattern.matcher(email).matches()
+        }
     }
 }
