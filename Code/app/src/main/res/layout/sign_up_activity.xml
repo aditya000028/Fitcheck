@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".authentication.signin.LoginActivity"
+    tools:context=".authentication.signup.SignUpActivity"
     android:fillViewport="true">
 
     <LinearLayout
@@ -14,11 +14,11 @@
         android:orientation="vertical"
         android:gravity="center">
 
-<!--        Some kind of logo here-->
+        <!--        Some kind of logo here-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/sign_in"
+            android:text="@string/sign_up"
             android:textSize="@dimen/sign_in_up_text_size"
             android:textColor="@color/black"
             android:layout_margin="@dimen/sign_in_up_text_margin">
@@ -27,38 +27,51 @@
         <EditText
             android:layout_width="@dimen/sign_in_fields_width"
             android:layout_height="wrap_content"
-            android:id="@+id/signInEmail"
+            android:id="@+id/signUpEmail"
             android:layout_margin="@dimen/sign_in_up_text_margin"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
             android:autofillHints="emailAddress">
         </EditText>
 
-        <EditText
-            android:layout_width="@dimen/sign_in_fields_width"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/signInPassword"
             android:layout_margin="@dimen/sign_in_up_text_margin"
-            android:hint="@string/password"
-            android:inputType="textPassword"
-            android:autofillHints="password">
-        </EditText>
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <EditText
+                android:layout_width="@dimen/sign_in_fields_width"
+                android:layout_height="wrap_content"
+                android:id="@+id/signUpPassword"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:autofillHints="password">
+            </EditText>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/password_requirements">
+            </TextView>
+
+        </LinearLayout>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/signInButton"
-            android:onClick="attemptSignIn"
+            android:id="@+id/signUpButton"
+            android:onClick="attemptSignUp"
             android:enabled="false"
             android:layout_margin="@dimen/sign_in_up_text_margin"
-            android:text="@string/sign_in">
+            android:text="@string/sign_up">
         </Button>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/noAccountSignUp"
-            android:text="@string/no_account_sign_up"
+            android:id="@+id/accountSignIn"
+            android:text="@string/have_an_account_sign_in"
             android:layout_margin="@dimen/sign_in_up_text_margin">
         </TextView>
 
