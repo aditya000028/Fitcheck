@@ -3,12 +3,12 @@
 
     <!-- ========================== Margins and Others ========================= -->
 
-    <dimen name="sign_in_text_margin">15dp</dimen>
+    <dimen name="sign_in_up_text_margin">15dp</dimen>
     <dimen name="sign_in_fields_width">200dp</dimen>
     <dimen name="sign_in_fields_margin">20dp</dimen>
 
     <!-- ========================== Font sizes ========================= -->
 
-    <dimen name="sign_in_text_size">20sp</dimen>
+    <dimen name="sign_in_up_text_size">20sp</dimen>
 
 </resources>

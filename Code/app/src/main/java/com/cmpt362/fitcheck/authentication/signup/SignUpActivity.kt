@@ -1,6 +1,5 @@
-package com.cmpt362.fitcheck.authentication.signin
+package com.cmpt362.fitcheck.authentication.signup
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -11,34 +10,33 @@ import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import com.cmpt362.fitcheck.R
 import com.cmpt362.fitcheck.authentication.AuthenticationUtil
-import com.cmpt362.fitcheck.authentication.signup.SignUpActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-class LoginActivity : AppCompatActivity() {
+class SignUpActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var emailText: EditText
     private lateinit var passwordText: EditText
-    private lateinit var signInButton: Button
-    private lateinit var signUpTV: TextView
+    private lateinit var signUpButton: Button
+    private lateinit var signInTV: TextView
     private val EMAIL_KEY = "EMAIL_KEY"
     private val PASSWORD_KEY = "PASSWORD_KEY"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.login_activity)
+        setContentView(R.layout.sign_up_activity)
 
         initializeVariables(savedInstanceState)
     }
 
     private fun initializeVariables(savedInstanceState: Bundle?) {
         auth = Firebase.auth
-        emailText = findViewById(R.id.signInEmail)
-        passwordText = findViewById(R.id.signInPassword)
-        signInButton = findViewById(R.id.signInButton)
-        signUpTV = findViewById(R.id.noAccountSignUp)
+        emailText = findViewById(R.id.signUpEmail)
+        passwordText = findViewById(R.id.signUpPassword)
+        signUpButton = findViewById(R.id.signUpButton)
+        signInTV = findViewById(R.id.accountSignIn)
 
         val maybeEmail = savedInstanceState?.getString(EMAIL_KEY)
         if (maybeEmail != null) {
@@ -50,50 +48,53 @@ class LoginActivity : AppCompatActivity() {
             passwordText.setText(maybePassword)
         }
 
-        emailText.doOnTextChanged { text, start, before, count ->
+        emailText.doOnTextChanged { text, _, _, _ ->
             if (text.toString().isNotEmpty()) {
-                checkIfAbleToSignIn()
+                checkIfAbleToSignUp()
             }
         }
 
-        passwordText.doOnTextChanged { text, start, before, count ->
+        passwordText.doOnTextChanged { text, _, _, _ ->
             if (text.toString().isNotEmpty()) {
-                checkIfAbleToSignIn()
+                checkIfAbleToSignUp()
             }
         }
 
-        signUpTV.setOnClickListener {
-            startActivity(Intent(this, SignUpActivity::class.java))
+        signInTV.setOnClickListener {
+            // Return back to previous, sign in activity
+            finish()
         }
     }
 
-    private fun checkIfAbleToSignIn() {
+    private fun checkIfAbleToSignUp() {
         val emailIsEmpty = emailText.text.toString().isEmpty()
         val passwordIsEmpty = passwordText.text.toString().isEmpty()
+        val passwordNotLongEnough = passwordText.text.toString().length < AuthenticationUtil.MIN_PASSWORD_LENGTH
 
-        signInButton.isEnabled = !(emailIsEmpty || passwordIsEmpty)
+        signUpButton.isEnabled = !(emailIsEmpty || passwordIsEmpty || passwordNotLongEnough)
     }
 
-    fun attemptSignIn(view: View) {
+    fun attemptSignUp(view: View) {
         if (!AuthenticationUtil.isValidEmail(emailText.text)) {
             emailText.error = getString(R.string.invalid_email_format)
         } else {
             emailText.error = null
-            signInUser()
+            signUpUser()
         }
     }
 
-    private fun signInUser() {
+    private fun signUpUser() {
         val email = emailText.text.toString()
         val password = passwordText.text.toString()
 
-        auth.signInWithEmailAndPassword(email, password)
+        auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) {
                 if (it.isSuccessful) {
-                    Toast.makeText(baseContext, "Authentication succeeded.",
+                    Toast.makeText(baseContext, "User created",
                         Toast.LENGTH_SHORT).show()
+                    // TODO: Direct user to home page
                 } else {
-                    Toast.makeText(baseContext, "Incorrect credentials",
+                    Toast.makeText(baseContext, "Unable to create user",
                         Toast.LENGTH_SHORT).show()
                 }
             }

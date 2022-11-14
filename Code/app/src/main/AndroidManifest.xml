@@ -3,15 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.cmpt362.fitcheck">
 
-<!--To Change the icon in the splash screen and on home page we'll need to change the following
-    android:icon="@mipmap/ic_launcher"
-    android:roundIcon="@mipmap/ic_launcher_round"
-
-    to be whatever logo/icon we want.
-
-    ic_launcher uses res/mipmap to get the current default android icons for now
--->
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -23,27 +14,31 @@
         android:theme="@style/Theme.Fitcheck"
         tools:targetApi="31">
         <activity
+            android:name=".authentication.signup.SignUpActivity"
+            android:exported="false" />
+        <activity
             android:name=".authentication.signin.LoginActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="false" >
+            android:exported="false">
 
-<!--I'm pretty sure we don't want this anymore because we want the splash screen to be the launcher activity-->
-<!--            android:exported="true">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
+            <!-- I'm pretty sure we don't want this anymore because we want the splash screen to be the launcher activity -->
+            <!-- android:exported="true"> -->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
-
         <activity
             android:name=".SplashScreenActivity"
-            android:theme="@style/SplashTheme"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -1,8 +1,11 @@
 <resources>
     <string name="app_name">Fitcheck</string>
     <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign up</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="password_requirements">Must be at least 6 characters long</string>
     <string name="no_account_sign_up">Don\'t have an account? <u>Sign up</u></string>
+    <string name="have_an_account_sign_in">Have an account? <u>Sign in</u></string>
     <string name="invalid_email_format">Invalid email format</string>
 </resources>
