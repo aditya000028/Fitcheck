@@ -14,7 +14,7 @@
         android:theme="@style/Theme.Fitcheck"
         tools:targetApi="31">
         <activity
-            android:name=".authentication.signup.LoginActivity"
+            android:name=".authentication.signin.LoginActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
