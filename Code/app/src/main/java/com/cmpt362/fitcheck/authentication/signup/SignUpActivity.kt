@@ -48,13 +48,13 @@ class SignUpActivity : AppCompatActivity() {
             passwordText.setText(maybePassword)
         }
 
-        emailText.doOnTextChanged { text, start, before, count ->
+        emailText.doOnTextChanged { text, _, _, _ ->
             if (text.toString().isNotEmpty()) {
                 checkIfAbleToSignUp()
             }
         }
 
-        passwordText.doOnTextChanged { text, start, before, count ->
+        passwordText.doOnTextChanged { text, _, _, _ ->
             if (text.toString().isNotEmpty()) {
                 checkIfAbleToSignUp()
             }
