@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--This is how we want our splash screen to look-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- First item in layer list will be the background color -->
+    <item android:drawable="@drawable/splash_background_gradient"/>
+    <!-- Second item in layer list will be the logo/icon we want
+           I just have a random template logo/icon to be changed later
+     -->
+    <item
+        android:gravity="center"
+        android:drawable="@drawable/splash_logo"/>
+</layer-list>
