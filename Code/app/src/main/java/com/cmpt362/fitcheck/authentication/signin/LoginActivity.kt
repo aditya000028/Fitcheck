@@ -9,7 +9,6 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
-import androidx.lifecycle.ViewModelProvider
 import com.cmpt362.fitcheck.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -53,13 +52,13 @@ class LoginActivity : AppCompatActivity() {
         }
 
         emailText.doOnTextChanged { text, start, before, count ->
-            if (!text.toString().isEmpty()) {
+            if (text.toString().isNotEmpty()) {
                 checkIfAbleToSignIn()
             }
         }
 
         passwordText.doOnTextChanged { text, start, before, count ->
-            if (!text.toString().isEmpty()) {
+            if (text.toString().isNotEmpty()) {
                 checkIfAbleToSignIn()
             }
         }
@@ -82,9 +81,9 @@ class LoginActivity : AppCompatActivity() {
 
     fun attemptSignIn(view: View) {
         if (!isValidEmail(emailText.text)) {
-            emailText.setError(getString(R.string.invalid_email_format))
+            emailText.error = getString(R.string.invalid_email_format)
         } else {
-            emailText.setError(null)
+            emailText.error = null
             signInUser()
         }
     }
