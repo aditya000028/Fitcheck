@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".authentication.signin.LoginActivity"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+<!--        Some kind of logo here-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_in"
+            android:textSize="@dimen/sign_in_text_size"
+            android:textColor="@color/black"
+            android:layout_margin="@dimen/sign_in_text_margin">
+        </TextView>
+
+        <EditText
+            android:layout_width="@dimen/sign_in_fields_width"
+            android:layout_height="wrap_content"
+            android:id="@+id/signInEmail"
+            android:layout_margin="@dimen/sign_in_text_margin"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress"
+            android:autofillHints="emailAddress">
+        </EditText>
+
+        <EditText
+            android:layout_width="@dimen/sign_in_fields_width"
+            android:layout_height="wrap_content"
+            android:id="@+id/signInPassword"
+            android:layout_margin="@dimen/sign_in_text_margin"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:autofillHints="password">
+        </EditText>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/signInButton"
+            android:onClick="attemptSignIn"
+            android:enabled="false"
+            android:layout_margin="@dimen/sign_in_text_margin"
+            android:text="@string/sign_in">
+        </Button>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/noAccountSignUp"
+            android:text="@string/no_account_sign_up"
+            android:layout_margin="@dimen/sign_in_text_margin">
+        </TextView>
+
+    </LinearLayout>
+
+</ScrollView>

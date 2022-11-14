@@ -23,7 +23,11 @@
         android:theme="@style/Theme.Fitcheck"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity">
+            android:name=".authentication.signin.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" >
 
 <!--I'm pretty sure we don't want this anymore because we want the splash screen to be the launcher activity-->
 <!--            android:exported="true">-->
