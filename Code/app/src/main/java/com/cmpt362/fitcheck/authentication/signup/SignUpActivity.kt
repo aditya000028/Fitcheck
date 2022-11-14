@@ -69,7 +69,7 @@ class SignUpActivity : AppCompatActivity() {
     private fun checkIfAbleToSignUp() {
         val emailIsEmpty = emailText.text.toString().isEmpty()
         val passwordIsEmpty = passwordText.text.toString().isEmpty()
-        val passwordNotLongEnough = passwordText.text.toString().length < 6
+        val passwordNotLongEnough = passwordText.text.toString().length < AuthenticationUtil.MIN_PASSWORD_LENGTH
 
         signUpButton.isEnabled = !(emailIsEmpty || passwordIsEmpty || passwordNotLongEnough)
     }
