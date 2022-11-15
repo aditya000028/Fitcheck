@@ -1,6 +1,7 @@
 package com.cmpt362.fitcheck.ui.calendar
 
 import android.R
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.CalendarView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.cmpt362.fitcheck.AddPhotoActivity
 import com.cmpt362.fitcheck.databinding.FragmentCalendarBinding
 
 
@@ -34,6 +36,11 @@ class CalendarFragment : Fragment() {
         calendarView.date = selectedDate
         calendarView.firstDayOfWeek = 1
 
+        val fab: View = binding.fab
+        fab.setOnClickListener { view ->
+            var intent: Intent = Intent(context, AddPhotoActivity::class.java)
+            startActivity(intent)
+        }
 
         return root
     }

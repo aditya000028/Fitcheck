@@ -22,5 +22,5 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginBottom="80dp"
         android:contentDescription="@string/take_photo"
-        android:src="@drawable/ic_baseline_add_a_photo_24" />
+        android:src="@drawable/ic_baseline_add_a_photo_24"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
