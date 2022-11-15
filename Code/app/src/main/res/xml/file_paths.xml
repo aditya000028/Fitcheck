@@ -1,0 +1,5 @@
+<paths>
+    <external-path
+        name="fitcheck_path"
+        path="."/>
+</paths>
