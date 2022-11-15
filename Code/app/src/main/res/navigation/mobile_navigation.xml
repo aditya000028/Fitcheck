@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_calendar"
+    app:labelVisibilityMode="labeled">
+
+    <fragment
+        android:id="@+id/navigation_calendar"
+        android:name="com.cmpt362.fitcheck.ui.calendar.CalendarFragment"
+        android:label="@string/title_calendar"
+        tools:layout="@layout/fragment_calendar" />
+
+    <fragment
+        android:id="@+id/navigation_friends"
+        android:name="com.cmpt362.fitcheck.ui.friends.FriendsFragment"
+        android:label="@string/title_friends"
+        tools:layout="@layout/fragment_friends" />
+
+    <fragment
+        android:id="@+id/navigation_search"
+        android:name="com.cmpt362.fitcheck.ui.search.SearchFragment"
+        android:label="@string/title_search"
+        tools:layout="@layout/fragment_search" />
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.cmpt362.fitcheck.ui.settings.SettingsFragment"
+        android:label="@string/title_settings"
+        tools:layout="@layout/fragment_settings" />
+</navigation>
