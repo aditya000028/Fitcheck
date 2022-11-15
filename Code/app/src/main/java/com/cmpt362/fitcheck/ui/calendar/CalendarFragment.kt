@@ -29,10 +29,6 @@ class CalendarFragment : Fragment() {
         _binding = FragmentCalendarBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-//        val textView: TextView = binding.textHome
-//        calendarViewModel.text.observe(viewLifecycleOwner) {
-//            textView.text = it
-//        }
         val calendarView: CalendarView = binding.simpleCalendarView
         val selectedDate: Long = calendarView.date
         calendarView.date = selectedDate
