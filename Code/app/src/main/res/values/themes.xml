@@ -22,4 +22,13 @@
         <item name="colorAccent">@color/black</item>
         <item name="android:statusBarColor">@color/black</item>
     </style>
+
+    <style name="Theme.Fitcheck.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Fitcheck.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Fitcheck.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
