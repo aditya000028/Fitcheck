@@ -9,5 +9,7 @@
      -->
     <item
         android:gravity="center"
+        android:width="400dp"
+        android:height="200dp"
         android:drawable="@drawable/splash_logo"/>
 </layer-list>
