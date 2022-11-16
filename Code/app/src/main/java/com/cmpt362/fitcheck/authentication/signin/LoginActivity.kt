@@ -9,6 +9,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
+import com.cmpt362.fitcheck.MainActivity
 import com.cmpt362.fitcheck.R
 import com.cmpt362.fitcheck.authentication.AuthenticationUtil
 import com.cmpt362.fitcheck.authentication.signup.SignUpActivity
@@ -92,6 +93,9 @@ class LoginActivity : AppCompatActivity() {
                 if (it.isSuccessful) {
                     Toast.makeText(baseContext, "Authentication succeeded.",
                         Toast.LENGTH_SHORT).show()
+                    // finishing login activity before starting main activity
+                    finish()
+                    startActivity(Intent(this, MainActivity::class.java))
                 } else {
                     Toast.makeText(baseContext, "Incorrect credentials",
                         Toast.LENGTH_SHORT).show()

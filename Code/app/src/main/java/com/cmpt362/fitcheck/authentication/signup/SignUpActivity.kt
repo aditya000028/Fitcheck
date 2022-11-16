@@ -1,5 +1,6 @@
 package com.cmpt362.fitcheck.authentication.signup
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -8,6 +9,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
+import com.cmpt362.fitcheck.MainActivity
 import com.cmpt362.fitcheck.R
 import com.cmpt362.fitcheck.authentication.AuthenticationUtil
 import com.google.firebase.auth.FirebaseAuth
@@ -92,7 +94,9 @@ class SignUpActivity : AppCompatActivity() {
                 if (it.isSuccessful) {
                     Toast.makeText(baseContext, "User created",
                         Toast.LENGTH_SHORT).show()
-                    // TODO: Direct user to home page
+                    // finishing sign up activity before starting main activity
+                    finish()
+                    startActivity(Intent(this, MainActivity::class.java))
                 } else {
                     Toast.makeText(baseContext, "Unable to create user",
                         Toast.LENGTH_SHORT).show()
