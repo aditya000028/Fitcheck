@@ -36,6 +36,22 @@ class CalendarFragment : Fragment() {
         calendarView.date = selectedDate
         calendarView.firstDayOfWeek = 1
 
+        calendarView
+            .setOnDateChangeListener(
+                CalendarView.OnDateChangeListener { view, year, month, dayOfMonth ->
+                    // In this Listener we are getting values
+                    // such as year, month and day of month
+                    // on below line we are creating a variable
+                    // in which we are adding all the variables in it.
+                    var intent: Intent = Intent(context, DetailActivity::class.java)
+                    intent.putExtra("year", year)
+                    intent.putExtra("month", month)
+                    intent.putExtra("day", dayOfMonth)
+                    startActivity(intent)
+
+                })
+
+
         val fab: View = binding.fab
         fab.setOnClickListener { view ->
             var intent: Intent = Intent(context, AddPhotoActivity::class.java)

@@ -30,4 +30,10 @@
     <string name="notes_hint">Enter notes about your fit here</string>
     <string name="tags">Tags:</string>
 
+    <!-- Detail Activity-->
+    <string name="detail_title">Your Fit On:</string>
+    <string name="done_button">Done</string>
+    <string name="edit_button">Edit</string>
+    <string name="fit_notes">Your fit notes</string>
+
 </resources>
