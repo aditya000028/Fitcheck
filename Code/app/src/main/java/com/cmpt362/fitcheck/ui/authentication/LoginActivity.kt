@@ -1,4 +1,4 @@
-package com.cmpt362.fitcheck.authentication.signin
+package com.cmpt362.fitcheck.ui.authentication
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -11,15 +11,11 @@ import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import com.cmpt362.fitcheck.MainActivity
 import com.cmpt362.fitcheck.R
-import com.cmpt362.fitcheck.authentication.AuthenticationUtil
-import com.cmpt362.fitcheck.authentication.signup.SignUpActivity
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.cmpt362.fitcheck.firebase.AuthenticationUtil
+import com.cmpt362.fitcheck.firebase.Firebase
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var auth: FirebaseAuth
     private lateinit var emailText: EditText
     private lateinit var passwordText: EditText
     private lateinit var signInButton: Button
@@ -35,7 +31,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun initializeVariables(savedInstanceState: Bundle?) {
-        auth = Firebase.auth
         emailText = findViewById(R.id.signInEmail)
         passwordText = findViewById(R.id.signInPassword)
         signInButton = findViewById(R.id.signInButton)
@@ -88,7 +83,7 @@ class LoginActivity : AppCompatActivity() {
         val email = emailText.text.toString()
         val password = passwordText.text.toString()
 
-        auth.signInWithEmailAndPassword(email, password)
+        Firebase.signInUser(email, password)
             .addOnCompleteListener(this) {
                 if (it.isSuccessful) {
                     Toast.makeText(baseContext, "Authentication succeeded.",

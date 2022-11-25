@@ -1,4 +1,4 @@
-package com.cmpt362.fitcheck.authentication
+package com.cmpt362.fitcheck.firebase
 
 import android.util.Patterns
 import java.util.regex.Pattern
