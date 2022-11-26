@@ -10,9 +10,9 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.cmpt362.fitcheck.R
-import com.cmpt362.fitcheck.authentication.signin.LoginActivity
+import com.cmpt362.fitcheck.ui.authentication.LoginActivity
 import com.cmpt362.fitcheck.databinding.FragmentSettingsBinding
-import com.google.firebase.auth.FirebaseAuth
+import com.cmpt362.fitcheck.firebase.Firebase
 
 class SettingsFragment : Fragment() {
 
@@ -41,8 +41,8 @@ class SettingsFragment : Fragment() {
         // Logging a user out when Logout button is clicked
         binding.root.findViewById<Button>(R.id.logout_button).setOnClickListener(){
             // Logic for logging a user out
-            val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
-            mAuth.signOut()
+            Firebase.signOut()
+
             // User logged out so end current activity and go back to Login activity
             activity?.finish()
             startActivity(Intent(requireContext(), LoginActivity::class.java))

@@ -1,4 +1,4 @@
-package com.cmpt362.fitcheck.authentication.signup
+package com.cmpt362.fitcheck.ui.authentication
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -11,14 +11,10 @@ import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import com.cmpt362.fitcheck.MainActivity
 import com.cmpt362.fitcheck.R
-import com.cmpt362.fitcheck.authentication.AuthenticationUtil
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.cmpt362.fitcheck.firebase.Firebase
 
 class SignUpActivity : AppCompatActivity() {
 
-    private lateinit var auth: FirebaseAuth
     private lateinit var emailText: EditText
     private lateinit var passwordText: EditText
     private lateinit var signUpButton: Button
@@ -34,7 +30,6 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun initializeVariables(savedInstanceState: Bundle?) {
-        auth = Firebase.auth
         emailText = findViewById(R.id.signUpEmail)
         passwordText = findViewById(R.id.signUpPassword)
         signUpButton = findViewById(R.id.signUpButton)
@@ -89,7 +84,7 @@ class SignUpActivity : AppCompatActivity() {
         val email = emailText.text.toString()
         val password = passwordText.text.toString()
 
-        auth.createUserWithEmailAndPassword(email, password)
+        Firebase.createUser(email, password)
             .addOnCompleteListener(this) {
                 if (it.isSuccessful) {
                     Toast.makeText(baseContext, "User created",

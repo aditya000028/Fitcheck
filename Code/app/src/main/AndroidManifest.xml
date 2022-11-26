@@ -37,10 +37,10 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".authentication.signup.SignUpActivity"
+            android:name=".ui.authentication.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".authentication.signin.LoginActivity"
+            android:name=".ui.authentication.LoginActivity"
             android:exported="false" />
         <activity
             android:name=".SplashScreenActivity"
