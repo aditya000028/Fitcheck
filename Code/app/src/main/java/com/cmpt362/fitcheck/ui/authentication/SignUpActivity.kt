@@ -11,7 +11,6 @@ import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import com.cmpt362.fitcheck.MainActivity
 import com.cmpt362.fitcheck.R
-import com.cmpt362.fitcheck.firebase.AuthenticationUtil
 import com.cmpt362.fitcheck.firebase.Firebase
 
 class SignUpActivity : AppCompatActivity() {
