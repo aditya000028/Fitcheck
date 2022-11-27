@@ -1,5 +1,6 @@
 package com.cmpt362.fitcheck.ui.calendar
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
@@ -9,6 +10,7 @@ import com.cmpt362.fitcheck.R
 class DetailActivity: AppCompatActivity() {
     private lateinit var dateText: TextView
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)

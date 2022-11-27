@@ -23,6 +23,7 @@
     <string name="cancel_button">Cancel</string>
     <string name="save_message">Fit uploaded!</string>
     <string name="cancel_message">Upload canceled</string>
+    <string name="add_tag_button">Add</string>
     <string name="photo_title_label">Take your FitCheck for today!</string>
     <string name="photo_button">Capture Fit!</string>
     <string name="location">Location</string>
@@ -35,5 +36,6 @@
     <string name="done_button">Done</string>
     <string name="edit_button">Edit</string>
     <string name="fit_notes">Your fit notes</string>
+    <string name="tag_notes">Enter tags for your fit</string>
 
 </resources>

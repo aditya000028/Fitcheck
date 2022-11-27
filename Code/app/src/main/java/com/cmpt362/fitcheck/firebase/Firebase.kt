@@ -49,4 +49,8 @@ object Firebase {
     fun signOut() {
         auth.signOut()
     }
+
+    fun getTag(): DatabaseReference {
+        return photosTagsReference
+    }
 }
