@@ -26,6 +26,11 @@
             app:summary="@string/change_email_summary"
             app:fragment="com.ui.settings.ChangeEmailFragment" />
 
+        <Preference
+            app:key="@string/logout"
+            app:summary="@string/logout_summary"
+            app:title="@string/logout" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>

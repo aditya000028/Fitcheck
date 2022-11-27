@@ -55,5 +55,7 @@
     <string name="reset_password_summary">Reset your password</string>
     <string name="change_email">Change Email</string>
     <string name="change_email_summary">Change your email</string>
+    <string name="logout">Log out</string>
+    <string name="logout_summary">Log out of your account</string>
 
 </resources>
