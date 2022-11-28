@@ -4,14 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.cmpt362.fitcheck.databinding.FragmentFriendsBinding
 
 class FriendsFragment : Fragment() {
 
     private var _binding: FragmentFriendsBinding? = null
+
+    private lateinit var friendsViewModel : FriendsViewModel
+    private lateinit var friendsRecyclerView: RecyclerView
+    lateinit var friendsAdapter: FriendsAdapter
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,17 +28,26 @@ class FriendsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val friendsViewModel =
-            ViewModelProvider(this).get(FriendsViewModel::class.java)
 
         _binding = FragmentFriendsBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
-        val textView: TextView = binding.textFriends
-        friendsViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
-        return root
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        friendsRecyclerView = binding.allUsersList
+        friendsRecyclerView.layoutManager = LinearLayoutManager(context)
+        friendsRecyclerView.setHasFixedSize(true)
+        friendsAdapter = FriendsAdapter()
+        friendsRecyclerView.adapter = friendsAdapter
+
+        friendsViewModel = ViewModelProvider(this)[FriendsViewModel::class.java]
+
+        friendsViewModel.allUsers.observe(viewLifecycleOwner, Observer {
+            friendsAdapter.updateUserList(it)
+        })
     }
 
     override fun onDestroyView() {
