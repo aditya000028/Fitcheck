@@ -83,13 +83,21 @@
             android:text="@string/tags">
         </TextView>
 
-        <EditText
+<!--        <EditText-->
+<!--            android:id="@+id/photoTags"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:hint="@string/tag_notes"-->
+<!--            android:inputType="textCapWords">-->
+<!--        </EditText>-->
+
+        <AutoCompleteTextView
             android:id="@+id/photoTags"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/tag_notes"
             android:inputType="textCapWords">
-        </EditText>
+        </AutoCompleteTextView>
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chipGroup"
