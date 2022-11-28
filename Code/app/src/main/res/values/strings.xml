@@ -23,8 +23,10 @@
     <!-- Add Photo Activity -->
     <string name="save_button">Save</string>
     <string name="cancel_button">Cancel</string>
-    <string name="save_message">Fit uploaded!</string>
-    <string name="cancel_message">Upload canceled</string>
+    <string name="save_message">Fit Uploaded!</string>
+    <string name="failure_message">"Upload Failed"</string>
+    <string name="cancel_message">Upload Canceled</string>
+    <string name="take_picture_message">"Capture your fit to upload!"</string>
     <string name="photo_title_label">Take your FitCheck for today!</string>
     <string name="photo_button">Capture Fit!</string>
     <string name="location">Location</string>
