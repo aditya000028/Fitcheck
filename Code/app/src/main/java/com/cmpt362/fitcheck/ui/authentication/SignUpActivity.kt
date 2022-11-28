@@ -90,6 +90,7 @@ class SignUpActivity : AppCompatActivity() {
                     Toast.makeText(baseContext, "User created",
                         Toast.LENGTH_SHORT).show()
                     // finishing sign up activity before starting main activity
+                    Firebase.addUserToDatabase(email, Firebase.getUserId()!!)
                     finish()
                     startActivity(Intent(this, MainActivity::class.java))
                 } else {

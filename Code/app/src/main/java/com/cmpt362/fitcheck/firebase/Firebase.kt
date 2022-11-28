@@ -82,6 +82,11 @@ object Firebase {
         return null
     }
 
+    // Add the new user to the database so we can search all users
+    fun addUserToDatabase(email: String, uid: String){
+        usersReference.child(uid).setValue(User(email, uid))
+    }
+
     fun getTag(): DatabaseReference {
         return photosTagsReference
     }
@@ -91,7 +96,7 @@ object Firebase {
      * under user's id and then current date.
      * Return the UploadTask object so Listeners can be added.
      */
-    fun addPhoto(file: Uri, notes: String, tags: String): UploadTask? {
+    fun addPhoto(file: Uri, notes: String): UploadTask? {
         // Check that userId is not null
         val uid = getUserId()
         if (uid != null) {
@@ -105,7 +110,6 @@ object Firebase {
             // Add custom metadata
             val metadata = storageMetadata {
                 setCustomMetadata(NOTES_METADATA_NAME, notes)
-                setCustomMetadata(TAGS_METADATA_NAME, tags)
             }
 
             // Upload photo and metadata to cloud storage
