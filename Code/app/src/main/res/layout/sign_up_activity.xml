@@ -27,6 +27,26 @@
         <EditText
             android:layout_width="@dimen/sign_in_fields_width"
             android:layout_height="wrap_content"
+            android:id="@+id/signUpFirstName"
+            android:layout_margin="@dimen/sign_in_up_text_margin"
+            android:hint="@string/first_name"
+            android:inputType="text"
+            android:autofillHints="name">
+        </EditText>
+
+        <EditText
+            android:layout_width="@dimen/sign_in_fields_width"
+            android:layout_height="wrap_content"
+            android:id="@+id/signUpLastName"
+            android:layout_margin="@dimen/sign_in_up_text_margin"
+            android:hint="@string/last_name"
+            android:inputType="text"
+            android:autofillHints="name">
+        </EditText>
+
+        <EditText
+            android:layout_width="@dimen/sign_in_fields_width"
+            android:layout_height="wrap_content"
             android:id="@+id/signUpEmail"
             android:layout_margin="@dimen/sign_in_up_text_margin"
             android:hint="@string/email"

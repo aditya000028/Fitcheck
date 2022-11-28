@@ -87,9 +87,8 @@ object Firebase {
         return null
     }
 
-    // Add the new user to the database so we can search all users
-    fun addUserToDatabase(email: String, uid: String){
-        usersReference.child(uid).setValue(User(email, uid))
+    fun addUserToDatabase(user: User){
+        usersReference.child(user.uid!!).setValue(user)
     }
 
     fun getTag(): DatabaseReference {

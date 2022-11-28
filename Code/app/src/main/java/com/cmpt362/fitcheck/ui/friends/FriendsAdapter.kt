@@ -12,10 +12,11 @@ class FriendsAdapter: RecyclerView.Adapter<FriendsAdapter.MyViewHolder>() {
 
     private val userList = ArrayList<User>()
 
-
     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        val email: TextView = itemView.findViewById<TextView>(R.id.user_email)
-        val user_id: TextView = itemView.findViewById<TextView>(R.id.user_id)
+        val email: TextView = itemView.findViewById(R.id.userEmail)
+        val user_id: TextView = itemView.findViewById(R.id.userId)
+        val firstName: TextView = itemView.findViewById(R.id.userFirstName)
+        val lastName: TextView = itemView.findViewById(R.id.userLastName)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -31,6 +32,8 @@ class FriendsAdapter: RecyclerView.Adapter<FriendsAdapter.MyViewHolder>() {
         println("debug: onBindViewHolder - $currentItem")
         holder.email.text = "user email - ${currentItem.email}"
         holder.user_id.text = "user id - ${currentItem.uid}"
+        holder.firstName.text = "user first name - ${currentItem.firstName}"
+        holder.lastName.text = "user last name - ${currentItem.lastName}"
     }
 
     override fun getItemCount(): Int {

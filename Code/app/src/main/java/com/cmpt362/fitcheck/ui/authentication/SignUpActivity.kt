@@ -12,16 +12,21 @@ import androidx.core.widget.doOnTextChanged
 import com.cmpt362.fitcheck.MainActivity
 import com.cmpt362.fitcheck.R
 import com.cmpt362.fitcheck.firebase.Firebase
+import com.cmpt362.fitcheck.firebase.User
 
 class SignUpActivity : AppCompatActivity() {
 
     private lateinit var emailText: EditText
     private lateinit var passwordText: EditText
+    private lateinit var firstNameText: EditText
+    private lateinit var lastNameText: EditText
     private lateinit var signUpButton: Button
     private lateinit var signInTV: TextView
 
     private var emailIsValid = false
     private var passwordIsValid = false
+    private var firstNameIsValid = false
+    private var lastNameIsValid = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +40,8 @@ class SignUpActivity : AppCompatActivity() {
         passwordText = findViewById(R.id.signUpPassword)
         signUpButton = findViewById(R.id.signUpButton)
         signInTV = findViewById(R.id.accountSignIn)
+        firstNameText = findViewById(R.id.signUpFirstName)
+        lastNameText = findViewById(R.id.signUpLastName)
 
         emailText.doOnTextChanged { text, _, _, _ ->
             emailIsValid = if (text.toString().isNotEmpty()) {
@@ -42,7 +49,7 @@ class SignUpActivity : AppCompatActivity() {
             } else {
                 false
             }
-            signUpButton.isEnabled = emailIsValid && passwordIsValid
+            checkSignUpValidity()
         }
 
         passwordText.doOnTextChanged { text, _, _, _ ->
@@ -51,13 +58,27 @@ class SignUpActivity : AppCompatActivity() {
             } else {
                 false
             }
-            signUpButton.isEnabled = emailIsValid && passwordIsValid
+            checkSignUpValidity()
+        }
+
+        firstNameText.doOnTextChanged { text, _, _, _ ->
+            firstNameIsValid = text.toString().isNotBlank()
+            checkSignUpValidity()
+        }
+
+        lastNameText.doOnTextChanged { text, _, _, _ ->
+            lastNameIsValid = text.toString().isNotBlank()
+            checkSignUpValidity()
         }
 
         signInTV.setOnClickListener {
             // Return back to previous, sign in activity
             finish()
         }
+    }
+
+    private fun checkSignUpValidity() {
+        signUpButton.isEnabled = emailIsValid && passwordIsValid && firstNameIsValid && lastNameIsValid
     }
 
     fun signUpUser(view: View) {
@@ -67,10 +88,17 @@ class SignUpActivity : AppCompatActivity() {
         Firebase.createUser(email, password)
             .addOnCompleteListener(this) {
                 if (it.isSuccessful) {
+                    val user = User(
+                        Firebase.getUserId()!!,
+                        email,
+                        firstNameText.text.toString(),
+                        lastNameText.text.toString()
+                    )
+                    Firebase.addUserToDatabase(user)
+
                     Toast.makeText(baseContext, "User created",
                         Toast.LENGTH_SHORT).show()
-                    // finishing sign up activity before starting main activity
-                    Firebase.addUserToDatabase(email, Firebase.getUserId()!!)
+
                     finish()
                     startActivity(Intent(this, MainActivity::class.java))
                 } else {
