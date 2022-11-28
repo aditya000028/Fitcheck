@@ -64,14 +64,13 @@
             android:text="@string/notes">
         </TextView>
 
-        <EditText
-            android:id="@+id/userName"
+        <TextView
+            android:id="@+id/notesText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/fit_notes"
-            android:inputType="textCapWords|textMultiLine"
-            android:lines="4">
-        </EditText>
+            android:text="@string/fit_notes"
+            android:maxLines="4">
+        </TextView>
 
         <TextView
             android:layout_width="wrap_content"
@@ -82,12 +81,19 @@
             android:text="@string/tags">
         </TextView>
 
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/detailChipGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.Chip.Entry">
+        </com.google.android.material.chip.ChipGroup>
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="20dp"
             android:layout_marginBottom="10dp">
 
             <Button

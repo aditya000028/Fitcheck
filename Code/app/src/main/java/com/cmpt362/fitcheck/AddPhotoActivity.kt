@@ -6,33 +6,47 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.KeyEvent
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.view.inputmethod.InputMethodManager
+import android.widget.*
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import com.cmpt362.fitcheck.firebase.Firebase
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import java.io.File
 
 class AddPhotoActivity : AppCompatActivity() {
     private lateinit var imageView: ImageView
+    private lateinit var notesText: EditText
+    private lateinit var tagEditText: AutoCompleteTextView
+    private var tagArray: ArrayList<String> = arrayListOf()
+    private var databaseTagArray: ArrayList<String> = arrayListOf()
     private lateinit var tempImgUri: Uri
     private lateinit var tempImgFile: File
     private val tempImgFileName = "fitcheck_temp_img.jpg"
     private lateinit var cameraResult: ActivityResultLauncher<Intent>
+    private var photoTaken = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_photo)
 
         imageView = findViewById(R.id.outfitImage)
+        notesText = findViewById(R.id.notesText)
 
         tempImgFile = File(getExternalFilesDir(null), tempImgFileName)
         tempImgUri = FileProvider.getUriForFile(
             this, "com.cmpt362.fitcheck", tempImgFile
         )
+        photoTaken = 0
 
         // Display photo taken in imageView
         cameraResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
@@ -40,8 +54,53 @@ class AddPhotoActivity : AppCompatActivity() {
             if(result.resultCode == Activity.RESULT_OK){
                 val bitmap = Util.getBitmap(this, tempImgUri)
                 imageView.setImageBitmap(bitmap)
+                photoTaken = 1
 
             }
+        }
+        val tagReference = Firebase.getTag()
+
+        val eventListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (ds: DataSnapshot in dataSnapshot.children) {
+                    val keyValue = ds.getValue(String::class.java)
+                    databaseTagArray.add(keyValue!!)
+                }
+            }
+            override fun onCancelled(databaseError: DatabaseError) {}
+        }
+        tagReference.child("tags").addListenerForSingleValueEvent(eventListener)
+
+        tagEditText = findViewById(R.id.photoTags)
+        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, databaseTagArray)
+        tagEditText.setAdapter(adapter)
+        tagEditText.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if ((keyCode == KeyEvent.KEYCODE_ENTER) && (event.action == KeyEvent.ACTION_UP)) {
+                val value = tagEditText.text.toString()
+                addChipToGroup(value)
+                tagArray.add(value)
+                val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(v.windowToken, 0)
+                tagEditText.text.clear()
+                return@OnKeyListener true
+            }
+            return@OnKeyListener false
+        })
+    }
+
+    private fun addChipToGroup(tag: String) {
+        val chip = Chip(this)
+        chip.text = tag
+        chip.chipIcon = ContextCompat.getDrawable(this, R.drawable.ic_launcher_background)
+        chip.isChipIconVisible = false
+        chip.isCloseIconVisible = true
+        chip.isClickable = false
+        chip.isCheckable = false
+        val chipGroup  = findViewById<ChipGroup>(R.id.chipGroup)
+        chipGroup.addView(chip as View)
+        chip.setOnCloseIconClickListener {
+            chipGroup.removeView(chip as View)
+            tagArray.remove(tag)
         }
     }
 
@@ -58,9 +117,53 @@ class AddPhotoActivity : AppCompatActivity() {
      * When save button is click, save the upload and finish the activity
      */
     fun onSaveUpload(view: View){
-        Toast.makeText(this, R.string.save_message, Toast.LENGTH_SHORT).show()
-        // ToDo: Save photo to firebase
-        this.finish()
+        val tagReference = Firebase.getTag()
+        val eventListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (ds: DataSnapshot in dataSnapshot.children) {
+                    val keyValue = ds.getValue(String::class.java)
+                    databaseTagArray.add(keyValue!!)
+                }
+            }
+            override fun onCancelled(databaseError: DatabaseError) {}
+        }
+        tagReference.child("tags").addListenerForSingleValueEvent(eventListener)
+
+        for(item in tagArray){
+            // if the tag DOES NOT exist in the database then add it
+            if(databaseTagArray.indexOf(item) == -1) {
+                val newData = tagReference.child("tags").push()
+                newData.setValue(item)
+            }
+        }
+        // Check that photo was taken
+        if (photoTaken == 1) {
+            // Get any notes from user
+            val notes = notesText.text.toString()
+
+            // Add photo and notes to cloud storage
+            val uploadTask = Firebase.addPhoto(tempImgUri, notes, fromArrayToString(tagArray))
+
+            // Check that UploadTask was created
+            if (uploadTask != null) {
+                // Add listeners for file success, progress, and failure
+                uploadTask.addOnSuccessListener { taskSnapshot ->
+                    // If successful, update user and finish activity
+                    Toast.makeText(this, R.string.save_message, Toast.LENGTH_SHORT).show()
+                    this.finish()
+                    }.addOnProgressListener { taskSnapshot ->
+                            val progress = (100.0 * taskSnapshot.bytesTransferred) / taskSnapshot.totalByteCount
+                            println("Upload is $progress% done")
+                    }.addOnFailureListener { exception ->
+                        // On failure, inform user and output error
+                        println(exception)
+                        Toast.makeText(this, R.string.failure_message, Toast.LENGTH_SHORT).show()
+                    }
+            }
+        } else {
+            // Inform user that picture must be taken
+            Toast.makeText(this, R.string.take_picture_message, Toast.LENGTH_SHORT).show()
+        }
     }
 
     /**
@@ -69,5 +172,13 @@ class AddPhotoActivity : AppCompatActivity() {
     fun onCancelUpload(view: View){
         Toast.makeText(this, R.string.cancel_message, Toast.LENGTH_SHORT).show()
         this.finish()
+    }
+
+    fun fromArrayToString(array: ArrayList<String>): String {
+        var string = ""
+        for (s in array) string += "${s}, "
+        println("latlng convert" + string)
+
+        return string
     }
 }

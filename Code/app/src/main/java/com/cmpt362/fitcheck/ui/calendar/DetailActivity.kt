@@ -1,14 +1,26 @@
 package com.cmpt362.fitcheck.ui.calendar
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import android.widget.AutoCompleteTextView
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.cmpt362.fitcheck.R
+import com.cmpt362.fitcheck.firebase.Firebase
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 
 class DetailActivity: AppCompatActivity() {
     private lateinit var dateText: TextView
+    private lateinit var imageView: ImageView
+    private lateinit var notesText: TextView
+    private lateinit var tagsText: AutoCompleteTextView
+    private lateinit var chipGroup: ChipGroup
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
@@ -20,6 +32,12 @@ class DetailActivity: AppCompatActivity() {
 
         dateText = findViewById(R.id.dateTextView)
         dateText.text = convertToString(month) + " $day, $year"
+
+        imageView = findViewById(R.id.outfitImage)
+        notesText = findViewById(R.id.notesText)
+        chipGroup  = findViewById(R.id.detailChipGroup)
+
+        Firebase.getPhoto(year, month, day, imageView, notesText, chipGroup, this)
     }
 
     fun convertToString(month: Int): String {
