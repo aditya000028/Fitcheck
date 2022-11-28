@@ -66,7 +66,7 @@
         </TextView>
 
         <EditText
-            android:id="@+id/userName"
+            android:id="@+id/notesText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/notes_hint"
@@ -82,14 +82,6 @@
             android:layout_marginTop="20dp"
             android:text="@string/tags">
         </TextView>
-
-<!--        <EditText-->
-<!--            android:id="@+id/photoTags"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:hint="@string/tag_notes"-->
-<!--            android:inputType="textCapWords">-->
-<!--        </EditText>-->
 
         <AutoCompleteTextView
             android:id="@+id/photoTags"
