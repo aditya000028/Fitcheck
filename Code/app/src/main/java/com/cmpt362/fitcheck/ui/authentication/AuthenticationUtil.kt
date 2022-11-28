@@ -20,7 +20,7 @@ object AuthenticationUtil {
         return if (password.isNullOrBlank()) {
             false
         } else {
-            return password.length > resources.getInteger(R.integer.minimum_password_length)
+            return password.length >= resources.getInteger(R.integer.minimum_password_length)
         }
     }
 }
