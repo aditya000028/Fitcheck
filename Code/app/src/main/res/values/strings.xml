@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Fitcheck</string>
+
+    <!-- Login/Signup -->
     <string name="sign_in">Sign in</string>
     <string name="sign_up">Sign up</string>
     <string name="email">Email</string>
@@ -37,5 +39,25 @@
     <string name="edit_button">Edit</string>
     <string name="fit_notes">Your fit notes</string>
     <string name="tag_notes">Enter tags for your fit</string>
+
+
+    <!-- Preference Titles -->
+    <string name="account_info_header">Account Info</string>
+    <string name="notifications_header">Notifications</string>
+    <string name="security_header">Security</string>
+
+    <!-- Account Info Preferences -->
+    <string name="profile">Profile</string>
+    <string name="profile_summary">Edit Profile</string>
+
+    <!-- Notification Preferences -->
+
+    <!-- Security Preferences -->
+    <string name="reset_password">Reset Password</string>
+    <string name="reset_password_summary">Reset your password</string>
+    <string name="change_email">Change Email</string>
+    <string name="change_email_summary">Change your email</string>
+    <string name="logout">Log out</string>
+    <string name="logout_summary">Log out of your account</string>
 
 </resources>
