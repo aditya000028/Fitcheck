@@ -19,42 +19,39 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var passwordText: EditText
     private lateinit var signInButton: Button
     private lateinit var signUpTV: TextView
-    private val EMAIL_KEY = "EMAIL_KEY"
-    private val PASSWORD_KEY = "PASSWORD_KEY"
+
+    private var emailIsValid = false
+    private var passwordIsValid = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_activity)
 
-        initializeVariables(savedInstanceState)
+        initializeVariables()
     }
 
-    private fun initializeVariables(savedInstanceState: Bundle?) {
+    private fun initializeVariables() {
         emailText = findViewById(R.id.signInEmail)
         passwordText = findViewById(R.id.signInPassword)
         signInButton = findViewById(R.id.signInButton)
         signUpTV = findViewById(R.id.noAccountSignUp)
 
-        val maybeEmail = savedInstanceState?.getString(EMAIL_KEY)
-        if (maybeEmail != null) {
-            emailText.setText(maybeEmail)
-        }
-
-        val maybePassword = savedInstanceState?.getString(PASSWORD_KEY)
-        if (maybePassword != null) {
-            passwordText.setText(maybePassword)
-        }
-
-        emailText.doOnTextChanged { text, start, before, count ->
-            if (text.toString().isNotEmpty()) {
-                checkIfAbleToSignIn()
+        emailText.doOnTextChanged { text, _, _, _ ->
+            emailIsValid = if (text.toString().isNotEmpty()) {
+                AuthenticationUtil.isValidEmail(text)
+            } else {
+                false
             }
+            signInButton.isEnabled = emailIsValid && passwordIsValid
         }
 
-        passwordText.doOnTextChanged { text, start, before, count ->
-            if (text.toString().isNotEmpty()) {
-                checkIfAbleToSignIn()
+        passwordText.doOnTextChanged { text, _, _, _ ->
+            passwordIsValid = if (text.toString().isNotEmpty()) {
+                AuthenticationUtil.isValidPassword(text, resources)
+            } else {
+                false
             }
+            signInButton.isEnabled = emailIsValid && passwordIsValid
         }
 
         signUpTV.setOnClickListener {
@@ -62,23 +59,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkIfAbleToSignIn() {
-        val emailIsEmpty = emailText.text.toString().isEmpty()
-        val passwordIsEmpty = passwordText.text.toString().isEmpty()
-
-        signInButton.isEnabled = !(emailIsEmpty || passwordIsEmpty)
-    }
-
-    fun attemptSignIn(view: View) {
-        if (!AuthenticationUtil.isValidEmail(emailText.text)) {
-            emailText.error = getString(R.string.invalid_email_format)
-        } else {
-            emailText.error = null
-            signInUser()
-        }
-    }
-
-    private fun signInUser() {
+    fun signInUser(view: View) {
         val email = emailText.text.toString()
         val password = passwordText.text.toString()
 
@@ -95,11 +76,5 @@ class LoginActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT).show()
                 }
             }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(EMAIL_KEY, emailText.text.toString())
-        outState.putString(PASSWORD_KEY, passwordText.text.toString())
     }
 }
