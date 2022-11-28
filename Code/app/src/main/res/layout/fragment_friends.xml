@@ -20,7 +20,43 @@
         android:id="@+id/all_users_list"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_below="@+id/all_users_title"
+        android:layout_below="@+id/all_users_title" />
+
+    <TextView
+        android:id="@+id/pending_friend_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/all_users_list"
+        android:layout_margin="10dp"
+        android:textSize="22dp"
+        android:textStyle="bold"
+        android:text="Pending Friends"/>
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/pending_friend_list"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@+id/pending_friend_title" />
+
+    <TextView
+        android:id="@+id/friends_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/pending_friend_list"
+        android:layout_margin="10dp"
+        android:textSize="22dp"
+        android:textStyle="bold"
+        android:text="Friends"/>
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/friends_list"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@+id/friends_title"
         android:layout_margin="10dp" />
 
 </RelativeLayout>
