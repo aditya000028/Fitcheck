@@ -2,12 +2,16 @@ package com.cmpt362.fitcheck.ui.calendar
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.cmpt362.fitcheck.R
+import com.cmpt362.fitcheck.firebase.Firebase
 
 class DetailActivity: AppCompatActivity() {
     private lateinit var dateText: TextView
+    private lateinit var imageView: ImageView
+    private lateinit var notesText: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,6 +24,11 @@ class DetailActivity: AppCompatActivity() {
 
         dateText = findViewById(R.id.dateTextView)
         dateText.text = convertToString(month) + " $day, $year"
+
+        imageView = findViewById(R.id.outfitImage)
+        notesText = findViewById(R.id.notesText)
+
+        Firebase.getPhoto(year, month, day, imageView, notesText, this)
     }
 
     fun convertToString(month: Int): String {

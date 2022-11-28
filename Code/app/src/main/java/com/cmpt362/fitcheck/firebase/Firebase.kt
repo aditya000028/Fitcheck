@@ -1,6 +1,10 @@
 package com.cmpt362.fitcheck.firebase
 
+import android.content.Context
 import android.net.Uri
+import android.widget.ImageView
+import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -14,6 +18,7 @@ import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import com.google.firebase.storage.ktx.storage
 import com.google.firebase.storage.ktx.storageMetadata
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -97,5 +102,39 @@ object Firebase {
         }
 
         return null
+    }
+
+    /**
+     * Downloads photo from cloud storage based on year, month, day given
+     * and places photo in given ImageView.
+     */
+    fun getPhoto(year: Int, month: Int, day: Int, imageView: ImageView, notesText: TextView, context: Context) {
+        // Check that userId is not null
+        val uid = getUserId()
+        if (uid != null) {
+            // Get and format given date
+            val date = LocalDate.of(year, month, day)
+            val formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)
+            val dateStr = date.format(formatter)
+
+            // Needed photo is stored in user id -> date
+            val photoRef = storageRef.child(uid).child(dateStr)
+
+            photoRef.downloadUrl.addOnSuccessListener {Uri->
+                val imageURL = Uri.toString()
+
+                // Download photo and place in ImageView
+                Glide.with(context /* context */)
+                    .load(imageURL)
+                    .into(imageView)
+            }
+
+            photoRef.metadata.addOnSuccessListener { metadata ->
+                // Get metadata and put entry notes into notes TextView
+                val notes = metadata.getCustomMetadata(NOTES_METADATA_NAME)
+                notesText.text = notes
+            }
+        }
+
     }
 }
