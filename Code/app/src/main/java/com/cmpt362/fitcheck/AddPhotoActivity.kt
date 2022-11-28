@@ -63,7 +63,6 @@ class AddPhotoActivity : AppCompatActivity() {
         val eventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (ds: DataSnapshot in dataSnapshot.children) {
-//                    val key = ds.key
                     val keyValue = ds.getValue(String::class.java)
                     databaseTagArray.add(keyValue!!)
                 }
@@ -143,7 +142,7 @@ class AddPhotoActivity : AppCompatActivity() {
             val notes = notesText.text.toString()
 
             // Add photo and notes to cloud storage
-            val uploadTask = Firebase.addPhoto(tempImgUri, notes)
+            val uploadTask = Firebase.addPhoto(tempImgUri, notes, fromArrayToString(tagArray))
 
             // Check that UploadTask was created
             if (uploadTask != null) {
@@ -173,5 +172,13 @@ class AddPhotoActivity : AppCompatActivity() {
     fun onCancelUpload(view: View){
         Toast.makeText(this, R.string.cancel_message, Toast.LENGTH_SHORT).show()
         this.finish()
+    }
+
+    fun fromArrayToString(array: ArrayList<String>): String {
+        var string = ""
+        for (s in array) string += "${s}, "
+        println("latlng convert" + string)
+
+        return string
     }
 }

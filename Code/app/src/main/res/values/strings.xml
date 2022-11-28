@@ -29,6 +29,7 @@
     <string name="take_picture_message">"Capture your fit to upload!"</string>
     <string name="photo_title_label">Take your FitCheck for today!</string>
     <string name="tag_notes">Enter tags for your fit</string>
+    <string name="detail_tag">Update tags for your fit</string>
     <string name="photo_button">Capture Fit!</string>
     <string name="location">Location</string>
     <string name="notes">Notes:</string>

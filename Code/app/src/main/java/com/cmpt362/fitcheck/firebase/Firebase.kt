@@ -2,10 +2,15 @@ package com.cmpt362.fitcheck.firebase
 
 import android.content.Context
 import android.net.Uri
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.cmpt362.fitcheck.R
 import com.google.android.gms.tasks.Task
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -34,6 +39,7 @@ object Firebase {
     private const val PHOTOS_TAGS_REFERENCE_NAME = "photos_tags"
     private const val PHOTOS_REFERENCE_NAME = "photos"
     private const val NOTES_METADATA_NAME = "Notes"
+    private const val TAGS_METADATA_NAME = "Tags"
 
     private val auth: FirebaseAuth = Firebase.auth
     private val database: FirebaseDatabase = Firebase.database
@@ -85,7 +91,7 @@ object Firebase {
      * under user's id and then current date.
      * Return the UploadTask object so Listeners can be added.
      */
-    fun addPhoto(file: Uri, notes: String): UploadTask? {
+    fun addPhoto(file: Uri, notes: String, tags: String): UploadTask? {
         // Check that userId is not null
         val uid = getUserId()
         if (uid != null) {
@@ -99,6 +105,7 @@ object Firebase {
             // Add custom metadata
             val metadata = storageMetadata {
                 setCustomMetadata(NOTES_METADATA_NAME, notes)
+                setCustomMetadata(TAGS_METADATA_NAME, tags)
             }
 
             // Upload photo and metadata to cloud storage
@@ -112,7 +119,7 @@ object Firebase {
      * Downloads photo from cloud storage based on year, month, day given
      * and places photo in given ImageView.
      */
-    fun getPhoto(year: Int, month: Int, day: Int, imageView: ImageView, notesText: TextView, context: Context) {
+    fun getPhoto(year: Int, month: Int, day: Int, imageView: ImageView, notesText: TextView, tagsGroup: ChipGroup, context: Context) {
         // Check that userId is not null
         val uid = getUserId()
         if (uid != null) {
@@ -137,8 +144,41 @@ object Firebase {
                 // Get metadata and put entry notes into notes TextView
                 val notes = metadata.getCustomMetadata(NOTES_METADATA_NAME)
                 notesText.text = notes
+
+                val tags = metadata.getCustomMetadata(TAGS_METADATA_NAME)
+                if(tags != null){
+                    val arrayOfTags = fromStringToArrayList(tags)
+                    for(item in arrayOfTags){
+                        addChipToGroup(item, tagsGroup, context)
+                    }
+                }
+
             }
         }
 
+    }
+
+    private fun addChipToGroup(tag: String, group: ChipGroup, context: Context) {
+        val chip = Chip(context)
+        chip.text = tag
+        chip.chipIcon = ContextCompat.getDrawable(context, R.drawable.ic_launcher_background)
+        chip.isChipIconVisible = false
+        chip.isCloseIconVisible = true
+        chip.isClickable = false
+        chip.isCheckable = false
+        group.addView(chip as View)
+        chip.setOnCloseIconClickListener {
+            group.removeView(chip as View)
+        }
+    }
+
+    fun fromStringToArrayList(s: String): ArrayList<String> {
+        val newArray: ArrayList<String> = arrayListOf()
+        val strs = s.split(",")
+        for(item in strs){
+            newArray.add(item)
+        }
+        newArray.removeLast()
+        return newArray
     }
 }
