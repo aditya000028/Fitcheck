@@ -15,6 +15,14 @@ class FriendsFragment : Fragment() {
 
     private var _binding: FragmentFriendsBinding? = null
 
+    private lateinit var allUsersViewModel : AllUsersViewModel
+    private lateinit var allUsersRecyclerView: RecyclerView
+    lateinit var allUsersAdapter: FriendsAdapter
+
+//    private lateinit var pendingRequestsViewModel : AllUsersViewModel
+//    private lateinit var pendingRequestsRecyclerView: RecyclerView
+//    lateinit var pendingRequestsAdapter: FriendsAdapter
+
     private lateinit var friendsViewModel : FriendsViewModel
     private lateinit var friendsRecyclerView: RecyclerView
     lateinit var friendsAdapter: FriendsAdapter
@@ -37,15 +45,36 @@ class FriendsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        friendsRecyclerView = binding.allUsersList
+        allUsersRecyclerView = binding.allUsersList
+        allUsersRecyclerView.layoutManager = LinearLayoutManager(context)
+        allUsersRecyclerView.setHasFixedSize(true)
+        allUsersAdapter = FriendsAdapter(null)
+        allUsersRecyclerView.adapter = allUsersAdapter
+
+        allUsersViewModel = ViewModelProvider(this)[AllUsersViewModel::class.java]
+
+        allUsersViewModel.allUsers.observe(viewLifecycleOwner, Observer {
+            allUsersAdapter.updateUserList(it)
+        })
+
+//        pendingRequestsRecyclerView = binding.pendingFriendList
+//        pendingRequestsRecyclerView.layoutManager = LinearLayoutManager(context)
+//        pendingRequestsRecyclerView.setHasFixedSize(true)
+//        pendingRequestsAdapter = FriendsAdapter()
+//        pendingRequestsRecyclerView.adapter = pendingRequestsAdapter
+//        pendingRequestsViewModel = ViewModelProvider(this)[AllUsersViewModel::class.java]
+//        pendingRequestsViewModel.allUsers.observe(viewLifecycleOwner, Observer {
+//            pendingRequestsAdapter.updateUserList(it)
+//        })
+
+        friendsRecyclerView = binding.friendsList
         friendsRecyclerView.layoutManager = LinearLayoutManager(context)
         friendsRecyclerView.setHasFixedSize(true)
-        friendsAdapter = FriendsAdapter()
+        friendsAdapter = FriendsAdapter(FriendshipStatus.FRIENDS)
         friendsRecyclerView.adapter = friendsAdapter
-
         friendsViewModel = ViewModelProvider(this)[FriendsViewModel::class.java]
-
-        friendsViewModel.allUsers.observe(viewLifecycleOwner, Observer {
+        friendsViewModel.friends.observe(viewLifecycleOwner, Observer {
+            println("debug: friends list - $it")
             friendsAdapter.updateUserList(it)
         })
     }

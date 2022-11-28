@@ -9,6 +9,8 @@ import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.cmpt362.fitcheck.R
 import androidx.lifecycle.MutableLiveData
+import com.cmpt362.fitcheck.models.User
+import com.cmpt362.fitcheck.ui.friends.FriendshipStatus
 import com.google.android.gms.tasks.Task
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
@@ -18,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -198,11 +201,11 @@ object Firebase {
                 try {
 
                     val userList : List<User> = snapshot.children.map { dataSnapshot ->
-                        println("debug: dataSnapshot - $dataSnapshot")
+                        // println("debug: dataSnapshot - $dataSnapshot")
                         dataSnapshot.getValue(User::class.java)!!
 
                     }
-                    println("debug: userList - $userList")
+                    // println("debug: userList - $userList")
                     allUsers.postValue(userList)
                 } catch (e: Exception){
                     println("debug: Exception when loading users $e")
@@ -211,6 +214,38 @@ object Firebase {
 
             override fun onCancelled(error: DatabaseError) {
                 println("debug: onCancelled when loading Users $error")
+            }
+        })
+    }
+
+    fun loadAllFriends(friendsLiveData: MutableLiveData<List<User>>) {
+        friendshipsReference.child(getUserId()!!).addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                try {
+                    val friendsUids = ArrayList<String>()
+                    val friends = ArrayList<User>()
+                    snapshot.children.forEach { dataSnapshot: DataSnapshot? ->
+                        if (dataSnapshot?.key != null && dataSnapshot.getValue<Int>() == FriendshipStatus.FRIENDS.ordinal) {
+                            friendsUids.add(dataSnapshot.key!!)
+                        }
+                    }
+                    friendsUids.forEach { uid ->
+                        usersReference.child(uid).get().addOnCompleteListener {
+                            if (it.isSuccessful) {
+                                friends.add(it.result.getValue<User>()!!)
+                                friendsLiveData.postValue(friends)
+                            } else {
+                                println("debug: unable to get use with uid $uid")
+                            }
+                        }
+                    }
+                } catch (e: Exception){
+                    println("debug: Exception when loading friends $e")
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                println("debug: unable to load all friends. Error message: ${error.message}")
             }
         })
     }

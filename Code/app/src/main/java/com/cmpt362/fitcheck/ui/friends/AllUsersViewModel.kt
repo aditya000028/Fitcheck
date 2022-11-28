@@ -6,12 +6,12 @@ import androidx.lifecycle.ViewModel
 import com.cmpt362.fitcheck.firebase.Firebase
 import com.cmpt362.fitcheck.models.User
 
-class FriendsViewModel : ViewModel() {
+class AllUsersViewModel : ViewModel() {
 
-    private val _friends = MutableLiveData<List<User>>()
-    val friends : LiveData<List<User>> = _friends
+    private val _allUsers = MutableLiveData<List<User>>()
+    val allUsers : LiveData<List<User>> = _allUsers
 
     init {
-        Firebase.loadAllFriends(_friends)
+        Firebase.loadAllUsers(_allUsers)
     }
 }

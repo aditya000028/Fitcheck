@@ -4,17 +4,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.cmpt362.fitcheck.R
 import com.cmpt362.fitcheck.firebase.Firebase
-import com.cmpt362.fitcheck.firebase.User
+import com.cmpt362.fitcheck.models.User
 
-class FriendsAdapter: RecyclerView.Adapter<FriendsAdapter.MyViewHolder>() {
+class FriendsAdapter(private val friendsStatus: FriendshipStatus?): RecyclerView.Adapter<FriendsAdapter.MyViewHolder>() {
 
     private val userList = ArrayList<User>()
 
     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+        val rootView: RelativeLayout = itemView.findViewById(R.id.userListView)
         val email: TextView = itemView.findViewById(R.id.userEmail)
         val user_id: TextView = itemView.findViewById(R.id.userId)
         val firstName: TextView = itemView.findViewById(R.id.userFirstName)
@@ -31,21 +33,40 @@ class FriendsAdapter: RecyclerView.Adapter<FriendsAdapter.MyViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val currentItem = userList[position]
-        println("debug: onBindViewHolder - $currentItem")
-        holder.email.text = "user email - ${currentItem.email}"
-        holder.user_id.text = "user id - ${currentItem.uid}"
-        holder.firstName.text = "user first name - ${currentItem.firstName}"
-        holder.lastName.text = "user last name - ${currentItem.lastName}"
+        val targetUser: User = userList[position]
+        // println("debug: onBindViewHolder - $currentItem")
+        holder.email.text = "user email - ${targetUser.email}"
+        holder.user_id.text = "user id - ${targetUser.uid}"
+        holder.firstName.text = "user first name - ${targetUser.firstName}"
+        holder.lastName.text = "user last name - ${targetUser.lastName}"
 
-        holder.add_friend_btn.setOnClickListener{
-            println("debug: selected user - $currentItem")
-            // code for sending pending friend request to user
+        when (friendsStatus) {
+            FriendshipStatus.FRIENDS -> {
+                holder.rootView.removeView(holder.add_friend_btn)
+            }
+            FriendshipStatus.FRIEND_REQUEST_RECEIVED -> {
+                holder.add_friend_btn.text = "Accept Request"
+                holder.add_friend_btn.setOnClickListener {
+                    Firebase.acceptFriendRequest(targetUser.uid!!)
+                    // Should automatically remove user from this list through valueEventListener?
+                }
+            }
+            FriendshipStatus.FRIEND_REQUEST_SENT -> {
+                holder.add_friend_btn.text = "Request Sent"
+                holder.add_friend_btn.isEnabled = false
+                holder.add_friend_btn.isClickable = false
+            }
+            else -> {
+                holder.add_friend_btn.setOnClickListener{
+                    // println("debug: selected user - $currentItem")
+                    // code for sending pending friend request to user
 
-            Firebase.sendFriendRequest(currentItem.uid!!)
-            holder.add_friend_btn.text = "Sent"
-            holder.add_friend_btn.isEnabled = false
-            holder.add_friend_btn.isClickable = false
+                    Firebase.acceptFriendRequest(targetUser.uid!!)
+                    holder.add_friend_btn.text = "Sent"
+                    holder.add_friend_btn.isEnabled = false
+                    holder.add_friend_btn.isClickable = false
+                }
+            }
         }
     }
 
