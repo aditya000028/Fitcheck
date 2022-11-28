@@ -3,6 +3,7 @@ package com.cmpt362.fitcheck.ui.friends
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.cmpt362.fitcheck.R
@@ -17,6 +18,7 @@ class FriendsAdapter: RecyclerView.Adapter<FriendsAdapter.MyViewHolder>() {
         val user_id: TextView = itemView.findViewById(R.id.userId)
         val firstName: TextView = itemView.findViewById(R.id.userFirstName)
         val lastName: TextView = itemView.findViewById(R.id.userLastName)
+        val add_friend_btn: Button = itemView.findViewById<Button>(R.id.add_friend_btn)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -34,6 +36,14 @@ class FriendsAdapter: RecyclerView.Adapter<FriendsAdapter.MyViewHolder>() {
         holder.user_id.text = "user id - ${currentItem.uid}"
         holder.firstName.text = "user first name - ${currentItem.firstName}"
         holder.lastName.text = "user last name - ${currentItem.lastName}"
+
+        holder.add_friend_btn.setOnClickListener{
+            println("debug: selected user - $currentItem")
+            // code for sending pending friend request to user
+            holder.add_friend_btn.text = "Sent"
+            holder.add_friend_btn.isEnabled = false
+            holder.add_friend_btn.isClickable = false
+        }
     }
 
     override fun getItemCount(): Int {
