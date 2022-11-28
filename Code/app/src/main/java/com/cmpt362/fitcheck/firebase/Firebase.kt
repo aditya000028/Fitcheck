@@ -214,4 +214,50 @@ object Firebase {
             }
         })
     }
+
+    // 0 - means sent friend request
+    // 1 - received friend request
+    // 2 - actively are friends
+
+    // order of opperations
+
+    // Set current user to have sent friend request to other user
+
+    // set other user to have received friend request from current user
+
+    fun sendFriendRequest(other_user_uid: String) {
+
+        // Set current user to have sent friend request to other user
+        friendshipsReference.child(getUserId()!!).child(other_user_uid).setValue(0)
+
+        // set other user to have received friend request from current user
+        friendshipsReference.child(other_user_uid).child(getUserId()!!).setValue(1)
+    }
+
+    fun denyFriendRequest(other_user_uid: String){
+
+        // Set current user to have sent friend request to other user
+        friendshipsReference.child(getUserId()!!).child(other_user_uid).setValue(null)
+
+        // set other user to have received friend request from current user
+        friendshipsReference.child(other_user_uid).child(getUserId()!!).setValue(null)
+    }
+
+    fun acceptFriendRequest(other_user_uid: String){
+
+        // Set current user to have sent friend request to other user
+        friendshipsReference.child(getUserId()!!).child(other_user_uid).setValue(2)
+
+        // set other user to have received friend request from current user
+        friendshipsReference.child(other_user_uid).child(getUserId()!!).setValue(2)
+    }
+
+    fun unfriend(other_user_uid: String){
+
+        // Set current user to have sent friend request to other user
+        friendshipsReference.child(getUserId()!!).child(other_user_uid).setValue(null)
+
+        // set other user to have received friend request from current user
+        friendshipsReference.child(other_user_uid).child(getUserId()!!).setValue(null)
+    }
 }

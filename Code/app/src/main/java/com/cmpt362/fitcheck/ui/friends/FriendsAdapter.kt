@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.cmpt362.fitcheck.R
+import com.cmpt362.fitcheck.firebase.Firebase
 import com.cmpt362.fitcheck.firebase.User
 
 class FriendsAdapter: RecyclerView.Adapter<FriendsAdapter.MyViewHolder>() {
@@ -40,6 +41,8 @@ class FriendsAdapter: RecyclerView.Adapter<FriendsAdapter.MyViewHolder>() {
         holder.add_friend_btn.setOnClickListener{
             println("debug: selected user - $currentItem")
             // code for sending pending friend request to user
+
+            Firebase.sendFriendRequest(currentItem.uid!!)
             holder.add_friend_btn.text = "Sent"
             holder.add_friend_btn.isEnabled = false
             holder.add_friend_btn.isClickable = false
