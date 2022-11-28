@@ -8,14 +8,14 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.cmpt362.fitcheck.R
+import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.Task
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -184,5 +184,29 @@ object Firebase {
         }
         newArray.removeLast()
         return newArray
+    }
+
+    // function for getting all users from the database with a view Model
+    fun loadAllUsers(allUsers: MutableLiveData<List<User>>) {
+        usersReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                try {
+
+                    val userList : List<User> = snapshot.children.map { dataSnapshot ->
+                        println("debug: dataSnapshot - $dataSnapshot")
+                        dataSnapshot.getValue(User::class.java)!!
+
+                    }
+                    println("debug: userList - $userList")
+                    allUsers.postValue(userList)
+                } catch (e: Exception){
+                    println("debug: Exception when loading users $e")
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                println("debug: onCancelled when loading Users $error")
+            }
+        })
     }
 }
