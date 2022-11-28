@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/signInButton"
-            android:onClick="attemptSignIn"
+            android:onClick="signInUser"
             android:enabled="false"
             android:layout_margin="@dimen/sign_in_up_text_margin"
             android:text="@string/sign_in">

@@ -1,4 +1,5 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory app:title="@string/account_info_header">
         <Preference
@@ -17,14 +18,18 @@
         <Preference
             app:key="@string/reset_password"
             app:title="@string/reset_password"
-            app:summary="@string/reset_password_summary"
-            app:fragment="com.ui.settings.ResetPasswordFragment" />
+            app:summary="@string/reset_password_summary">
+            <intent
+                android:targetPackage="com.cmpt362.fitcheck"
+                android:targetClass="com.cmpt362.fitcheck.ui.settings.ResetPasswordActivity">
+            </intent>
+        </Preference>
 
         <Preference
             app:key="@string/change_email"
             app:title="@string/change_email"
             app:summary="@string/change_email_summary"
-            app:fragment="com.ui.settings.ChangeEmailFragment" />
+            app:fragment="com.cmpt362.fitcheck.ui.settings.ChangeEmailFragment" />
 
         <Preference
             app:key="@string/logout"

@@ -62,4 +62,10 @@
     <string name="logout">Log out</string>
     <string name="logout_summary">Log out of your account</string>
 
+    <!--    Reset Password  -->
+    <string name="current_password">Current Password</string>
+    <string name="reset_password_instructions">To change your password, you must enter your current password and a new one. Password must be at least 6 characters long.</string>
+    <string name="new_password">New password</string>
+    <string name="change_password">Change password</string>
+
 </resources>

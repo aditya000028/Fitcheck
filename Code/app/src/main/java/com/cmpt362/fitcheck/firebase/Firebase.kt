@@ -14,6 +14,7 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
@@ -61,6 +62,10 @@ object Firebase {
 
     fun isUserSignedIn(): Boolean {
         return auth.currentUser != null
+    }
+
+    fun getUser(): FirebaseUser? {
+        return auth.currentUser
     }
 
     fun signInUser(email: String, password: String): Task<AuthResult> {

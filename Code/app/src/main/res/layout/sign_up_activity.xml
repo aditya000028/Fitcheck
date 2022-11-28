@@ -61,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/signUpButton"
-            android:onClick="attemptSignUp"
+            android:onClick="signUpUser"
             android:enabled="false"
             android:layout_margin="@dimen/sign_in_up_text_margin"
             android:text="@string/sign_up">
