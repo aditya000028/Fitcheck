@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/user_email"
+        android:id="@+id/userEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="textStart"
@@ -14,10 +14,24 @@
         android:text="User Email"/>
 
     <TextView
-        android:id="@+id/user_id"
+        android:id="@+id/userId"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="textStart"
         android:text="User Id"/>
+
+    <TextView
+        android:id="@+id/userFirstName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        android:text="User first name"/>
+
+    <TextView
+        android:id="@+id/userLastName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        android:text="User last name"/>
 
 </LinearLayout>
