@@ -165,7 +165,6 @@ class AddPhotoActivity : AppCompatActivity() {
             // Inform user that picture must be taken
             Toast.makeText(this, R.string.take_picture_message, Toast.LENGTH_SHORT).show()
         }
-        this.finish()
     }
 
     /**
