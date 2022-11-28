@@ -64,14 +64,13 @@
             android:text="@string/notes">
         </TextView>
 
-        <EditText
-            android:id="@+id/userName"
+        <TextView
+            android:id="@+id/notesText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/fit_notes"
-            android:inputType="textCapWords|textMultiLine"
+            android:text="@string/fit_notes"
             android:lines="4">
-        </EditText>
+        </TextView>
 
         <TextView
             android:layout_width="wrap_content"
