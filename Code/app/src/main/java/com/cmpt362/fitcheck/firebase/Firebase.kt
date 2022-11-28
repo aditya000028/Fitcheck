@@ -71,6 +71,10 @@ object Firebase {
         return null
     }
 
+    fun getTag(): DatabaseReference {
+        return photosTagsReference
+    }
+
     /**
      * Given a file uri and notes, upload image with metafile to cloud storage
      * under user's id and then current date.
