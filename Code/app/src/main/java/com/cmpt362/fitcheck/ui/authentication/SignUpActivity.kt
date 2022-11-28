@@ -89,8 +89,8 @@ class SignUpActivity : AppCompatActivity() {
             .addOnCompleteListener(this) {
                 if (it.isSuccessful) {
                     val user = User(
-                        email,
                         Firebase.getUserId()!!,
+                        email,
                         firstNameText.text.toString(),
                         lastNameText.text.toString()
                     )
