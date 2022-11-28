@@ -66,18 +66,4 @@ class DetailActivity: AppCompatActivity() {
     fun onEdit(view: View){
         this@DetailActivity.finish()
     }
-
-    private fun addChipToGroup(tag: String, group: ChipGroup) {
-        val chip = Chip(this)
-        chip.text = tag
-        chip.chipIcon = ContextCompat.getDrawable(this, R.drawable.ic_launcher_background)
-        chip.isChipIconVisible = false
-        chip.isCloseIconVisible = true
-        chip.isClickable = false
-        chip.isCheckable = false
-        group.addView(chip as View)
-        chip.setOnCloseIconClickListener {
-            group.removeView(chip as View)
-        }
-    }
 }
