@@ -1,4 +1,4 @@
-package com.cmpt362.fitcheck.ui.friends
+package com.cmpt362.fitcheck.ui.friends.viewModels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

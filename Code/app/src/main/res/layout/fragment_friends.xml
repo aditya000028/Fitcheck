@@ -34,11 +34,11 @@
 
 
 
-<!--&lt;!&ndash;    <androidx.recyclerview.widget.RecyclerView&ndash;&gt;-->
-<!--&lt;!&ndash;        android:id="@+id/pending_friend_list"&ndash;&gt;-->
-<!--&lt;!&ndash;        android:layout_width="match_parent"&ndash;&gt;-->
-<!--&lt;!&ndash;        android:layout_height="200dp"&ndash;&gt;-->
-<!--&lt;!&ndash;        android:layout_below="@+id/pending_friend_title" />&ndash;&gt;-->
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/pending_friend_list"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="200dp"-->
+<!--        android:layout_below="@+id/pending_friend_title" />-->
 
 <!--    <TextView-->
 <!--        android:id="@+id/friends_title"-->

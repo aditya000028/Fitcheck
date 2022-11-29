@@ -11,17 +11,18 @@ import com.cmpt362.fitcheck.R
 import com.cmpt362.fitcheck.firebase.Firebase
 import com.cmpt362.fitcheck.models.User
 
-class FriendsAdapter(private val friendsStatus: FriendshipStatus?): RecyclerView.Adapter<FriendsAdapter.MyViewHolder>() {
+class FriendsListAdapter(private val friendsStatus: FriendshipStatus?):
+    RecyclerView.Adapter<FriendsListAdapter.MyViewHolder>() {
 
     private val userList = ArrayList<User>()
 
     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val rootView: RelativeLayout = itemView.findViewById(R.id.userListView)
         val email: TextView = itemView.findViewById(R.id.userEmail)
-        val user_id: TextView = itemView.findViewById(R.id.userId)
+        val userId: TextView = itemView.findViewById(R.id.userId)
         val firstName: TextView = itemView.findViewById(R.id.userFirstName)
         val lastName: TextView = itemView.findViewById(R.id.userLastName)
-        val add_friend_btn: Button = itemView.findViewById<Button>(R.id.add_friend_btn)
+        val friendButton: Button = itemView.findViewById<Button>(R.id.add_friend_btn)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -34,36 +35,32 @@ class FriendsAdapter(private val friendsStatus: FriendshipStatus?): RecyclerView
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val targetUser: User = userList[position]
-        // println("debug: onBindViewHolder - $currentItem")
         holder.email.text = "user email - ${targetUser.email}"
-        holder.user_id.text = "user id - ${targetUser.uid}"
+        holder.userId.text = "user id - ${targetUser.uid}"
         holder.firstName.text = "user first name - ${targetUser.firstName}"
         holder.lastName.text = "user last name - ${targetUser.lastName}"
 
         when (friendsStatus) {
             FriendshipStatus.FRIENDS -> {
-                holder.rootView.removeView(holder.add_friend_btn)
+                holder.rootView.removeView(holder.friendButton)
             }
             FriendshipStatus.FRIEND_REQUEST_RECEIVED -> {
-                holder.add_friend_btn.text = "Accept Request"
-                holder.add_friend_btn.setOnClickListener {
+                holder.friendButton.text = "Accept Request"
+                holder.friendButton.setOnClickListener {
                     Firebase.acceptFriendRequest(targetUser.uid!!)
                 }
             }
             FriendshipStatus.FRIEND_REQUEST_SENT -> {
-                holder.add_friend_btn.text = "Request Sent"
-                holder.add_friend_btn.isEnabled = false
-                holder.add_friend_btn.isClickable = false
+                holder.friendButton.text = "Request Sent"
+                holder.friendButton.isEnabled = false
+                holder.friendButton.isClickable = false
             }
             else -> {
-                holder.add_friend_btn.setOnClickListener{
-                    // println("debug: selected user - $currentItem")
-                    // code for sending pending friend request to user
-
+                holder.friendButton.setOnClickListener{
                     Firebase.sendFriendRequest(targetUser.uid!!)
-                    holder.add_friend_btn.text = "Sent"
-                    holder.add_friend_btn.isEnabled = false
-                    holder.add_friend_btn.isClickable = false
+                    holder.friendButton.text = "Sent"
+                    holder.friendButton.isEnabled = false
+                    holder.friendButton.isClickable = false
                 }
             }
         }

@@ -29,14 +29,6 @@ class FriendsFragment : Fragment() {
     private lateinit var tabConfigurationStrategy: TabLayoutMediator.TabConfigurationStrategy
     private lateinit var tabLayoutMediator: TabLayoutMediator
 
-//    private lateinit var allUsersViewModel : AllUsersViewModel
-//    private lateinit var allUsersRecyclerView: RecyclerView
-//    lateinit var allUsersAdapter: FriendsAdapter
-//
-//    private lateinit var friendsViewModel : FriendsViewModel
-//    private lateinit var friendsRecyclerView: RecyclerView
-//    lateinit var friendsAdapter: FriendsAdapter
-
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -77,32 +69,6 @@ class FriendsFragment : Fragment() {
         }
         tabLayoutMediator = TabLayoutMediator(tabLayout, viewPager2, tabConfigurationStrategy)
         tabLayoutMediator.attach()
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-//        allUsersRecyclerView = binding.allUsersList
-//        allUsersRecyclerView.layoutManager = LinearLayoutManager(context)
-//        allUsersRecyclerView.setHasFixedSize(true)
-//        allUsersAdapter = FriendsAdapter(null)
-//        allUsersRecyclerView.adapter = allUsersAdapter
-//
-//        allUsersViewModel = ViewModelProvider(this)[AllUsersViewModel::class.java]
-//
-//        allUsersViewModel.allUsers.observe(viewLifecycleOwner, Observer {
-//            allUsersAdapter.updateUserList(it)
-//        })
-//
-//        friendsRecyclerView = binding.friendsList
-//        friendsRecyclerView.layoutManager = LinearLayoutManager(context)
-//        friendsRecyclerView.setHasFixedSize(true)
-//        friendsAdapter = FriendsAdapter(FriendshipStatus.FRIENDS)
-//        friendsRecyclerView.adapter = friendsAdapter
-//        friendsViewModel = ViewModelProvider(this)[FriendsViewModel::class.java]
-//        friendsViewModel.friends.observe(viewLifecycleOwner) {
-//            friendsAdapter.updateUserList(it)
-//        }
     }
 
     override fun onDestroyView() {
