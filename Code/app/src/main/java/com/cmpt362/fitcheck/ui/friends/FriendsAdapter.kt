@@ -48,7 +48,6 @@ class FriendsAdapter(private val friendsStatus: FriendshipStatus?): RecyclerView
                 holder.add_friend_btn.text = "Accept Request"
                 holder.add_friend_btn.setOnClickListener {
                     Firebase.acceptFriendRequest(targetUser.uid!!)
-                    // Should automatically remove user from this list through valueEventListener?
                 }
             }
             FriendshipStatus.FRIEND_REQUEST_SENT -> {
@@ -61,7 +60,7 @@ class FriendsAdapter(private val friendsStatus: FriendshipStatus?): RecyclerView
                     // println("debug: selected user - $currentItem")
                     // code for sending pending friend request to user
 
-                    Firebase.acceptFriendRequest(targetUser.uid!!)
+                    Firebase.sendFriendRequest(targetUser.uid!!)
                     holder.add_friend_btn.text = "Sent"
                     holder.add_friend_btn.isEnabled = false
                     holder.add_friend_btn.isClickable = false
