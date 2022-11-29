@@ -199,13 +199,9 @@ object Firebase {
         usersReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 try {
-
                     val userList : List<User> = snapshot.children.map { dataSnapshot ->
-                        // println("debug: dataSnapshot - $dataSnapshot")
                         dataSnapshot.getValue(User::class.java)!!
-
                     }
-                    // println("debug: userList - $userList")
                     allUsers.postValue(userList)
                 } catch (e: Exception){
                     println("debug: Exception when loading users $e")
@@ -224,6 +220,7 @@ object Firebase {
                 try {
                     val friendsUids = ArrayList<String>()
                     val friends = ArrayList<User>()
+
                     snapshot.children.forEach { dataSnapshot: DataSnapshot? ->
                         if (dataSnapshot?.key != null && dataSnapshot.getValue<Int>() == FriendshipStatus.FRIENDS.ordinal) {
                             friendsUids.add(dataSnapshot.key!!)
@@ -250,49 +247,29 @@ object Firebase {
         })
     }
 
-    // 0 - means sent friend request
-    // 1 - received friend request
-    // 2 - actively are friends
-
-    // order of opperations
-
-    // Set current user to have sent friend request to other user
-
-    // set other user to have received friend request from current user
-
-    fun sendFriendRequest(other_user_uid: String) {
-
-        // Set current user to have sent friend request to other user
-        friendshipsReference.child(getUserId()!!).child(other_user_uid).setValue(0)
-
-        // set other user to have received friend request from current user
-        friendshipsReference.child(other_user_uid).child(getUserId()!!).setValue(1)
+    fun sendFriendRequest(targetUserId: String) {
+        val currentUserId = getUserId()!!
+        friendshipsReference.child(currentUserId).child(targetUserId).setValue(FriendshipStatus.FRIEND_REQUEST_SENT.ordinal)
+        friendshipsReference.child(targetUserId).child(currentUserId).setValue(FriendshipStatus.FRIEND_REQUEST_RECEIVED.ordinal)
     }
 
-    fun denyFriendRequest(other_user_uid: String){
-
-        // Set current user to have sent friend request to other user
-        friendshipsReference.child(getUserId()!!).child(other_user_uid).setValue(null)
-
-        // set other user to have received friend request from current user
-        friendshipsReference.child(other_user_uid).child(getUserId()!!).setValue(null)
+    fun denyFriendRequest(targetUserId: String) {
+        removeFriendsRelationship(targetUserId)
     }
 
-    fun acceptFriendRequest(other_user_uid: String){
-
-        // Set current user to have sent friend request to other user
-        friendshipsReference.child(getUserId()!!).child(other_user_uid).setValue(2)
-
-        // set other user to have received friend request from current user
-        friendshipsReference.child(other_user_uid).child(getUserId()!!).setValue(2)
+    fun acceptFriendRequest(targetUserId: String) {
+        val currentUserId = getUserId()!!
+        friendshipsReference.child(currentUserId).child(targetUserId).setValue(FriendshipStatus.FRIENDS.ordinal)
+        friendshipsReference.child(targetUserId).child(currentUserId).setValue(FriendshipStatus.FRIENDS.ordinal)
     }
 
-    fun unfriend(other_user_uid: String){
+    fun unfriend(targetUserId: String) {
+        removeFriendsRelationship(targetUserId)
+    }
 
-        // Set current user to have sent friend request to other user
-        friendshipsReference.child(getUserId()!!).child(other_user_uid).setValue(null)
-
-        // set other user to have received friend request from current user
-        friendshipsReference.child(other_user_uid).child(getUserId()!!).setValue(null)
+    private fun removeFriendsRelationship(targetUserId: String) {
+        val currentUserId = getUserId()!!
+        friendshipsReference.child(currentUserId).child(targetUserId).setValue(null)
+        friendshipsReference.child(targetUserId).child(currentUserId).setValue(null)
     }
 }
