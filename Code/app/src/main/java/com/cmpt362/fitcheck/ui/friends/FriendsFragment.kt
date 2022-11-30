@@ -5,11 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.cmpt362.fitcheck.databinding.FragmentFriendsBinding
 import com.google.android.material.tabs.TabLayout
@@ -20,7 +15,7 @@ class FriendsFragment : Fragment() {
     private var _binding: FragmentFriendsBinding? = null
 
     private lateinit var currentFriendsFragment: CurrentFriendsFragment
-    private lateinit var discoverFriendsFragment: DiscoverFriendsFragment
+    private lateinit var requestsFragment: RequestsFragment
     private lateinit var viewPager2: ViewPager2
     private lateinit var tabLayout: TabLayout
     private lateinit var fragmentStateAdapter: FriendsFragmentStateAdapter
@@ -51,14 +46,14 @@ class FriendsFragment : Fragment() {
         tabLayout = binding.tabs
 
         currentFriendsFragment = CurrentFriendsFragment()
-        discoverFriendsFragment = DiscoverFriendsFragment()
+        requestsFragment = RequestsFragment()
 
         fragmentList = ArrayList()
-        fragmentList.add(discoverFriendsFragment)
+        fragmentList.add(requestsFragment)
         fragmentList.add(currentFriendsFragment)
 
         tabTitles = ArrayList()
-        tabTitles.add(DiscoverFriendsFragment.TAB_TITLE)
+        tabTitles.add(RequestsFragment.TAB_TITLE)
         tabTitles.add(CurrentFriendsFragment.TAB_TITLE)
 
         fragmentStateAdapter = FriendsFragmentStateAdapter(requireActivity(), fragmentList)
