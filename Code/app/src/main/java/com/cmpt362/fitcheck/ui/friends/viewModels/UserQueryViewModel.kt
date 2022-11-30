@@ -10,4 +10,14 @@ class UserQueryViewModel : ViewModel() {
 
     private val _queriedUsers = MutableLiveData<List<User>>()
     val queriedUsers : LiveData<List<User>> = _queriedUsers
+
+
+    fun getQueriedUsers(query: String) {
+        println("debug: - ModelView getQueriedUsers $query")
+        Firebase.getQueriedUsers(_queriedUsers, query)
+    }
+
+    fun clearQueriedUsers() {
+        _queriedUsers.postValue(ArrayList<User>())
+    }
 }

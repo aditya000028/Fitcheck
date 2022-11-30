@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cmpt362.fitcheck.R
-import com.cmpt362.fitcheck.ui.friends.viewModels.FriendRequestsViewModel
 import com.cmpt362.fitcheck.ui.friends.viewModels.UserQueryViewModel
 
 class DiscoverFriendsFragment: Fragment() {
@@ -22,7 +22,9 @@ class DiscoverFriendsFragment: Fragment() {
 
     private lateinit var userQueryViewModel: UserQueryViewModel
     private lateinit var userQueryRecyclerView: RecyclerView
-    lateinit var userQueryAdapter: FriendsListAdapter
+    private lateinit var userQueryAdapter: FriendsListAdapter
+
+    private lateinit var querySearchView: SearchView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,7 +43,7 @@ class DiscoverFriendsFragment: Fragment() {
         userQueryRecyclerView.layoutManager = LinearLayoutManager(context)
         userQueryRecyclerView.setHasFixedSize(true)
 
-        userQueryAdapter = FriendsListAdapter(FriendshipStatus.FRIEND_REQUEST_RECEIVED)
+        userQueryAdapter = FriendsListAdapter(null)
         userQueryRecyclerView.adapter = userQueryAdapter
 
         userQueryViewModel = ViewModelProvider(this)[UserQueryViewModel::class.java]
@@ -49,5 +51,28 @@ class DiscoverFriendsFragment: Fragment() {
         userQueryViewModel.queriedUsers.observe(viewLifecycleOwner) {
             userQueryAdapter.updateUserList(it)
         }
+
+        querySearchView = myView.findViewById(R.id.user_search_query)
+
+        querySearchView.setOnQueryTextListener( object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                println("debug: - search submit - $query")
+                if (query != null) {
+                    userQueryViewModel.getQueriedUsers(query)
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                println("debug: - search change - $newText")
+
+                if (newText == ""){
+                    userQueryViewModel.clearQueriedUsers()
+                }
+
+                return false
+            }
+
+        })
     }
 }
