@@ -194,26 +194,6 @@ object Firebase {
         return newArray
     }
 
-    fun loadAllUsers(allUsers: MutableLiveData<List<User>>) {
-        usersReference.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                try {
-                    val userList : List<User> = snapshot.children.map { dataSnapshot ->
-                        dataSnapshot.getValue(User::class.java)!!
-                    }
-                    allUsers.postValue(userList)
-                } catch (e: Exception){
-                    println("debug: Exception when loading users $e")
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                println("debug: onCancelled when loading Users $error")
-            }
-        })
-    }
-
-
     fun getQueriedUsers(queriedUsersLiveData: MutableLiveData<List<User>>, query: String) {
         usersReference.orderByChild("firstName").startAt(query).endAt(query + "\uf8ff")
             .addValueEventListener(object : ValueEventListener{
