@@ -16,7 +16,6 @@ class FriendRequestsViewModel : ViewModel() {
 
     init {
         Firebase.loadReceivedRequests(_receivedRequests)
-
-//        Firebase.loadAllUsers(_allUsers)
+        Firebase.loadSentRequests(_sentRequests)
     }
 }

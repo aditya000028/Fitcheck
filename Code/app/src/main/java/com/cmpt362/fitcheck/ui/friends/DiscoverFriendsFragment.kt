@@ -23,6 +23,9 @@ class DiscoverFriendsFragment: Fragment() {
     private lateinit var receivedRequestsRecyclerView: RecyclerView
     lateinit var receivedRequestsAdapter: FriendsListAdapter
 
+    private lateinit var sentRequestsRecyclerView: RecyclerView
+    lateinit var sentRequestsAdapter: FriendsListAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -47,6 +50,17 @@ class DiscoverFriendsFragment: Fragment() {
 
         friendRequestsViewModel.receivedRequests.observe(viewLifecycleOwner) {
             receivedRequestsAdapter.updateUserList(it)
+        }
+
+        sentRequestsRecyclerView = myView.findViewById(R.id.sent_requests_list)
+        sentRequestsRecyclerView.layoutManager = LinearLayoutManager(context)
+        sentRequestsRecyclerView.setHasFixedSize(true)
+
+        sentRequestsAdapter = FriendsListAdapter(FriendshipStatus.FRIEND_REQUEST_SENT)
+        sentRequestsRecyclerView.adapter = sentRequestsAdapter
+
+        friendRequestsViewModel.sentRequests.observe(viewLifecycleOwner) {
+            sentRequestsAdapter.updateUserList(it)
         }
     }
 
