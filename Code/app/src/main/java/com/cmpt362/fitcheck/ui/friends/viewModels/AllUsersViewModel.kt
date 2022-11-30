@@ -1,12 +1,12 @@
-package com.cmpt362.fitcheck.ui.friends
+package com.cmpt362.fitcheck.ui.friends.viewModels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.cmpt362.fitcheck.firebase.Firebase
-import com.cmpt362.fitcheck.firebase.User
+import com.cmpt362.fitcheck.models.User
 
-class FriendsViewModel : ViewModel() {
+class AllUsersViewModel : ViewModel() {
 
     private val _allUsers = MutableLiveData<List<User>>()
     val allUsers : LiveData<List<User>> = _allUsers

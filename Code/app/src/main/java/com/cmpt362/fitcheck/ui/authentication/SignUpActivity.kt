@@ -12,7 +12,7 @@ import androidx.core.widget.doOnTextChanged
 import com.cmpt362.fitcheck.MainActivity
 import com.cmpt362.fitcheck.R
 import com.cmpt362.fitcheck.firebase.Firebase
-import com.cmpt362.fitcheck.firebase.User
+import com.cmpt362.fitcheck.models.User
 
 class SignUpActivity : AppCompatActivity() {
 

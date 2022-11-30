@@ -9,15 +9,25 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.cmpt362.fitcheck.databinding.FragmentFriendsBinding
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 
 class FriendsFragment : Fragment() {
 
     private var _binding: FragmentFriendsBinding? = null
 
-    private lateinit var friendsViewModel : FriendsViewModel
-    private lateinit var friendsRecyclerView: RecyclerView
-    lateinit var friendsAdapter: FriendsAdapter
+    private lateinit var currentFriendsFragment: CurrentFriendsFragment
+    private lateinit var discoverFriendsFragment: DiscoverFriendsFragment
+    private lateinit var viewPager2: ViewPager2
+    private lateinit var tabLayout: TabLayout
+    private lateinit var fragmentStateAdapter: FriendsFragmentStateAdapter
+    private lateinit var fragmentList: ArrayList<Fragment>
+    private lateinit var tabTitles: ArrayList<String>
+    private lateinit var tabConfigurationStrategy: TabLayoutMediator.TabConfigurationStrategy
+    private lateinit var tabLayoutMediator: TabLayoutMediator
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -31,27 +41,39 @@ class FriendsFragment : Fragment() {
 
         _binding = FragmentFriendsBinding.inflate(inflater, container, false)
 
+        initializeTabs()
+
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private fun initializeTabs() {
+        viewPager2 = binding.viewpager
+        tabLayout = binding.tabs
 
-        friendsRecyclerView = binding.allUsersList
-        friendsRecyclerView.layoutManager = LinearLayoutManager(context)
-        friendsRecyclerView.setHasFixedSize(true)
-        friendsAdapter = FriendsAdapter()
-        friendsRecyclerView.adapter = friendsAdapter
+        currentFriendsFragment = CurrentFriendsFragment()
+        discoverFriendsFragment = DiscoverFriendsFragment()
 
-        friendsViewModel = ViewModelProvider(this)[FriendsViewModel::class.java]
+        fragmentList = ArrayList()
+        fragmentList.add(discoverFriendsFragment)
+        fragmentList.add(currentFriendsFragment)
 
-        friendsViewModel.allUsers.observe(viewLifecycleOwner, Observer {
-            friendsAdapter.updateUserList(it)
-        })
+        tabTitles = ArrayList()
+        tabTitles.add(DiscoverFriendsFragment.TAB_TITLE)
+        tabTitles.add(CurrentFriendsFragment.TAB_TITLE)
+
+        fragmentStateAdapter = FriendsFragmentStateAdapter(requireActivity(), fragmentList)
+        viewPager2.adapter = fragmentStateAdapter
+
+        tabConfigurationStrategy = TabLayoutMediator.TabConfigurationStrategy { tab, position ->
+            tab.text = tabTitles[position]
+        }
+        tabLayoutMediator = TabLayoutMediator(tabLayout, viewPager2, tabConfigurationStrategy)
+        tabLayoutMediator.attach()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        tabLayoutMediator.detach()
         _binding = null
     }
 }
