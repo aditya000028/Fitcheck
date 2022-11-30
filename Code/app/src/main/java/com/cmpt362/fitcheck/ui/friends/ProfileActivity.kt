@@ -66,7 +66,6 @@ class ProfileActivity: AppCompatActivity() {
                 }
             }
             FriendshipStatus.FRIEND_REQUEST_SENT.ordinal -> {
-                friendshipDenyButton.visibility = View.GONE
                 friendshipButton.text = "Request Sent"
                 friendshipButton.isEnabled = false
                 friendshipButton.isClickable = false

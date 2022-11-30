@@ -31,7 +31,7 @@ class DiscoverFriendsFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        myView = inflater.inflate(R.layout.fragment_users_search, container, false)
+        myView = inflater.inflate(R.layout.fragment_users_discover, container, false)
 
         initVariables()
 
