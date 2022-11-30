@@ -194,7 +194,6 @@ object Firebase {
         return newArray
     }
 
-    // function for getting all users from the database with a view Model
     fun loadAllUsers(allUsers: MutableLiveData<List<User>>) {
         usersReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -216,7 +215,6 @@ object Firebase {
 
 
     fun getQueriedUsers(queriedUsersLiveData: MutableLiveData<List<User>>, query: String) {
-        println("debug: - Firebase getQueriedUsers $query")
         usersReference.orderByChild("firstName").startAt(query).endAt(query + "\uf8ff")
             .addValueEventListener(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -224,13 +222,10 @@ object Firebase {
                         val userList = ArrayList<User>()
 
                         snapshot.children.forEach{ dataSnapshot ->
-                            println("debug: - dataSnapShot $dataSnapshot")
                             if (dataSnapshot.key != getUserId()){
                                 userList.add(dataSnapshot.getValue(User::class.java)!!)
-                                println("debug: - userList $userList")
                             }
                         }
-                        println("debug: - userList $userList")
                         queriedUsersLiveData.postValue(userList)
                     } catch (e: Exception){
                         println("debug: Exception when querying for users $e")
@@ -355,6 +350,31 @@ object Firebase {
                 println("debug: unable to load all friends. Error message: ${error.message}")
             }
         })
+    }
+
+    fun getFriendshipStatus(friendshipStatusLiveData: MutableLiveData<Int?>, uid: String) {
+        friendshipsReference.child(getUserId()!!).child(uid).addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val status = snapshot.getValue<Int>()
+                friendshipStatusLiveData.postValue(status)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                println("debug: unable to get friendship status for $uid")
+            }
+
+        })
+    }
+
+    fun getUser(userLiveData: MutableLiveData<User>, uid: String) {
+        usersReference.child(uid).get().addOnCompleteListener {
+            if (it.isSuccessful) {
+                val targetUser = it.result.getValue<User>()
+                userLiveData.postValue(targetUser)
+            } else {
+                println("debug: unable to get use with uid $uid")
+            }
+        }
     }
 
     fun sendFriendRequest(targetUserId: String) {

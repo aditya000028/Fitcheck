@@ -40,7 +40,7 @@ class CurrentFriendsFragment: Fragment() {
         friendsRecyclerView.layoutManager = LinearLayoutManager(context)
         friendsRecyclerView.setHasFixedSize(true)
 
-        friendsAdapter = FriendsListAdapter(FriendshipStatus.FRIENDS)
+        friendsAdapter = FriendsListAdapter(FriendshipStatus.FRIENDS, requireContext())
         friendsRecyclerView.adapter = friendsAdapter
 
         friendsViewModel = ViewModelProvider(this)[FriendsViewModel::class.java]

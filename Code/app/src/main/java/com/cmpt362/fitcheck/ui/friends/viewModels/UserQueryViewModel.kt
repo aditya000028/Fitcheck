@@ -13,11 +13,10 @@ class UserQueryViewModel : ViewModel() {
 
 
     fun getQueriedUsers(query: String) {
-        println("debug: - ModelView getQueriedUsers $query")
         Firebase.getQueriedUsers(_queriedUsers, query)
     }
 
     fun clearQueriedUsers() {
-        _queriedUsers.postValue(ArrayList<User>())
+        _queriedUsers.postValue(ArrayList())
     }
 }

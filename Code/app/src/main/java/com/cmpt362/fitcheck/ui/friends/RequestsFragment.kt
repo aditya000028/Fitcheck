@@ -43,7 +43,7 @@ class RequestsFragment: Fragment() {
         receivedRequestsRecyclerView.layoutManager = LinearLayoutManager(context)
         receivedRequestsRecyclerView.setHasFixedSize(true)
 
-        receivedRequestsAdapter = FriendsListAdapter(FriendshipStatus.FRIEND_REQUEST_RECEIVED)
+        receivedRequestsAdapter = FriendsListAdapter(FriendshipStatus.FRIEND_REQUEST_RECEIVED, requireContext())
         receivedRequestsRecyclerView.adapter = receivedRequestsAdapter
 
         friendRequestsViewModel = ViewModelProvider(this)[FriendRequestsViewModel::class.java]
@@ -56,7 +56,7 @@ class RequestsFragment: Fragment() {
         sentRequestsRecyclerView.layoutManager = LinearLayoutManager(context)
         sentRequestsRecyclerView.setHasFixedSize(true)
 
-        sentRequestsAdapter = FriendsListAdapter(FriendshipStatus.FRIEND_REQUEST_SENT)
+        sentRequestsAdapter = FriendsListAdapter(FriendshipStatus.FRIEND_REQUEST_SENT, requireContext())
         sentRequestsRecyclerView.adapter = sentRequestsAdapter
 
         friendRequestsViewModel.sentRequests.observe(viewLifecycleOwner) {

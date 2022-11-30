@@ -43,7 +43,7 @@ class DiscoverFriendsFragment: Fragment() {
         userQueryRecyclerView.layoutManager = LinearLayoutManager(context)
         userQueryRecyclerView.setHasFixedSize(true)
 
-        userQueryAdapter = FriendsListAdapter(null)
+        userQueryAdapter = FriendsListAdapter(null, requireContext())
         userQueryRecyclerView.adapter = userQueryAdapter
 
         userQueryViewModel = ViewModelProvider(this)[UserQueryViewModel::class.java]
@@ -56,7 +56,6 @@ class DiscoverFriendsFragment: Fragment() {
 
         querySearchView.setOnQueryTextListener( object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
-                println("debug: - search submit - $query")
                 if (query != null) {
                     userQueryViewModel.getQueriedUsers(query)
                 }
@@ -64,15 +63,11 @@ class DiscoverFriendsFragment: Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                println("debug: - search change - $newText")
-
-                if (newText == ""){
+                if (newText?.isBlank() == true){
                     userQueryViewModel.clearQueriedUsers()
                 }
-
                 return false
             }
-
         })
     }
 }
