@@ -28,8 +28,12 @@
         <Preference
             app:key="@string/change_email"
             app:title="@string/change_email"
-            app:summary="@string/change_email_summary"
-            app:fragment="com.cmpt362.fitcheck.ui.settings.ChangeEmailFragment" />
+            app:summary="@string/change_email_summary">
+            <intent
+                android:targetPackage="com.cmpt362.fitcheck"
+                android:targetClass="com.cmpt362.fitcheck.ui.settings.ChangeEmailActivity">
+            </intent>
+        </Preference>
 
         <Preference
             app:key="@string/logout"

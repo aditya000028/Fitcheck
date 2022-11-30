@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.cmpt362.fitcheck.R
 import androidx.lifecycle.MutableLiveData
 import com.cmpt362.fitcheck.models.User
+import com.cmpt362.fitcheck.models.UserKeys
 import com.cmpt362.fitcheck.ui.friends.FriendshipStatus
 import com.google.android.gms.tasks.Task
 import com.google.android.material.chip.Chip
@@ -325,6 +326,10 @@ object Firebase {
                 println("debug: unable to load all friends. Error message: ${error.message}")
             }
         })
+    }
+
+    fun changeUserEmailInDB(email: String) {
+        usersReference.child(getUserId()!!).child(UserKeys.EMAIL).setValue(email)
     }
 
     fun sendFriendRequest(targetUserId: String) {

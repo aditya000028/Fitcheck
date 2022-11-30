@@ -70,4 +70,9 @@
     <string name="new_password">New password</string>
     <string name="change_password">Change password</string>
 
+    <!--    Change Email  -->
+    <string name="change_email_instructions">To change your email, you must enter your current email and password along with your new email</string>
+    <string name="current_email">Current Email</string>
+    <string name="new_email">New Email</string>
+
 </resources>

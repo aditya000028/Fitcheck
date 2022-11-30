@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.settings.ChangeEmailActivity"
+    android:orientation="vertical"
+    android:layout_margin="@dimen/general_layout_margin">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/change_email"
+            android:textSize="@dimen/sub_settings_header_size"
+            android:layout_marginVertical="@dimen/heading_to_subheading_vertical_margin">
+        </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/change_email_instructions">
+        </TextView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/heading_to_content_vertical_margin"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/current_email">
+            </TextView>
+            <EditText
+                android:id="@+id/currentEmail"
+                android:layout_width="@dimen/full_screen_edit_text_width"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/label_to_content_vertical_margin"
+                android:hint="@string/current_email"
+                android:autofillHints="emailAddress"
+                android:inputType="textEmailAddress">
+            </EditText>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/current_password">
+            </TextView>
+            <EditText
+                android:id="@+id/currentPassword"
+                android:layout_width="@dimen/full_screen_edit_text_width"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/label_to_content_vertical_margin"
+                android:hint="@string/current_password"
+                android:autofillHints="password"
+                android:inputType="textPassword">
+            </EditText>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/new_email">
+            </TextView>
+            <EditText
+                android:id="@+id/newEmail"
+                android:layout_width="@dimen/full_screen_edit_text_width"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/label_to_content_vertical_margin"
+                android:hint="@string/new_email"
+                android:inputType="textEmailAddress"
+                android:autofillHints="emailAddress">
+            </EditText>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/changeEmailErrorMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/red_error">
+        </TextView>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/changeEmailButton"
+        android:layout_width="fill_parent"
+        android:enabled="false"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/change_email"
+        android:onClick="onChangeEmail">
+    </Button>
+
+</LinearLayout>
