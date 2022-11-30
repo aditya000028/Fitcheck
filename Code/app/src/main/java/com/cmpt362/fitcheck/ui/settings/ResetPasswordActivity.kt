@@ -65,7 +65,6 @@ class ResetPasswordActivity : AppCompatActivity() {
                         user.updatePassword(newPasswordText.text.toString())
                             .addOnCompleteListener { updatePasswordResult ->
                                 if (updatePasswordResult.isSuccessful) {
-                                    println("debug: Password changed successfully")
                                     Toast.makeText(baseContext, "Password changed",
                                         Toast.LENGTH_SHORT).show()
                                     resetPasswordErrorTV.text = ""

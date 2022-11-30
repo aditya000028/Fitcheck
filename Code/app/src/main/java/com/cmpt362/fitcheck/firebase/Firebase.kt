@@ -332,6 +332,10 @@ object Firebase {
         })
     }
 
+    fun changeUserEmailInDB(email: String) {
+        usersReference.child(getUserId()!!).child(UserKeys.EMAIL).setValue(email)
+    }
+
     fun getFriendshipStatus(friendshipStatusLiveData: MutableLiveData<Int?>, uid: String) {
         friendshipsReference.child(getUserId()!!).child(uid).addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {

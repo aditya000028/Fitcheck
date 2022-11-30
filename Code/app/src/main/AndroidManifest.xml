@@ -17,6 +17,10 @@
         android:theme="@style/Theme.Fitcheck"
         tools:targetApi="31">
         <activity
+            android:name=".ui.settings.ChangeEmailActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.settings.ResetPasswordActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
