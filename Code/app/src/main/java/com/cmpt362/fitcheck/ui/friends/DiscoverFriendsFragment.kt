@@ -5,7 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.cmpt362.fitcheck.R
+import com.cmpt362.fitcheck.ui.friends.viewModels.FriendRequestsViewModel
 
 class DiscoverFriendsFragment: Fragment() {
 
@@ -14,6 +18,10 @@ class DiscoverFriendsFragment: Fragment() {
     companion object {
         const val TAB_TITLE = "Discover"
     }
+
+    private lateinit var friendRequestsViewModel: FriendRequestsViewModel
+    private lateinit var receivedRequestsRecyclerView: RecyclerView
+    lateinit var receivedRequestsAdapter: FriendsListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,7 +36,18 @@ class DiscoverFriendsFragment: Fragment() {
     }
 
     private fun initVariables() {
+        receivedRequestsRecyclerView = myView.findViewById(R.id.received_requests_list)
+        receivedRequestsRecyclerView.layoutManager = LinearLayoutManager(context)
+        receivedRequestsRecyclerView.setHasFixedSize(true)
 
+        receivedRequestsAdapter = FriendsListAdapter(FriendshipStatus.FRIEND_REQUEST_RECEIVED)
+        receivedRequestsRecyclerView.adapter = receivedRequestsAdapter
+
+        friendRequestsViewModel = ViewModelProvider(this)[FriendRequestsViewModel::class.java]
+
+        friendRequestsViewModel.receivedRequests.observe(viewLifecycleOwner) {
+            receivedRequestsAdapter.updateUserList(it)
+        }
     }
 
 }

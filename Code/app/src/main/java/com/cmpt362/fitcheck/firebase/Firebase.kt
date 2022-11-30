@@ -247,6 +247,46 @@ object Firebase {
         })
     }
 
+    fun loadReceivedRequests(receivedRequestsLiveData: MutableLiveData<List<User>>) {
+        friendshipsReference.child(getUserId()!!).addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                try {
+                    val receivedRequestsUids = ArrayList<String>()
+                    val receivedRequestsUsers = ArrayList<User>()
+
+                    snapshot.children.forEach { dataSnapshot: DataSnapshot? ->
+                        if (dataSnapshot?.key != null && dataSnapshot.getValue<Int>() == FriendshipStatus.FRIEND_REQUEST_RECEIVED.ordinal) {
+                            receivedRequestsUids.add(dataSnapshot.key!!)
+                        }
+                    }
+
+                    // need to update the live data if there are no longer any more received uids
+                    if (receivedRequestsUids.isEmpty()) {
+                        receivedRequestsLiveData.postValue(receivedRequestsUsers)
+                        return
+                    }
+
+                    receivedRequestsUids.forEach { uid ->
+                        usersReference.child(uid).get().addOnCompleteListener {
+                            if (it.isSuccessful) {
+                                receivedRequestsUsers.add(it.result.getValue<User>()!!)
+                                receivedRequestsLiveData.postValue(receivedRequestsUsers)
+                            } else {
+                                println("debug: unable to get use with uid $uid")
+                            }
+                        }
+                    }
+                } catch (e: Exception){
+                    println("debug: Exception when loading friends $e")
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                println("debug: unable to load all friends. Error message: ${error.message}")
+            }
+        })
+    }
+
     fun sendFriendRequest(targetUserId: String) {
         val currentUserId = getUserId()!!
         friendshipsReference.child(currentUserId).child(targetUserId).setValue(FriendshipStatus.FRIEND_REQUEST_SENT.ordinal)
