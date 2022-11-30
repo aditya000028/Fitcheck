@@ -6,12 +6,8 @@ import androidx.lifecycle.ViewModel
 import com.cmpt362.fitcheck.firebase.Firebase
 import com.cmpt362.fitcheck.models.User
 
-class AllUsersViewModel : ViewModel() {
+class UserQueryViewModel : ViewModel() {
 
-    private val _allUsers = MutableLiveData<List<User>>()
-    val allUsers : LiveData<List<User>> = _allUsers
-
-    init {
-        Firebase.loadAllUsers(_allUsers)
-    }
+    private val _queriedUsers = MutableLiveData<List<User>>()
+    val queriedUsers : LiveData<List<User>> = _queriedUsers
 }

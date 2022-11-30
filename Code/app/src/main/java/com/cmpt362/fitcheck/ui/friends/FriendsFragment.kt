@@ -14,6 +14,7 @@ class FriendsFragment : Fragment() {
 
     private var _binding: FragmentFriendsBinding? = null
 
+    private lateinit var discoverFriendsFragment: DiscoverFriendsFragment
     private lateinit var currentFriendsFragment: CurrentFriendsFragment
     private lateinit var requestsFragment: RequestsFragment
     private lateinit var viewPager2: ViewPager2
@@ -45,14 +46,17 @@ class FriendsFragment : Fragment() {
         viewPager2 = binding.viewpager
         tabLayout = binding.tabs
 
+        discoverFriendsFragment = DiscoverFriendsFragment()
         currentFriendsFragment = CurrentFriendsFragment()
         requestsFragment = RequestsFragment()
 
         fragmentList = ArrayList()
+        fragmentList.add(discoverFriendsFragment)
         fragmentList.add(requestsFragment)
         fragmentList.add(currentFriendsFragment)
 
         tabTitles = ArrayList()
+        tabTitles.add(DiscoverFriendsFragment.TAB_TITLE)
         tabTitles.add(RequestsFragment.TAB_TITLE)
         tabTitles.add(CurrentFriendsFragment.TAB_TITLE)
 

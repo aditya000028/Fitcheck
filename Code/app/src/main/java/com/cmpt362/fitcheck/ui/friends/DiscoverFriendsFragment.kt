@@ -10,28 +10,26 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cmpt362.fitcheck.R
 import com.cmpt362.fitcheck.ui.friends.viewModels.FriendRequestsViewModel
+import com.cmpt362.fitcheck.ui.friends.viewModels.UserQueryViewModel
 
 class DiscoverFriendsFragment: Fragment() {
 
     private lateinit var myView: View
 
     companion object {
-        const val TAB_TITLE = "Discover"
+        const val TAB_TITLE = "Discover Friends"
     }
 
-    private lateinit var friendRequestsViewModel: FriendRequestsViewModel
-    private lateinit var receivedRequestsRecyclerView: RecyclerView
-    lateinit var receivedRequestsAdapter: FriendsListAdapter
-
-    private lateinit var sentRequestsRecyclerView: RecyclerView
-    lateinit var sentRequestsAdapter: FriendsListAdapter
+    private lateinit var userQueryViewModel: UserQueryViewModel
+    private lateinit var userQueryRecyclerView: RecyclerView
+    lateinit var userQueryAdapter: FriendsListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        myView = inflater.inflate(R.layout.discover_friends, container, false)
+        myView = inflater.inflate(R.layout.fragment_users_search, container, false)
 
         initVariables()
 
@@ -39,29 +37,17 @@ class DiscoverFriendsFragment: Fragment() {
     }
 
     private fun initVariables() {
-        receivedRequestsRecyclerView = myView.findViewById(R.id.received_requests_list)
-        receivedRequestsRecyclerView.layoutManager = LinearLayoutManager(context)
-        receivedRequestsRecyclerView.setHasFixedSize(true)
+        userQueryRecyclerView = myView.findViewById(R.id.user_search_result_list)
+        userQueryRecyclerView.layoutManager = LinearLayoutManager(context)
+        userQueryRecyclerView.setHasFixedSize(true)
 
-        receivedRequestsAdapter = FriendsListAdapter(FriendshipStatus.FRIEND_REQUEST_RECEIVED)
-        receivedRequestsRecyclerView.adapter = receivedRequestsAdapter
+        userQueryAdapter = FriendsListAdapter(FriendshipStatus.FRIEND_REQUEST_RECEIVED)
+        userQueryRecyclerView.adapter = userQueryAdapter
 
-        friendRequestsViewModel = ViewModelProvider(this)[FriendRequestsViewModel::class.java]
+        userQueryViewModel = ViewModelProvider(this)[UserQueryViewModel::class.java]
 
-        friendRequestsViewModel.receivedRequests.observe(viewLifecycleOwner) {
-            receivedRequestsAdapter.updateUserList(it)
-        }
-
-        sentRequestsRecyclerView = myView.findViewById(R.id.sent_requests_list)
-        sentRequestsRecyclerView.layoutManager = LinearLayoutManager(context)
-        sentRequestsRecyclerView.setHasFixedSize(true)
-
-        sentRequestsAdapter = FriendsListAdapter(FriendshipStatus.FRIEND_REQUEST_SENT)
-        sentRequestsRecyclerView.adapter = sentRequestsAdapter
-
-        friendRequestsViewModel.sentRequests.observe(viewLifecycleOwner) {
-            sentRequestsAdapter.updateUserList(it)
+        userQueryViewModel.queriedUsers.observe(viewLifecycleOwner) {
+            userQueryAdapter.updateUserList(it)
         }
     }
-
 }
