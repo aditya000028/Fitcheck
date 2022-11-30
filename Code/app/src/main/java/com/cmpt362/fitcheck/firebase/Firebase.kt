@@ -10,7 +10,6 @@ import com.bumptech.glide.Glide
 import com.cmpt362.fitcheck.R
 import androidx.lifecycle.MutableLiveData
 import com.cmpt362.fitcheck.models.User
-import com.cmpt362.fitcheck.models.UserKeys
 import com.cmpt362.fitcheck.ui.friends.FriendshipStatus
 import com.google.android.gms.tasks.Task
 import com.google.android.material.chip.Chip

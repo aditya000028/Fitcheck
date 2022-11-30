@@ -1,4 +1,4 @@
-package com.cmpt362.fitcheck.models
+package com.cmpt362.fitcheck.firebase
 
 /**
  * The values of these variables should be the same as the
