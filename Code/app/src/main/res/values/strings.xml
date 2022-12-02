@@ -55,6 +55,9 @@
     <string name="profile_summary">Edit Profile</string>
 
     <!-- Notification Preferences -->
+    <string name="daily_outfit_upload_reminder">Daily outfit upload reminder</string>
+    <string name="daily_outfit_upload_reminder_summary">Get a daily update to upload outfit</string>
+    <string name="daily_outfit_upload_reminder_time">Outfit upload reminder time</string>
 
     <!-- Security Preferences -->
     <string name="reset_password">Reset Password</string>
