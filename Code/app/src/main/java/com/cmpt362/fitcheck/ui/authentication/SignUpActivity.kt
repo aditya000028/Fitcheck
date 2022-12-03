@@ -12,7 +12,9 @@ import androidx.core.widget.doOnTextChanged
 import com.cmpt362.fitcheck.MainActivity
 import com.cmpt362.fitcheck.R
 import com.cmpt362.fitcheck.firebase.Firebase
+import com.cmpt362.fitcheck.models.Settings
 import com.cmpt362.fitcheck.models.User
+import java.util.*
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -95,6 +97,12 @@ class SignUpActivity : AppCompatActivity() {
                         lastNameText.text.toString()
                     )
                     Firebase.addUserToDatabase(user)
+
+                    val settings = Settings(
+                        true,
+                        Calendar.getInstance().timeInMillis
+                    )
+                    Firebase.addUserSettings(settings)
 
                     Toast.makeText(baseContext, "User created",
                         Toast.LENGTH_SHORT).show()
