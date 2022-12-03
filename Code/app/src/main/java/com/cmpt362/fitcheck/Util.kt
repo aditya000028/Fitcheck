@@ -12,6 +12,7 @@ import android.net.Uri
 import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import java.text.SimpleDateFormat
 
 object Util {
     /**
@@ -35,4 +36,19 @@ object Util {
         return ret
     }
 
+    fun timeInMilliToString(context: Context, dailyReminderTimeInMilli: Long?): CharSequence? {
+        return if (dailyReminderTimeInMilli != null) {
+            val calendar = Calendar.getInstance()
+            calendar.timeInMillis = dailyReminderTimeInMilli
+            val timeFormatter = SimpleDateFormat(context.getString(R.string.time_formatter_pattern))
+            try {
+                timeFormatter.format(calendar.time)
+            } catch (e: Exception) {
+                println("debug: Unable to convert milli to string")
+                ""
+            }
+        } else {
+            ""
+        }
+    }
 }

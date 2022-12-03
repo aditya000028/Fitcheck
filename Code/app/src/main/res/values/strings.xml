@@ -78,4 +78,7 @@
     <string name="current_email">Current Email</string>
     <string name="new_email">New Email</string>
 
+    <!--    Misc  -->
+    <string name="time_formatter_pattern">hh:mm a</string>
+
 </resources>
