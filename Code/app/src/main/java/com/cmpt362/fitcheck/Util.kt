@@ -15,6 +15,9 @@ import androidx.core.content.ContextCompat
 import java.text.SimpleDateFormat
 
 object Util {
+
+    const val MILLISECONDS_IN_A_DAY: Long = 86400000
+
     /**
      * Check for camera permission from user
      */
