@@ -14,6 +14,7 @@ import com.cmpt362.fitcheck.R
 import com.cmpt362.fitcheck.firebase.Firebase
 import com.cmpt362.fitcheck.models.Settings
 import com.cmpt362.fitcheck.models.User
+import com.cmpt362.fitcheck.ui.settings.notifications.NotificationHandler
 import java.util.*
 
 class SignUpActivity : AppCompatActivity() {
@@ -98,11 +99,13 @@ class SignUpActivity : AppCompatActivity() {
                     )
                     Firebase.addUserToDatabase(user)
 
+                    val currentTime = Calendar.getInstance().timeInMillis
                     val settings = Settings(
                         true,
-                        Calendar.getInstance().timeInMillis
+                        currentTime
                     )
                     Firebase.addUserSettings(settings)
+                    NotificationHandler.changeOrStartNotification(this, currentTime)
 
                     Toast.makeText(baseContext, "User created",
                         Toast.LENGTH_SHORT).show()

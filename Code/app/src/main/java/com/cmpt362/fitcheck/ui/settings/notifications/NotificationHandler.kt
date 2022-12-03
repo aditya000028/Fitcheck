@@ -12,9 +12,9 @@ object NotificationHandler {
     const val RECURRING_NOTIFICATION_REQUEST_CODE = 10
 
     fun changeOrStartNotification(context: Context, newTimeInMilli: Long) {
-        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        cancelRecurringNotification(context, alarmManager)
+        cancelRecurringNotification(context)
 
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val notificationIntent = Intent(context, NotificationReceiver::class.java)
         val pendingNotificationIntent = PendingIntent.getBroadcast(
             context,
@@ -39,19 +39,8 @@ object NotificationHandler {
         )
     }
 
-    fun recurringNotificationIsOn(context: Context): Boolean {
-        val intent = Intent(context, NotificationReceiver::class.java)
-        val pendingIntent = PendingIntent.getService(
-            context,
-            RECURRING_NOTIFICATION_REQUEST_CODE,
-            intent,
-            PendingIntent.FLAG_NO_CREATE
-        )
-
-        return pendingIntent != null
-    }
-
-    private fun cancelRecurringNotification(context: Context, alarmManager: AlarmManager) {
+    fun cancelRecurringNotification(context: Context) {
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, NotificationReceiver::class.java)
         val pendingIntent = PendingIntent.getService(
             context,

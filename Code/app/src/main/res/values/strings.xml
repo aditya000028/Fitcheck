@@ -58,6 +58,8 @@
     <string name="daily_outfit_upload_reminder">Daily outfit upload reminder</string>
     <string name="daily_outfit_upload_reminder_summary">Get a daily update to upload outfit</string>
     <string name="daily_outfit_upload_reminder_time">Outfit upload reminder time</string>
+    <string name="daily_notification_title">Upload your fit of the day</string>
+    <string name="daily_notification_description">Don\'t forget to upload your outfit of the day if you haven\'t done so already!</string>
 
     <!-- Security Preferences -->
     <string name="reset_password">Reset Password</string>

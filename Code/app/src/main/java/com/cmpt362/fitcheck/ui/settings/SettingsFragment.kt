@@ -12,6 +12,7 @@ import com.cmpt362.fitcheck.Util
 import com.cmpt362.fitcheck.firebase.Firebase
 import com.cmpt362.fitcheck.models.Settings
 import com.cmpt362.fitcheck.ui.authentication.LoginActivity
+import com.cmpt362.fitcheck.ui.settings.notifications.NotificationHandler
 import com.cmpt362.fitcheck.ui.settings.notifications.NotificationsViewModel
 import com.cmpt362.fitcheck.ui.settings.notifications.TimePickerDialog
 import java.util.*
@@ -22,7 +23,7 @@ class SettingsFragment : PreferenceFragmentCompat(), TimePickerDialog.TimePicker
     private lateinit var logoutPreference: Preference
     private lateinit var uploadTimePreference: Preference
     private lateinit var dailyUploadReminderTimeToggle: SwitchPreferenceCompat
-    private var dailyReminderTimeInMilli: Long? = null
+    private var dailyReminderTimeInMilli: Long = -1
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
@@ -56,8 +57,14 @@ class SettingsFragment : PreferenceFragmentCompat(), TimePickerDialog.TimePicker
         dailyUploadReminderTimeToggle.setOnPreferenceChangeListener { _, newValue ->
             val remindUser = newValue as Boolean
             when (remindUser) {
-                true -> uploadTimePreference.isEnabled = true
-                false -> uploadTimePreference.isEnabled = false
+                true -> {
+                    uploadTimePreference.isEnabled = true
+                    NotificationHandler.changeOrStartNotification(requireContext(), dailyReminderTimeInMilli)
+                }
+                false -> {
+                    uploadTimePreference.isEnabled = false
+                    NotificationHandler.cancelRecurringNotification(requireContext())
+                }
             }
             val newSetting = if (notificationsViewModel.settings.value != null) {
                 val setting = notificationsViewModel.settings.value
@@ -72,8 +79,8 @@ class SettingsFragment : PreferenceFragmentCompat(), TimePickerDialog.TimePicker
 
         notificationsViewModel = ViewModelProvider(this)[NotificationsViewModel::class.java]
         notificationsViewModel.settings.observe(this) {
-            dailyUploadReminderTimeToggle.isChecked = it?.dailyReminderToggle == true
-            dailyReminderTimeInMilli = it?.dailyReminderTime
+            dailyUploadReminderTimeToggle.isChecked = it.dailyReminderToggle == true
+            dailyReminderTimeInMilli = it.dailyReminderTime!!
             uploadTimePreference.summary = Util.timeInMilliToString(requireContext(), dailyReminderTimeInMilli)
             uploadTimePreference.isEnabled = dailyUploadReminderTimeToggle.isChecked
         }
@@ -88,7 +95,7 @@ class SettingsFragment : PreferenceFragmentCompat(), TimePickerDialog.TimePicker
             } else {
                 Settings(true, time.timeInMillis)
             }
-
+            NotificationHandler.changeOrStartNotification(requireContext(), time.timeInMillis)
             Firebase.addUserSettings(settings)
         }
     }
