@@ -20,7 +20,7 @@ object NotificationHandler {
             context,
             RECURRING_NOTIFICATION_REQUEST_CODE,
             notificationIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
         val currentTimeInMilli = System.currentTimeMillis()
@@ -46,7 +46,7 @@ object NotificationHandler {
             context,
             RECURRING_NOTIFICATION_REQUEST_CODE,
             intent,
-            PendingIntent.FLAG_NO_CREATE
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_NO_CREATE
         )
 
         if (pendingIntent != null) {

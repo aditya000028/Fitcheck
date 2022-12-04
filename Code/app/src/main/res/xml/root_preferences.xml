@@ -19,7 +19,7 @@
         <Preference
             app:key="@string/daily_outfit_upload_reminder_time"
             app:title="@string/daily_outfit_upload_reminder_time"
-            app:summary="">
+            app:summary="@string/not_set">
         </Preference>
     </PreferenceCategory>
 

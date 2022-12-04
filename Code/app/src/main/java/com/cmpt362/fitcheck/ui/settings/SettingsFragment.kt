@@ -88,15 +88,15 @@ class SettingsFragment : PreferenceFragmentCompat(), TimePickerDialog.TimePicker
 
     override fun onTimeSet(dialog: DialogFragment, time: Calendar) {
         if (dailyReminderTimeInMilli != time.timeInMillis) {
-            val settings = if (notificationsViewModel.settings.value != null) {
-                val settings = notificationsViewModel.settings.value
-                settings!!.dailyReminderTime = time.timeInMillis
-                settings
+            val newSettings = if (notificationsViewModel.settings.value != null) {
+                val modifiedSettings = notificationsViewModel.settings.value
+                modifiedSettings!!.dailyReminderTime = time.timeInMillis
+                modifiedSettings
             } else {
                 Settings(true, time.timeInMillis)
             }
             NotificationHandler.changeOrStartNotification(requireContext(), time.timeInMillis)
-            Firebase.addUserSettings(settings)
+            Firebase.addUserSettings(newSettings)
         }
     }
 }
