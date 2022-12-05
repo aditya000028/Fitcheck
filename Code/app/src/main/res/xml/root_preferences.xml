@@ -23,7 +23,13 @@
         </Preference>
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/security_header">
+    <PreferenceCategory app:title="@string/security_privacy_header">
+
+        <SwitchPreferenceCompat
+            app:key="@string/make_profile_public"
+            app:title="@string/make_profile_public">
+        </SwitchPreferenceCompat>
+
         <Preference
             app:key="@string/reset_password"
             app:title="@string/reset_password"
