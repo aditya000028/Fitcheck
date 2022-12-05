@@ -1,9 +1,12 @@
 package com.cmpt362.fitcheck
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.*
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.KeyEvent
@@ -13,6 +16,8 @@ import android.widget.*
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.cmpt362.fitcheck.firebase.Firebase
@@ -22,8 +27,9 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import java.io.File
+import java.util.*
 
-class AddPhotoActivity : AppCompatActivity() {
+class AddPhotoActivity : AppCompatActivity(), LocationListener {
     private lateinit var imageView: ImageView
     private lateinit var notesText: EditText
     private lateinit var tagEditText: AutoCompleteTextView
@@ -35,9 +41,17 @@ class AddPhotoActivity : AppCompatActivity() {
     private lateinit var cameraResult: ActivityResultLauncher<Intent>
     private var photoTaken = 0
 
+    private lateinit var locationManager: LocationManager
+    private lateinit var locationText: TextView
+    private lateinit var locationStr: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_photo)
+
+        locationText = findViewById(R.id.locationText)
+
+        checkPermission()
 
         imageView = findViewById(R.id.outfitImage)
         notesText = findViewById(R.id.notesText)
@@ -142,7 +156,7 @@ class AddPhotoActivity : AppCompatActivity() {
             val notes = notesText.text.toString()
 
             // Add photo and notes to cloud storage
-            val uploadTask = Firebase.addPhoto(tempImgUri, notes, fromArrayToString(tagArray))
+            val uploadTask = Firebase.addPhoto(tempImgUri, notes, locationStr, fromArrayToString(tagArray))
 
             // Check that UploadTask was created
             if (uploadTask != null) {
@@ -180,5 +194,61 @@ class AddPhotoActivity : AppCompatActivity() {
         println("latlng convert" + string)
 
         return string
+    }
+
+    private fun initLocationManager() {
+        try {
+            locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+            val criteria = Criteria()
+            criteria.accuracy = Criteria.ACCURACY_FINE
+            val provider: String? = locationManager.getBestProvider(criteria, true)
+            if(provider != null) {
+                val location = locationManager.getLastKnownLocation(provider)
+                if (location != null)
+                    onLocationChanged(location)
+                locationManager.requestLocationUpdates(provider, 0, 0f, this)
+            }
+        } catch (e: SecurityException) {
+        }
+    }
+
+    override fun onLocationChanged(location: Location) {
+        try {
+            val lat = location.latitude
+            val lng = location.longitude
+            val geocoder = Geocoder(this, Locale.getDefault())
+            val addresses = geocoder.getFromLocation(lat, lng, 1)
+            val cityName = addresses[0].subAdminArea
+            val provinceName = addresses[0].adminArea
+            val countryName = addresses[0].countryName
+
+            locationStr = "$cityName, $provinceName, $countryName"
+            locationText.text = locationStr
+
+        } catch (e: Exception) {
+        }
+    }
+
+    override fun onProviderDisabled(provider: String) {}
+    override fun onProviderEnabled(provider: String) {}
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (locationManager != null)
+            locationManager.removeUpdates(this)
+    }
+
+    fun checkPermission() {
+        if (Build.VERSION.SDK_INT < 23) return
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
+            PackageManager.PERMISSION_GRANTED) ActivityCompat.requestPermissions(this, arrayOf(
+            Manifest.permission.ACCESS_FINE_LOCATION), 0) else initLocationManager()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 0) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) initLocationManager()
+        }
     }
 }

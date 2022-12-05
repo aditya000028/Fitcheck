@@ -17,6 +17,7 @@ class DetailActivity: AppCompatActivity() {
     private lateinit var dateText: TextView
     private lateinit var imageView: ImageView
     private lateinit var notesText: TextView
+    private lateinit var locationText: TextView
     private lateinit var tagsText: AutoCompleteTextView
     private lateinit var chipGroup: ChipGroup
 
@@ -35,9 +36,10 @@ class DetailActivity: AppCompatActivity() {
 
         imageView = findViewById(R.id.outfitImage)
         notesText = findViewById(R.id.notesText)
+        locationText = findViewById(R.id.locationText)
         chipGroup  = findViewById(R.id.detailChipGroup)
 
-        Firebase.getPhoto(year, month, day, imageView, notesText, chipGroup, this)
+        Firebase.getPhoto(year, month, day, imageView, notesText, locationText, chipGroup, this)
     }
 
     fun convertToString(month: Int): String {
