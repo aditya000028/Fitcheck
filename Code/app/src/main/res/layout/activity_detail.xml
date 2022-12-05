@@ -23,6 +23,7 @@
             android:layout_marginBottom="10dp">
 
             <TextView
+                android:id="@+id/titleText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="28dp"
@@ -101,16 +102,15 @@
                 android:id="@+id/btnSave"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
                 android:onClick="onDone"
                 android:text="@string/done_button" >
             </Button>
 
             <Button
-                android:id="@+id/btnCancel"
+                android:id="@+id/btnEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="40dp"
                 android:onClick="onEdit"
                 android:text="@string/edit_button" >
             </Button>

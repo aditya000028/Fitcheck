@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.cmpt362.fitcheck.R
 import androidx.lifecycle.MutableLiveData
+import com.cmpt362.fitcheck.models.Settings
 import com.cmpt362.fitcheck.models.User
 import com.cmpt362.fitcheck.ui.friends.FriendshipStatus
 import com.google.android.gms.tasks.Task
@@ -42,6 +43,7 @@ object Firebase {
     private const val USER_PHOTOS_REFERENCE_NAME = "user_photos"
     private const val PHOTOS_TAGS_REFERENCE_NAME = "photos_tags"
     private const val PHOTOS_REFERENCE_NAME = "photos"
+    private const val SETTINGS_REFERENCE_NAME = "settings"
     private const val NOTES_METADATA_NAME = "Notes"
     private const val LOCATION_METADATA_NAME = "Location"
     private const val TAGS_METADATA_NAME = "Tags"
@@ -54,6 +56,7 @@ object Firebase {
     private val friendshipsReference: DatabaseReference
     private val userPhotosReference: DatabaseReference
     private val photosTagsReference: DatabaseReference
+    private val settingsReference: DatabaseReference
     private val storageRef: StorageReference
 
     init {
@@ -61,6 +64,7 @@ object Firebase {
         friendshipsReference = database.getReference(FRIENDSHIPS_REFERENCE_NAME)
         userPhotosReference = database.getReference(USER_PHOTOS_REFERENCE_NAME)
         photosTagsReference = database.getReference(PHOTOS_TAGS_REFERENCE_NAME)
+        settingsReference = database.getReference(SETTINGS_REFERENCE_NAME)
         storageRef = storage.getReference(PHOTOS_REFERENCE_NAME)
     }
 
@@ -133,11 +137,15 @@ object Firebase {
      * Downloads photo from cloud storage based on year, month, day given
      * and places photo in given ImageView.
      */
-    fun getPhoto(year: Int, month: Int, day: Int, imageView: ImageView, notesText: TextView, locationText: TextView, tagsGroup: ChipGroup, context: Context) {
+    fun getPhoto(year: Int, month: Int, day: Int, imageView: ImageView, notesText: TextView, locationText: TextView, tagsGroup: ChipGroup, context: Context, userID: String?) {
         // Check that userId is not null
-        val uid = getUserId()
+        var uid = getUserId()
+        if (userID != null){
+            uid = userID
+        }
         if (uid != null) {
             // Get and format given date
+            println("debug: $year $month $day")
             val date = LocalDate.of(year, month, day)
             val formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)
             val dateStr = date.format(formatter)
@@ -173,6 +181,38 @@ object Firebase {
             }
         }
 
+    }
+
+    /**
+     * Downloads photo from cloud storage based on year, month, day given
+     * and places photo in given ImageView.
+     * If no photo exists, replace image with no_fit_found image
+     */
+    fun getFriendsPhoto(uid: String, year: Int, month: Int, day: Int, imageView: ImageView, context: Context) {
+        // Check that userId is not null
+        if (uid != null) {
+            // Get and format given date
+            val date = LocalDate.of(year, month, day)
+            val formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)
+            val dateStr = date.format(formatter)
+
+            // Needed photo is stored in user id -> date
+            val photoRef = storageRef.child(uid).child(dateStr)
+
+            photoRef.downloadUrl.addOnSuccessListener {Uri->
+                val imageURL = Uri.toString()
+
+                // Download photo and place in ImageView
+                Glide.with(context /* context */)
+                    .load(imageURL)
+                    .into(imageView)
+
+            } .addOnFailureListener{
+                Glide.with(context /* context */)
+                    .load(R.drawable.no_fit_found)
+                    .into(imageView)
+            }
+        }
     }
 
     private fun addChipToGroup(tag: String, group: ChipGroup, context: Context) {
@@ -390,5 +430,22 @@ object Firebase {
         val currentUserId = getUserId()!!
         friendshipsReference.child(currentUserId).child(targetUserId).setValue(null)
         friendshipsReference.child(targetUserId).child(currentUserId).setValue(null)
+    }
+
+    fun addUserSettings(settings: Settings) {
+        settingsReference.child(getUserId()!!).setValue(settings)
+    }
+
+    fun getUserSettings(settingsLiveData: MutableLiveData<Settings>) {
+        settingsReference.child(getUserId()!!).addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val settings = snapshot.getValue<Settings>()
+                settingsLiveData.postValue(settings)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                println("debug: unable to get user settings. Error message: ${error.message}")
+            }
+        })
     }
 }
