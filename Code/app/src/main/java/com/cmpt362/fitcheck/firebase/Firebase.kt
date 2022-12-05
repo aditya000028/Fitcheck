@@ -174,6 +174,50 @@ object Firebase {
 
     }
 
+    fun getJustPhoto(year: Int, month: Int, day: Int, imageView: ImageView, context: Context) {
+        val uid = getUserId()
+        if (uid != null) {
+            // Get and format given date
+            val date = LocalDate.of(year, month, day)
+            val formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)
+            val dateStr = date.format(formatter)
+
+            // Needed photo is stored in user id -> date
+            val photoRef = storageRef.child(uid).child(dateStr)
+
+            photoRef.downloadUrl.addOnSuccessListener {Uri->
+                val imageURL = Uri.toString()
+
+                // Download photo and place in ImageView
+                Glide.with(context /* context */)
+                    .load(imageURL)
+                    .into(imageView)
+            }
+        }
+    }
+
+    fun updateNotesAndTags(notes: String, tags: String) {
+        // Check that userId is not null
+        val uid = getUserId()
+        if (uid != null) {
+            // Get and format current date
+            val formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)
+            val currentDate = LocalDateTime.now().format(formatter)
+
+            // Store in user id -> date
+            val photoRef = storageRef.child(uid).child(currentDate)
+
+            // Add custom metadata
+            val metadata = storageMetadata {
+                setCustomMetadata(NOTES_METADATA_NAME, notes)
+                setCustomMetadata(TAGS_METADATA_NAME, tags)
+            }
+
+            photoRef.updateMetadata(metadata)
+
+        }
+    }
+
     private fun addChipToGroup(tag: String, group: ChipGroup, context: Context) {
         val chip = Chip(context)
         chip.text = tag

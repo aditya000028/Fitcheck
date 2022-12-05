@@ -35,6 +35,15 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".ui.calendar.EditActivity"
+            android:exported="false"
+            android:label="@string/title_activity_main"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".AddPhotoActivity"
             android:exported="false"
             android:screenOrientation="portrait">
