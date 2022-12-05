@@ -11,7 +11,16 @@
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/notifications_header">
-        <!--        Should be toggles here using "SwitchPreferenceCompat"      -->
+        <SwitchPreferenceCompat
+            app:key="@string/daily_outfit_upload_reminder"
+            app:title="@string/daily_outfit_upload_reminder"
+            app:summary="@string/daily_outfit_upload_reminder_summary">
+        </SwitchPreferenceCompat>
+        <Preference
+            app:key="@string/daily_outfit_upload_reminder_time"
+            app:title="@string/daily_outfit_upload_reminder_time"
+            app:summary="@string/not_set">
+        </Preference>
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/security_header">
