@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.cmpt362.fitcheck.R
 import androidx.lifecycle.MutableLiveData
+import com.cmpt362.fitcheck.models.Settings
 import com.cmpt362.fitcheck.models.User
 import com.cmpt362.fitcheck.ui.friends.FriendshipStatus
 import com.google.android.gms.tasks.Task
@@ -42,6 +43,7 @@ object Firebase {
     private const val USER_PHOTOS_REFERENCE_NAME = "user_photos"
     private const val PHOTOS_TAGS_REFERENCE_NAME = "photos_tags"
     private const val PHOTOS_REFERENCE_NAME = "photos"
+    private const val SETTINGS_REFERENCE_NAME = "settings"
     private const val NOTES_METADATA_NAME = "Notes"
     private const val TAGS_METADATA_NAME = "Tags"
 
@@ -53,6 +55,7 @@ object Firebase {
     private val friendshipsReference: DatabaseReference
     private val userPhotosReference: DatabaseReference
     private val photosTagsReference: DatabaseReference
+    private val settingsReference: DatabaseReference
     private val storageRef: StorageReference
 
     init {
@@ -60,6 +63,7 @@ object Firebase {
         friendshipsReference = database.getReference(FRIENDSHIPS_REFERENCE_NAME)
         userPhotosReference = database.getReference(USER_PHOTOS_REFERENCE_NAME)
         photosTagsReference = database.getReference(PHOTOS_TAGS_REFERENCE_NAME)
+        settingsReference = database.getReference(SETTINGS_REFERENCE_NAME)
         storageRef = storage.getReference(PHOTOS_REFERENCE_NAME)
     }
 
@@ -421,5 +425,22 @@ object Firebase {
         val currentUserId = getUserId()!!
         friendshipsReference.child(currentUserId).child(targetUserId).setValue(null)
         friendshipsReference.child(targetUserId).child(currentUserId).setValue(null)
+    }
+
+    fun addUserSettings(settings: Settings) {
+        settingsReference.child(getUserId()!!).setValue(settings)
+    }
+
+    fun getUserSettings(settingsLiveData: MutableLiveData<Settings>) {
+        settingsReference.child(getUserId()!!).addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val settings = snapshot.getValue<Settings>()
+                settingsLiveData.postValue(settings)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                println("debug: unable to get user settings. Error message: ${error.message}")
+            }
+        })
     }
 }

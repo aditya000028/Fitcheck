@@ -58,6 +58,11 @@
     <string name="profile_summary">Edit Profile</string>
 
     <!-- Notification Preferences -->
+    <string name="daily_outfit_upload_reminder">Daily outfit upload reminder</string>
+    <string name="daily_outfit_upload_reminder_summary">Get a daily update to upload outfit</string>
+    <string name="daily_outfit_upload_reminder_time">Outfit upload reminder time</string>
+    <string name="daily_notification_title">Upload your fit of the day</string>
+    <string name="daily_notification_description">Don\'t forget to upload your outfit of the day if you haven\'t done so already!</string>
 
     <!-- Security Preferences -->
     <string name="reset_password">Reset Password</string>
@@ -77,5 +82,8 @@
     <string name="change_email_instructions">To change your email, you must enter your current email and password along with your new email</string>
     <string name="current_email">Current Email</string>
     <string name="new_email">New Email</string>
+
+    <!--    Misc  -->
+    <string name="time_formatter_pattern">hh:mm a</string>
 
 </resources>
