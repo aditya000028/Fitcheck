@@ -174,28 +174,6 @@ object Firebase {
 
     }
 
-    fun getJustPhoto(year: Int, month: Int, day: Int, imageView: ImageView, context: Context) {
-        val uid = getUserId()
-        if (uid != null) {
-            // Get and format given date
-            val date = LocalDate.of(year, month, day)
-            val formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)
-            val dateStr = date.format(formatter)
-
-            // Needed photo is stored in user id -> date
-            val photoRef = storageRef.child(uid).child(dateStr)
-
-            photoRef.downloadUrl.addOnSuccessListener {Uri->
-                val imageURL = Uri.toString()
-
-                // Download photo and place in ImageView
-                Glide.with(context /* context */)
-                    .load(imageURL)
-                    .into(imageView)
-            }
-        }
-    }
-
     fun updateNotesAndTags(notes: String, tags: String) {
         // Check that userId is not null
         val uid = getUserId()
@@ -215,6 +193,28 @@ object Firebase {
 
             photoRef.updateMetadata(metadata)
 
+        }
+    }
+
+    fun getTags(tagArray: ArrayList<String>){
+        val uid = getUserId()
+        if (uid != null) {
+            val formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)
+            val currentDate = LocalDateTime.now().format(formatter)
+
+            val photoRef = storageRef.child(uid).child(currentDate)
+            photoRef.metadata.addOnSuccessListener { metadata ->
+                // Get metadata and put entry notes into notes TextView
+
+                val tags = metadata.getCustomMetadata(TAGS_METADATA_NAME)
+                if (tags != null) {
+                    val arrayOfTags = fromStringToArrayList(tags)
+                    for (item in arrayOfTags) {
+                        tagArray.add(item)
+                    }
+                }
+
+            }
         }
     }
 

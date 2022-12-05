@@ -1,29 +1,20 @@
 package com.cmpt362.fitcheck.ui.calendar
 
-import android.app.Activity
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
 import com.cmpt362.fitcheck.R
-import com.cmpt362.fitcheck.Util
 import com.cmpt362.fitcheck.firebase.Firebase
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import java.io.File
+
 
 class EditActivity : AppCompatActivity() {
     private lateinit var imageView: ImageView
@@ -41,6 +32,8 @@ class EditActivity : AppCompatActivity() {
         imageView = findViewById(R.id.outfitImage)
         notesText = findViewById(R.id.notesText)
         chipGroup = findViewById(R.id.chipGroup)
+
+        Firebase.getTags(tagArray)
 
         val year: Int = intent.getIntExtra("year", 0)
         var month: Int = intent.getIntExtra("month", 0)
@@ -143,6 +136,7 @@ class EditActivity : AppCompatActivity() {
 
         val notes = notesText.text.toString()
         Firebase.updateNotesAndTags(notes, fromArrayToString(tagArray))
+        Toast.makeText(this, "Update Saved", Toast.LENGTH_SHORT).show()
         finish()
     }
 
