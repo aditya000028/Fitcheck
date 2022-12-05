@@ -26,6 +26,7 @@ import com.google.android.material.chip.ChipGroup
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.UploadTask
 import java.io.File
 import java.util.*
 
@@ -35,6 +36,7 @@ class AddPhotoActivity : AppCompatActivity(), LocationListener {
     private lateinit var tagEditText: AutoCompleteTextView
     private var tagArray: ArrayList<String> = arrayListOf()
     private var databaseTagArray: ArrayList<String> = arrayListOf()
+    private var databaseIDArray: ArrayList<String> = arrayListOf()
     private lateinit var tempImgUri: Uri
     private lateinit var tempImgFile: File
     private val tempImgFileName = "fitcheck_temp_img.jpg"
@@ -136,7 +138,10 @@ class AddPhotoActivity : AppCompatActivity(), LocationListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (ds: DataSnapshot in dataSnapshot.children) {
                     val keyValue = ds.getValue(String::class.java)
+                    val keyID = ds.key
                     databaseTagArray.add(keyValue!!)
+                    databaseIDArray.add(keyID!!)
+                    println("image key thing $keyID")
                 }
             }
             override fun onCancelled(databaseError: DatabaseError) {}
@@ -150,6 +155,8 @@ class AddPhotoActivity : AppCompatActivity(), LocationListener {
                 newData.setValue(item)
             }
         }
+
+
         // Check that photo was taken
         if (photoTaken == 1) {
             // Get any notes from user
@@ -157,6 +164,7 @@ class AddPhotoActivity : AppCompatActivity(), LocationListener {
 
             // Add photo and notes to cloud storage
             val uploadTask = Firebase.addPhoto(tempImgUri, notes, locationStr, fromArrayToString(tagArray))
+            println("TEMP IMAGE URI $tempImgUri")
 
             // Check that UploadTask was created
             if (uploadTask != null) {
@@ -174,9 +182,16 @@ class AddPhotoActivity : AppCompatActivity(), LocationListener {
                         Toast.makeText(this, R.string.failure_message, Toast.LENGTH_SHORT).show()
                     }
             }
+
         } else {
             // Inform user that picture must be taken
             Toast.makeText(this, R.string.take_picture_message, Toast.LENGTH_SHORT).show()
+        }
+
+        for(item in tagArray){
+            //at this point all items in tagArray exist in database
+            val newData = tagReference.child(item).push()
+            newData.setValue(tempImgUri.toString())
         }
     }
 
