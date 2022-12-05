@@ -98,6 +98,7 @@ class SettingsFragment : PreferenceFragmentCompat(), TimePickerDialog.TimePicker
             dailyReminderTimeInMilli = it.dailyReminderTime!!
             uploadTimePreference.summary = Util.timeInMilliToString(requireContext(), dailyReminderTimeInMilli)
             uploadTimePreference.isEnabled = dailyUploadReminderTimeToggle.isChecked
+            makeProfilePublicToggle.isChecked = it?.profileIsPublic == true
         }
     }
 
