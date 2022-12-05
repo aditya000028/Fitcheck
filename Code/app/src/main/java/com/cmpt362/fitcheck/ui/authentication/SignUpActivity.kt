@@ -102,7 +102,8 @@ class SignUpActivity : AppCompatActivity() {
                     val currentTime = Calendar.getInstance().timeInMillis
                     val settings = Settings(
                         true,
-                        currentTime
+                        currentTime,
+                        false
                     )
                     Firebase.addUserSettings(settings)
                     NotificationHandler.changeOrStartNotification(this, currentTime)

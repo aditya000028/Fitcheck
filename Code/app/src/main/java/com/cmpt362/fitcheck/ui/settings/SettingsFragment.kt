@@ -23,6 +23,7 @@ class SettingsFragment : PreferenceFragmentCompat(), TimePickerDialog.TimePicker
     private lateinit var logoutPreference: Preference
     private lateinit var uploadTimePreference: Preference
     private lateinit var dailyUploadReminderTimeToggle: SwitchPreferenceCompat
+    private lateinit var makeProfilePublicToggle: SwitchPreferenceCompat
     private var dailyReminderTimeInMilli: Long = -1
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -53,25 +54,39 @@ class SettingsFragment : PreferenceFragmentCompat(), TimePickerDialog.TimePicker
             true
         }
 
+        makeProfilePublicToggle = findPreference(getString(R.string.make_profile_public))!!
+        makeProfilePublicToggle.summaryOff = getString(R.string.make_profile_public_off_summary)
+        makeProfilePublicToggle.summaryOn = getString(R.string.make_profile_public_on_summary)
+        makeProfilePublicToggle.setOnPreferenceChangeListener { _, newValue ->
+            val profileIsPublic = newValue as Boolean
+
+            val newSetting = if (notificationsViewModel.settings.value != null) {
+                val setting = notificationsViewModel.settings.value
+                setting!!.profileIsPublic = profileIsPublic
+                setting
+            } else {
+                Settings(true, Calendar.getInstance().timeInMillis, false)
+            }
+
+            Firebase.addUserSettings(newSetting)
+            true
+        }
+
         dailyUploadReminderTimeToggle = findPreference(getString(R.string.daily_outfit_upload_reminder))!!
         dailyUploadReminderTimeToggle.setOnPreferenceChangeListener { _, newValue ->
             val remindUser = newValue as Boolean
             when (remindUser) {
-                true -> {
-                    uploadTimePreference.isEnabled = true
-                    NotificationHandler.changeOrStartNotification(requireContext(), dailyReminderTimeInMilli)
-                }
-                false -> {
-                    uploadTimePreference.isEnabled = false
-                    NotificationHandler.cancelRecurringNotification(requireContext())
-                }
+                true -> NotificationHandler.changeOrStartNotification(requireContext(), dailyReminderTimeInMilli)
+                false -> NotificationHandler.cancelRecurringNotification(requireContext())
             }
+            uploadTimePreference.isEnabled = remindUser
+
             val newSetting = if (notificationsViewModel.settings.value != null) {
                 val setting = notificationsViewModel.settings.value
                 setting!!.dailyReminderToggle = remindUser
                 setting
             } else {
-                Settings(remindUser, Calendar.getInstance().timeInMillis)
+                Settings(remindUser, Calendar.getInstance().timeInMillis, false)
             }
             Firebase.addUserSettings(newSetting)
             true
@@ -93,7 +108,7 @@ class SettingsFragment : PreferenceFragmentCompat(), TimePickerDialog.TimePicker
                 modifiedSettings!!.dailyReminderTime = time.timeInMillis
                 modifiedSettings
             } else {
-                Settings(true, time.timeInMillis)
+                Settings(true, time.timeInMillis, false)
             }
             NotificationHandler.changeOrStartNotification(requireContext(), time.timeInMillis)
             Firebase.addUserSettings(newSettings)
