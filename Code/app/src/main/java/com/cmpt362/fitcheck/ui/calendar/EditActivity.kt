@@ -30,6 +30,7 @@ class EditActivity : AppCompatActivity() {
     private lateinit var notesText: EditText
     private lateinit var tagEditText: AutoCompleteTextView
     private lateinit var dateText: TextView
+    private lateinit var chipGroup: ChipGroup
     private var tagArray: ArrayList<String> = arrayListOf()
     private var databaseTagArray: ArrayList<String> = arrayListOf()
 
@@ -39,6 +40,7 @@ class EditActivity : AppCompatActivity() {
 
         imageView = findViewById(R.id.outfitImage)
         notesText = findViewById(R.id.notesText)
+        chipGroup = findViewById(R.id.chipGroup)
 
         val year: Int = intent.getIntExtra("year", 0)
         var month: Int = intent.getIntExtra("month", 0)
@@ -48,7 +50,7 @@ class EditActivity : AppCompatActivity() {
         dateText = findViewById(R.id.dateTextView)
         dateText.text = convertToString(month) + " $day, $year"
 
-        Firebase.getJustPhoto(year, month, day, imageView, this)
+
 
         val tagReference = Firebase.getTag()
 
@@ -78,6 +80,7 @@ class EditActivity : AppCompatActivity() {
             }
             return@OnKeyListener false
         })
+        Firebase.getPhoto(year, month, day, imageView, notesText, chipGroup, this)
     }
 
     private fun addChipToGroup(tag: String) {
@@ -88,7 +91,6 @@ class EditActivity : AppCompatActivity() {
         chip.isCloseIconVisible = true
         chip.isClickable = false
         chip.isCheckable = false
-        val chipGroup  = findViewById<ChipGroup>(R.id.chipGroup)
         chipGroup.addView(chip as View)
         chip.setOnCloseIconClickListener {
             chipGroup.removeView(chip as View)

@@ -72,11 +72,11 @@ class DetailActivity: AppCompatActivity() {
     }
 
     fun onEdit(view: View){
-
         val myIntent = Intent(this, EditActivity::class.java)
         myIntent.putExtra("year", yearIntent)
         myIntent.putExtra("month", monthIntent)
         myIntent.putExtra("day", dayIntent)
         startActivity(myIntent)
+        finish()
     }
 }
