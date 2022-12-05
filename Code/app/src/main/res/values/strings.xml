@@ -44,6 +44,9 @@
     <string name="edit_button">Edit</string>
     <string name="fit_notes">No notes</string>
 
+    <!-- Friend Feed Activity-->
+    <string name="user">User:</string>
+    <string name="unfriend">Unfriend</string>
 
     <!-- Preference Titles -->
     <string name="account_info_header">Account Info</string>

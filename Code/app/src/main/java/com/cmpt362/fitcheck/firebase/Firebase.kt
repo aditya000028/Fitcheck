@@ -135,11 +135,15 @@ object Firebase {
      * Downloads photo from cloud storage based on year, month, day given
      * and places photo in given ImageView.
      */
-    fun getPhoto(year: Int, month: Int, day: Int, imageView: ImageView, notesText: TextView, tagsGroup: ChipGroup, context: Context) {
+    fun getPhoto(year: Int, month: Int, day: Int, imageView: ImageView, notesText: TextView, tagsGroup: ChipGroup, context: Context, userID: String?) {
         // Check that userId is not null
-        val uid = getUserId()
+        var uid = getUserId()
+        if (userID != null){
+            uid = userID
+        }
         if (uid != null) {
             // Get and format given date
+            println("debug: $year $month $day")
             val date = LocalDate.of(year, month, day)
             val formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)
             val dateStr = date.format(formatter)
@@ -172,6 +176,38 @@ object Firebase {
             }
         }
 
+    }
+
+    /**
+     * Downloads photo from cloud storage based on year, month, day given
+     * and places photo in given ImageView.
+     * If no photo exists, replace image with no_fit_found image
+     */
+    fun getFriendsPhoto(uid: String, year: Int, month: Int, day: Int, imageView: ImageView, context: Context) {
+        // Check that userId is not null
+        if (uid != null) {
+            // Get and format given date
+            val date = LocalDate.of(year, month, day)
+            val formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)
+            val dateStr = date.format(formatter)
+
+            // Needed photo is stored in user id -> date
+            val photoRef = storageRef.child(uid).child(dateStr)
+
+            photoRef.downloadUrl.addOnSuccessListener {Uri->
+                val imageURL = Uri.toString()
+
+                // Download photo and place in ImageView
+                Glide.with(context /* context */)
+                    .load(imageURL)
+                    .into(imageView)
+
+            } .addOnFailureListener{
+                Glide.with(context /* context */)
+                    .load(R.drawable.no_fit_found)
+                    .into(imageView)
+            }
+        }
     }
 
     private fun addChipToGroup(tag: String, group: ChipGroup, context: Context) {

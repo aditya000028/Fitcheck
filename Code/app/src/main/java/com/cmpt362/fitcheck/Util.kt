@@ -39,6 +39,25 @@ object Util {
         return ret
     }
 
+    fun convertMonthIntToString(month: Int): String {
+        var monthString = "default"
+        when (month) {
+            1 -> monthString = "Jan"
+            2 -> monthString = "Feb"
+            3 -> monthString = "Mar"
+            4 -> monthString = "Apr"
+            5 -> monthString = "May"
+            6 -> monthString = "June"
+            7 -> monthString = "July"
+            8 -> monthString = "Aug"
+            9 -> monthString = "Sept"
+            10 -> monthString = "Oct"
+            11 -> monthString = "Nov"
+            12 -> monthString = "Dec"
+        }
+        return monthString
+    }
+
     fun timeInMilliToString(context: Context, dailyReminderTimeInMilli: Long?): CharSequence? {
         return if (dailyReminderTimeInMilli != null) {
             val calendar = Calendar.getInstance()
@@ -54,4 +73,5 @@ object Util {
             ""
         }
     }
+
 }
