@@ -47,7 +47,7 @@ class SearchFragment : Fragment() {
         searchView = root.findViewById(R.id.photo_search_query)
         textView = root.findViewById(R.id.noImageTextView)
         val searchArrayAdapter = SearchViewAdapter(root.context, arrayList)
-        searchView.queryHint = "Search for fits by tags or location"
+        searchView.queryHint = "Search for fits by tags"
         var searchText = ""
         searchView.setOnQueryTextListener( object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
