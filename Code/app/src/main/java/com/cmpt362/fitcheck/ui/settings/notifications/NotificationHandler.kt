@@ -9,7 +9,7 @@ import kotlin.math.abs
 
 object NotificationHandler {
 
-    const val RECURRING_NOTIFICATION_REQUEST_CODE = 10
+    private const val RECURRING_NOTIFICATION_REQUEST_CODE = 10
 
     fun changeOrStartNotification(context: Context, newTimeInMilli: Long) {
         cancelRecurringNotification(context)
@@ -42,7 +42,7 @@ object NotificationHandler {
     fun cancelRecurringNotification(context: Context) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, NotificationReceiver::class.java)
-        val pendingIntent = PendingIntent.getService(
+        val pendingIntent = PendingIntent.getBroadcast(
             context,
             RECURRING_NOTIFICATION_REQUEST_CODE,
             intent,
