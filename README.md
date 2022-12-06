@@ -14,4 +14,5 @@ Final video:
 
 [MVVM and Threaded Design Diagram](https://docs.google.com/presentation/d/1-6kyfsQC4NY7-8-WJaZxz-Bdg3-TN0iA57hgYJaKqJY/edit?usp=sharing)
 
-[App APK Here](/app-release.apk)
+<a download="app-release.apk" href="/app-release.apk" title="App APK Here">App Apk Here
+</a>
