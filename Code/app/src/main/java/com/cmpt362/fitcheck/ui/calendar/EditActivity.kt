@@ -138,6 +138,12 @@ class EditActivity : AppCompatActivity() {
             }
         }
 
+        for(item in tagArray){
+            //at this point all items in tagArray exist in database
+            val newData = tagReference.child(item).push()
+            newData.setValue(imageView.tag.toString())
+        }
+
         val notes = notesText.text.toString()
         Firebase.updateNotesAndTags(year, month, day, notes, fromArrayToString(tagArray))
         Toast.makeText(this, "Update Saved", Toast.LENGTH_SHORT).show()

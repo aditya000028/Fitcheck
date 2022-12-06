@@ -153,6 +153,7 @@ object Firebase {
 
             photoRef.downloadUrl.addOnSuccessListener {Uri->
                 val imageURL = Uri.toString()
+                imageView.tag = Uri
 
                 // Download photo and place in ImageView
                 Glide.with(context /* context */)
