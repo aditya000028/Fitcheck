@@ -12,3 +12,4 @@ https://youtu.be/dD9AO0fXf0w
 
 Final video
 
+[MVVM and Threaded Design Diagram](https://docs.google.com/presentation/d/1-6kyfsQC4NY7-8-WJaZxz-Bdg3-TN0iA57hgYJaKqJY/edit?usp=sharing)
