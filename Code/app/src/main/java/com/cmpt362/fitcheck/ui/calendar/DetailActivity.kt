@@ -1,6 +1,7 @@
 package com.cmpt362.fitcheck.ui.calendar
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +16,6 @@ import androidx.core.view.marginStart
 import com.cmpt362.fitcheck.R
 import com.cmpt362.fitcheck.Util
 import com.cmpt362.fitcheck.firebase.Firebase
-import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 
 class DetailActivity: AppCompatActivity() {
@@ -26,6 +26,7 @@ class DetailActivity: AppCompatActivity() {
         val MONTH_KEY = "month"
         val DAY_KEY = "day"
     }
+
     private lateinit var dateText: TextView
     private lateinit var titleText: TextView
     private lateinit var imageView: ImageView
@@ -35,6 +36,10 @@ class DetailActivity: AppCompatActivity() {
     private lateinit var chipGroup: ChipGroup
     private lateinit var editButtonView: Button
 
+    private var yearIntent: Int = 0
+    private var monthIntent: Int = 0
+    private var dayIntent: Int = 0
+
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +48,10 @@ class DetailActivity: AppCompatActivity() {
         val year: Int = intent.getIntExtra(YEAR_KEY, 2022)
         var month: Int = intent.getIntExtra(MONTH_KEY, 10)
         month += 1
+        yearIntent = year
+        monthIntent = month
         val day: Int = intent.getIntExtra(DAY_KEY, 30)
+        dayIntent = day
 
         dateText = findViewById(R.id.dateTextView)
         dateText.text = Util.convertMonthIntToString(month) + " $day, $year"
@@ -68,11 +76,16 @@ class DetailActivity: AppCompatActivity() {
         Firebase.getPhoto(year, month, day, imageView, notesText, locationText, chipGroup, this, userID)
     }
 
-    fun onDone(view: View){
+    fun onDone(view: View) {
         this@DetailActivity.finish()
     }
 
-    fun onEdit(view: View){
-        this@DetailActivity.finish()
+    fun onEdit(view: View) {
+        val myIntent = Intent(this, EditActivity::class.java)
+        myIntent.putExtra("year", yearIntent)
+        myIntent.putExtra("month", monthIntent)
+        myIntent.putExtra("day", dayIntent)
+        startActivity(myIntent)
+        finish()
     }
 }

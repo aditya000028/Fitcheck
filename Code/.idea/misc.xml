@@ -39,6 +39,8 @@
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.15172101449275363" />
         <entry key="app/src/main/res/layout/fragment_users_discover.xml" value="0.13229166666666667" />
         <entry key="app/src/main/res/layout/search_view.xml" value="0.15172101449275363" />
+        <entry key="app/src/main/res/layout/activity_edit.xml" value="0.28125" />
+        <entry key="app/src/main/res/layout/activity_profile.xml" value="0.15172101449275363" />
       </map>
     </option>
   </component>

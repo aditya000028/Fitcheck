@@ -156,6 +156,7 @@ object Firebase {
 
             photoRef.downloadUrl.addOnSuccessListener {Uri->
                 val imageURL = Uri.toString()
+                imageView.tag = Uri
 
                 // Download photo and place in ImageView
                 Glide.with(context /* context */)
@@ -178,7 +179,6 @@ object Firebase {
                         addChipToGroup(item, tagsGroup, context)
                     }
                 }
-
             }
         }
 
@@ -222,6 +222,52 @@ object Firebase {
         }
     }
 
+    fun updateNotesAndTags(year: Int, month: Int, day: Int, notes: String, tags: String) {
+        // Check that userId is not null
+        val uid = getUserId()
+        if (uid != null) {
+            // Get and format current date
+            val date = LocalDate.of(year, month, day)
+            val formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)
+            val dateStr = date.format(formatter)
+
+            // Store in user id -> date
+            val photoRef = storageRef.child(uid).child(dateStr)
+
+            // Add custom metadata
+            val metadata = storageMetadata {
+                setCustomMetadata(NOTES_METADATA_NAME, notes)
+                setCustomMetadata(TAGS_METADATA_NAME, tags)
+            }
+
+            photoRef.updateMetadata(metadata)
+
+        }
+    }
+
+    fun getTags(year: Int, month: Int, day: Int) : ArrayList<String> {
+        val uid = getUserId()
+        val emptyArray = arrayListOf<String>()
+        if (uid != null) {
+            val date = LocalDate.of(year, month, day)
+            val formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)
+            val dateStr = date.format(formatter)
+
+            val photoRef = storageRef.child(uid).child(dateStr)
+            photoRef.metadata.addOnSuccessListener { metadata ->
+                // Get metadata and put entry notes into notes TextView
+                val tags = metadata.getCustomMetadata(TAGS_METADATA_NAME)
+                if (tags != null) {
+                    val arrayOfTags = fromStringToArrayList(tags)
+                    for(item in arrayOfTags){
+                        emptyArray.add(item)
+                    }
+                }
+            }
+        }
+        return emptyArray
+    }
+
     private fun addChipToGroup(tag: String, group: ChipGroup, context: Context) {
         val chip = Chip(context)
         chip.text = tag
@@ -236,7 +282,7 @@ object Firebase {
         }
     }
 
-    fun fromStringToArrayList(s: String): ArrayList<String> {
+    fun fromStringToArrayList(s: String) : ArrayList<String>{
         val newArray: ArrayList<String> = arrayListOf()
         val strs = s.split(",")
         for(item in strs){
