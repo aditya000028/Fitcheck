@@ -5,9 +5,12 @@
         <Preference
             app:key="@string/profile"
             app:title="@string/profile"
-            app:summary="@string/profile_summary"
-            app:fragment="com.ui.settings.ProfileFragment" />
-<!--        This could be a activity if needed (same applies to others)     -->
+            app:summary="@string/profile_summary">
+            <intent
+                android:targetPackage="com.cmpt362.fitcheck"
+                android:targetClass="com.cmpt362.fitcheck.ui.settings.editProfile.EditProfileActivity">
+            </intent>
+        </Preference>
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/notifications_header">

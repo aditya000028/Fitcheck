@@ -38,6 +38,12 @@
     <string name="notes_hint">Enter notes about your fit here</string>
     <string name="tags">Tags:</string>
 
+    <!-- Edit profile Activity -->
+    <string name="edit_profile">Edit Profile</string>
+    <string name="edit_profile_instructions">First and last name must not be empty</string>
+    <string name="save_profile">Save Profile</string>
+    <string name="profile_saved">Profile Saved</string>
+
     <!-- Detail Activity-->
     <string name="detail_title">Your Fit On:</string>
     <string name="done_button">Done</string>
