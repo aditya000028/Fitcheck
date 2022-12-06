@@ -41,8 +41,9 @@ class FriendsListAdapter(private val friendsStatus: FriendshipStatus?, private v
         holder.lastName.text = "Last name: ${targetUser.lastName}"
 
         holder.itemView.setOnClickListener {
-            val intent = Intent(context, ProfileActivity::class.java)
-            intent.putExtra(ProfileActivity.USER_ID_KEY, targetUser.uid)
+            val intent: Intent = Intent(context, FriendsFeedActivity::class.java)
+            intent.putExtra(FriendsFeedActivity.USER_ID_KEY, targetUser.uid)
+            intent.putExtra(FriendsFeedActivity.USER_FULL_NAME_KEY, "${targetUser.firstName} ${targetUser.lastName}")
             context.startActivity(intent)
         }
 

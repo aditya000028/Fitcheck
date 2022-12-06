@@ -1,6 +1,5 @@
 package com.cmpt362.fitcheck.ui.calendar
 
-import android.R
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -44,11 +44,14 @@
     <string name="edit_button">Edit</string>
     <string name="fit_notes">No notes</string>
 
+    <!-- Friend Feed Activity-->
+    <string name="user">User:</string>
+    <string name="unfriend">Unfriend</string>
 
     <!-- Preference Titles -->
     <string name="account_info_header">Account Info</string>
     <string name="notifications_header">Notifications</string>
-    <string name="security_header">Security</string>
+    <string name="security_privacy_header">Security/Privacy</string>
 
     <!-- Account Info Preferences -->
     <string name="profile">Profile</string>
@@ -61,7 +64,10 @@
     <string name="daily_notification_title">Upload your fit of the day</string>
     <string name="daily_notification_description">Don\'t forget to upload your outfit of the day if you haven\'t done so already!</string>
 
-    <!-- Security Preferences -->
+    <!-- Security/Privacy Preferences -->
+    <string name="make_profile_public">Make profile public</string>
+    <string name="make_profile_public_on_summary">Anyone can see your photos</string>
+    <string name="make_profile_public_off_summary">Only friends can see your photos</string>
     <string name="reset_password">Reset Password</string>
     <string name="reset_password_summary">Reset your password</string>
     <string name="change_email">Change Email</string>
