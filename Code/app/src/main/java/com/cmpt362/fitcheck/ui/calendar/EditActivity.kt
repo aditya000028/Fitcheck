@@ -22,6 +22,7 @@ class EditActivity : AppCompatActivity() {
     private lateinit var notesText: EditText
     private lateinit var tagEditText: AutoCompleteTextView
     private lateinit var dateText: TextView
+    private lateinit var locationText: TextView
     private lateinit var chipGroup: ChipGroup
     private var tagArray: ArrayList<String> = arrayListOf()
     private var databaseTagArray: ArrayList<String> = arrayListOf()
@@ -33,6 +34,7 @@ class EditActivity : AppCompatActivity() {
 
         imageView = findViewById(R.id.outfitImage)
         notesText = findViewById(R.id.notesText)
+        locationText = findViewById(R.id.locationText)
         chipGroup = findViewById(R.id.chipGroup)
 
         val year: Int = intent.getIntExtra("year", 0)
@@ -81,7 +83,7 @@ class EditActivity : AppCompatActivity() {
         // Get user id if viewing a friends detail view
         val userID = intent.getStringExtra(DetailActivity.USER_ID_KEY)
 
-        Firebase.getPhoto(year, month, day, imageView, notesText, chipGroup, this, userID)
+        Firebase.getPhoto(year, month, day, imageView, notesText, locationText, chipGroup, this, userID)
     }
 
     private fun addChipToGroup(tag: String) {
