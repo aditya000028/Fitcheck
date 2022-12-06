@@ -81,10 +81,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.friends.ProfileActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"></activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"

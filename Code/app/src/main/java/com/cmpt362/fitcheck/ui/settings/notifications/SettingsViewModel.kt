@@ -6,12 +6,12 @@ import androidx.lifecycle.ViewModel
 import com.cmpt362.fitcheck.firebase.Firebase
 import com.cmpt362.fitcheck.models.Settings
 
-class NotificationsViewModel: ViewModel() {
+class SettingsViewModel: ViewModel() {
 
     private val _settings = MutableLiveData<Settings>()
     val settings: LiveData<Settings> = _settings
 
-    init {
-        Firebase.getUserSettings(_settings)
+    fun loadUserSetting(targetUID: String) {
+        Firebase.getUserSettings(_settings, targetUID)
     }
 }
