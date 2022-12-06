@@ -22,6 +22,7 @@ class FriendsFeedActivity : AppCompatActivity() {
     private lateinit var profileViewModel: ProfileViewModel
     private lateinit var settingsViewModel: SettingsViewModel
     private lateinit var userName: TextView
+    private lateinit var privateTextView: TextView
     private lateinit var friendshipButton: Button
     private lateinit var friendshipDenyButton: Button
     private lateinit var targetUserUID: String
@@ -74,9 +75,11 @@ class FriendsFeedActivity : AppCompatActivity() {
 
     private fun initializeVariables() {
         userName = findViewById(R.id.textUser)
+        privateTextView = findViewById(R.id.private_user_text)
         friendshipButton = findViewById(R.id.friendship_button)
         friendshipDenyButton = findViewById(R.id.friendship_deny_button)
 
+        privateTextView.visibility = View.GONE
         friendshipDenyButton.visibility = View.GONE
 
         targetUserUID = intent.extras!!.getString(USER_ID_KEY)!!
@@ -92,9 +95,6 @@ class FriendsFeedActivity : AppCompatActivity() {
         }
 
         profileViewModel.friendshipStatus.observe(this) {
-//            friendshipButton.setOnClickListener {
-//                Firebase.unfriend(targetUserUID)
-//            }
             updateFriendshipButton(it)
             friendshipStatus = it
             displayPhotos()
@@ -103,10 +103,10 @@ class FriendsFeedActivity : AppCompatActivity() {
 
         settingsViewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
         if (settingsViewModel.settings.value == null){
-            settingsViewModel.loadUserSetting(Firebase.getUserId()!!)
+            settingsViewModel.loadUserSetting(targetUserUID)
         }
         settingsViewModel.settings.observe(this) {
-            targetUserIsPublic = it.profileIsPublic
+            targetUserIsPublic = it?.profileIsPublic
             displayPhotos()
         }
     }
@@ -156,6 +156,7 @@ class FriendsFeedActivity : AppCompatActivity() {
         // if friends then can show photos
         if (friendshipStatus == FriendshipStatus.FRIENDS.ordinal || targetUserIsPublic == true){
             if (!recyclerview.isVisible){
+                privateTextView.visibility = View.GONE
                 recyclerview.visibility = View.VISIBLE
             }
         }
@@ -163,6 +164,7 @@ class FriendsFeedActivity : AppCompatActivity() {
         else {
             if (recyclerview.isVisible){
                 recyclerview.visibility = View.GONE
+                privateTextView.visibility = View.VISIBLE
             }
         }
     }
