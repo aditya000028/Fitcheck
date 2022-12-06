@@ -13,12 +13,14 @@ import com.cmpt362.fitcheck.R
 import com.cmpt362.fitcheck.firebase.Firebase
 import com.cmpt362.fitcheck.ui.friends.viewModels.ItemsViewModel
 import com.cmpt362.fitcheck.ui.friends.viewModels.ProfileViewModel
+import com.cmpt362.fitcheck.ui.settings.notifications.SettingsViewModel
 import java.util.*
 import kotlin.collections.ArrayList
 
 
 class FriendsFeedActivity : AppCompatActivity() {
     private lateinit var profileViewModel: ProfileViewModel
+    private lateinit var settingsViewModel: SettingsViewModel
     private lateinit var userName: TextView
     private lateinit var friendshipButton: Button
     private lateinit var friendshipDenyButton: Button
@@ -91,9 +93,17 @@ class FriendsFeedActivity : AppCompatActivity() {
 //                Firebase.unfriend(targetUserUID)
 //            }
             updateFriendshipButton(it)
-            displayPhotos(it)
+            displayPhotos(friendshipStatus=it)
         }
         profileViewModel.loadProfile(targetUserUID)
+
+        settingsViewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
+        if (settingsViewModel.settings.value == null){
+            settingsViewModel.loadUserSetting(Firebase.getUserId()!!)
+        }
+        settingsViewModel.settings.observe(this) {
+            displayPhotos(isPublic = it.profileIsPublic)
+        }
     }
 
     private fun updateFriendshipButton(friendshipStatus: Int?) {
@@ -137,9 +147,9 @@ class FriendsFeedActivity : AppCompatActivity() {
         }
     }
 
-    private fun displayPhotos(friendshipStatus: Int?){
+    private fun displayPhotos(friendshipStatus: Int?=null, isPublic: Boolean?=null){
         // if friends then can show photos
-        if (friendshipStatus == FriendshipStatus.FRIENDS.ordinal){
+        if (friendshipStatus == FriendshipStatus.FRIENDS.ordinal || isPublic == true){
             if (!recyclerview.isVisible){
                 recyclerview.visibility = View.VISIBLE
             }

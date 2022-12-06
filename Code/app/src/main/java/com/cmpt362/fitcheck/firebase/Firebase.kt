@@ -431,8 +431,8 @@ object Firebase {
         settingsReference.child(getUserId()!!).setValue(settings)
     }
 
-    fun getUserSettings(settingsLiveData: MutableLiveData<Settings>) {
-        settingsReference.child(getUserId()!!).addValueEventListener(object: ValueEventListener {
+    fun getUserSettings(settingsLiveData: MutableLiveData<Settings>, uid: String) {
+        settingsReference.child(uid).addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val settings = snapshot.getValue<Settings>()
                 settingsLiveData.postValue(settings)
