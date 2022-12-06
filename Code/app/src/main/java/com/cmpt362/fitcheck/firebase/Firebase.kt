@@ -173,7 +173,6 @@ object Firebase {
                         addChipToGroup(item, tagsGroup, context)
                     }
                 }
-
             }
         }
 
@@ -234,26 +233,27 @@ object Firebase {
         }
     }
 
-    fun getTags(tagArray: ArrayList<String>){
+    fun getTags(year: Int, month: Int, day: Int) : ArrayList<String> {
         val uid = getUserId()
+        val emptyArray = arrayListOf<String>()
         if (uid != null) {
+            val date = LocalDate.of(year, month, day)
             val formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)
-            val currentDate = LocalDateTime.now().format(formatter)
+            val dateStr = date.format(formatter)
 
-            val photoRef = storageRef.child(uid).child(currentDate)
+            val photoRef = storageRef.child(uid).child(dateStr)
             photoRef.metadata.addOnSuccessListener { metadata ->
                 // Get metadata and put entry notes into notes TextView
-
                 val tags = metadata.getCustomMetadata(TAGS_METADATA_NAME)
                 if (tags != null) {
                     val arrayOfTags = fromStringToArrayList(tags)
-                    for (item in arrayOfTags) {
-                        tagArray.add(item)
+                    for(item in arrayOfTags){
+                        emptyArray.add(item)
                     }
                 }
-
             }
         }
+        return emptyArray
     }
 
     private fun addChipToGroup(tag: String, group: ChipGroup, context: Context) {
@@ -270,7 +270,7 @@ object Firebase {
         }
     }
 
-    fun fromStringToArrayList(s: String): ArrayList<String> {
+    fun fromStringToArrayList(s: String) : ArrayList<String>{
         val newArray: ArrayList<String> = arrayListOf()
         val strs = s.split(",")
         for(item in strs){

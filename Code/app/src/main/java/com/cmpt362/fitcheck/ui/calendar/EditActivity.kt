@@ -24,6 +24,7 @@ class EditActivity : AppCompatActivity() {
     private lateinit var chipGroup: ChipGroup
     private var tagArray: ArrayList<String> = arrayListOf()
     private var databaseTagArray: ArrayList<String> = arrayListOf()
+    private var databaseUriArray: ArrayList<String> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,11 +34,16 @@ class EditActivity : AppCompatActivity() {
         notesText = findViewById(R.id.notesText)
         chipGroup = findViewById(R.id.chipGroup)
 
-        Firebase.getTags(tagArray)
-
         val year: Int = intent.getIntExtra("year", 0)
         var month: Int = intent.getIntExtra("month", 0)
         val day: Int = intent.getIntExtra("day", 0)
+
+        val metadataTagArray = Firebase.getTags(year, month, day)
+
+        for(item in metadataTagArray) {
+            addChipToGroup(item)
+            tagArray.add(item)
+        }
 
         dateText = findViewById(R.id.dateTextView)
         dateText.text = convertToString(month) + " $day, $year"
@@ -130,6 +136,17 @@ class EditActivity : AppCompatActivity() {
         }
         tagReference.child("tags").addListenerForSingleValueEvent(eventListener)
 
+        val eventListenerImage = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (ds: DataSnapshot in dataSnapshot.children) {
+                    val keyValue = ds.getValue(String::class.java)
+                    databaseUriArray.add(keyValue!!)
+                }
+            }
+            override fun onCancelled(databaseError: DatabaseError) {}
+        }
+
+
         for(item in tagArray){
             // if the tag DOES NOT exist in the database then add it
             if(databaseTagArray.indexOf(item) == -1) {
@@ -138,11 +155,15 @@ class EditActivity : AppCompatActivity() {
             }
         }
 
-        for(item in tagArray){
-            //at this point all items in tagArray exist in database
-            val newData = tagReference.child(item).push()
-            newData.setValue(imageView.tag.toString())
+        for(item in tagArray) {
+            tagReference.child(item).addListenerForSingleValueEvent(eventListenerImage)
+            //if url doesn't exist in tag database
+            if(databaseUriArray.indexOf(imageView.tag.toString()) == -1) {
+                val newData = tagReference.child(item).push()
+                newData.setValue(imageView.tag.toString())
+            }
         }
+
 
         val notes = notesText.text.toString()
         Firebase.updateNotesAndTags(year, month, day, notes, fromArrayToString(tagArray))
