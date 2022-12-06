@@ -29,6 +29,9 @@ class FriendsFeedActivity : AppCompatActivity() {
 
     private lateinit var recyclerview: RecyclerView
 
+    private var targetUserIsPublic: Boolean? = null
+    private var friendshipStatus: Int? = null
+
     companion object {
         const val USER_ID_KEY = "USER_ID_KEY"
         const val USER_FULL_NAME_KEY = "USER_FULL_NAME_KEY"
@@ -93,7 +96,8 @@ class FriendsFeedActivity : AppCompatActivity() {
 //                Firebase.unfriend(targetUserUID)
 //            }
             updateFriendshipButton(it)
-            displayPhotos(friendshipStatus=it)
+            friendshipStatus = it
+            displayPhotos()
         }
         profileViewModel.loadProfile(targetUserUID)
 
@@ -102,7 +106,8 @@ class FriendsFeedActivity : AppCompatActivity() {
             settingsViewModel.loadUserSetting(Firebase.getUserId()!!)
         }
         settingsViewModel.settings.observe(this) {
-            displayPhotos(isPublic = it.profileIsPublic)
+            targetUserIsPublic = it.profileIsPublic
+            displayPhotos()
         }
     }
 
@@ -147,9 +152,9 @@ class FriendsFeedActivity : AppCompatActivity() {
         }
     }
 
-    private fun displayPhotos(friendshipStatus: Int?=null, isPublic: Boolean?=null){
+    private fun displayPhotos(){
         // if friends then can show photos
-        if (friendshipStatus == FriendshipStatus.FRIENDS.ordinal || isPublic == true){
+        if (friendshipStatus == FriendshipStatus.FRIENDS.ordinal || targetUserIsPublic == true){
             if (!recyclerview.isVisible){
                 recyclerview.visibility = View.VISIBLE
             }
