@@ -1,5 +1,4 @@
-# Fitcheck
-CMPT 362 Project
+# CMPT 362 Project - Fitcheck
 
 [Project Pitch](https://youtu.be/XdCp8GB9n8I)
 
@@ -7,7 +6,7 @@ CMPT 362 Project
 
 [Show and tell 2](https://youtu.be/dD9AO0fXf0w)
 
-[Final video]
+[Final video](https://youtu.be/_caAyDVUiYI)
 
 [MVVM and Threaded Design Diagram](https://docs.google.com/presentation/d/1-6kyfsQC4NY7-8-WJaZxz-Bdg3-TN0iA57hgYJaKqJY/edit?usp=sharing)
 
