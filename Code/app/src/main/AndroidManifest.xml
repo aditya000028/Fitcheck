@@ -6,6 +6,8 @@
     <uses-feature android:name="android.hardware.camera" />
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
         android:allowBackup="true"
@@ -21,7 +23,6 @@
             android:name=".ui.settings.editProfile.EditNameActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
-
         <receiver android:name=".ui.settings.notifications.NotificationReceiver" />
 
         <activity
