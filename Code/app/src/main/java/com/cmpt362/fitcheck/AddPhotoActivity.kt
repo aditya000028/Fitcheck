@@ -28,7 +28,10 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.UploadTask
 import java.io.File
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.collections.ArrayList
 
 class AddPhotoActivity : AppCompatActivity(), LocationListener {
     private lateinit var imageView: ImageView
@@ -37,6 +40,7 @@ class AddPhotoActivity : AppCompatActivity(), LocationListener {
     private var tagArray: ArrayList<String> = arrayListOf()
     private var databaseTagArray: ArrayList<String> = arrayListOf()
     private var databaseIDArray: ArrayList<String> = arrayListOf()
+    private var databasePhotoPath: ArrayList<String> = arrayListOf()
     private lateinit var tempImgUri: Uri
     private lateinit var tempImgFile: File
     private val tempImgFileName = "fitcheck_temp_img.jpg"
@@ -51,6 +55,7 @@ class AddPhotoActivity : AppCompatActivity(), LocationListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_photo)
 
+        locationStr = ""
         locationText = findViewById(R.id.locationText)
 
         checkPermission()
@@ -71,7 +76,6 @@ class AddPhotoActivity : AppCompatActivity(), LocationListener {
                 val bitmap = Util.getBitmap(this, tempImgUri)
                 imageView.setImageBitmap(bitmap)
                 photoTaken = 1
-
             }
         }
         val tagReference = Firebase.getTag()
@@ -156,7 +160,6 @@ class AddPhotoActivity : AppCompatActivity(), LocationListener {
             }
         }
 
-
         // Check that photo was taken
         if (photoTaken == 1) {
             // Get any notes from user
@@ -188,10 +191,33 @@ class AddPhotoActivity : AppCompatActivity(), LocationListener {
             Toast.makeText(this, R.string.take_picture_message, Toast.LENGTH_SHORT).show()
         }
 
-        for(item in tagArray){
-            //at this point all items in tagArray exist in database
-            val newData = tagReference.child(item).push()
-            newData.setValue(tempImgUri.toString())
+
+        val eventListenerPhoto = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                databasePhotoPath.clear()
+                for (ds: DataSnapshot in dataSnapshot.children) {
+                    val keyValue = ds.getValue(String::class.java)
+                    databasePhotoPath.add(keyValue!!)
+                }
+
+                val userId = Firebase.getUserId()!!
+                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                val currentDate = LocalDateTime.now().format(formatter)
+                val path = "$userId/$currentDate"
+
+                for(tag in tagArray){
+                    //at this point all items in tagArray exist in database
+                    if(databasePhotoPath.indexOf(path) == -1) {
+                        val newData = tagReference.child(tag).push()
+                        newData.setValue(path)
+                    }
+                }
+            }
+            override fun onCancelled(databaseError: DatabaseError) {}
+        }
+
+        for(tag in tagArray){
+            tagReference.child(tag).addListenerForSingleValueEvent(eventListenerPhoto)
         }
     }
 

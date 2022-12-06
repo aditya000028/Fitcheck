@@ -90,8 +90,6 @@ class SearchFragment : Fragment() {
             searchView.setQuery("", false)
             searchArrayAdapter.notifyDataSetChanged()
         }
-
-
         return root
     }
 
@@ -100,6 +98,7 @@ class SearchFragment : Fragment() {
         var success: Int = 0
         val eventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+                arrayList.clear()
                 if(!dataSnapshot.exists()){
                     println("inside empty arraylist")
                     textView.text = "No photos found"
@@ -110,9 +109,8 @@ class SearchFragment : Fragment() {
                     textView.text = ""
                     textView.visibility = View.GONE
                     println("should be a success $success")
-                    arrayList.add(SearchView(Uri.parse(keyValue), "1", "One"))
+                    arrayList.add(SearchView(keyValue, "1", "One"))
                     adapter.notifyDataSetChanged()
-
                 }
             }
             override fun onCancelled(databaseError: DatabaseError) {}

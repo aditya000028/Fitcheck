@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import com.cmpt362.fitcheck.R
+import com.cmpt362.fitcheck.firebase.Firebase
 import com.cmpt362.fitcheck.models.User
 
 class SearchViewAdapter(@NonNull context: Context, arrayList: ArrayList<SearchView>) :
@@ -34,7 +35,8 @@ class SearchViewAdapter(@NonNull context: Context, arrayList: ArrayList<SearchVi
 
         // then according to the position of the view assign the desired image for the same
         val numbersImage: ImageView = currentItemView!!.findViewById(R.id.imageView)
-        numbersImage.setImageURI(currentNumberPosition.getImageUri())
+//        numbersImage.setImageURI(currentNumberPosition.getImageUri())
+        Firebase.getSearchPhoto(currentNumberPosition.getImagePath(), numbersImage, context)
         notifyDataSetChanged()
 
         // then return the recyclable view
