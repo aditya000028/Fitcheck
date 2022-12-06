@@ -1,7 +1,7 @@
 # Fitcheck
 CMPT 362 Project
 
-Idea Pitch: 
+Project Pitch: 
 https://youtu.be/XdCp8GB9n8I 
 
 Show and tell 1: 
