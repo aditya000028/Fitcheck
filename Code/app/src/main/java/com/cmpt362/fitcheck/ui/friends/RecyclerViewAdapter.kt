@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.cmpt362.fitcheck.R
@@ -26,7 +27,8 @@ class RecyclerViewAdapter(private val mList: MutableList<ItemsViewModel>, privat
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val ItemsViewModel = mList[position]
 
-        Firebase.getFriendsPhoto(ItemsViewModel.uid, ItemsViewModel.year, ItemsViewModel.month, ItemsViewModel.day, holder.imageView, context)
+        holder.imageView.visibility = View.GONE
+        Firebase.getFriendsPhoto(ItemsViewModel.uid, ItemsViewModel.year, ItemsViewModel.month, ItemsViewModel.day, holder.imageView, holder.loadingIcon, context)
 
         // Set date text
         val dateStr = Util.convertMonthIntToString(ItemsViewModel.month) + " ${ItemsViewModel.day}, ${ItemsViewModel.year}"
@@ -52,6 +54,7 @@ class RecyclerViewAdapter(private val mList: MutableList<ItemsViewModel>, privat
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         val imageView: ImageView = itemView.findViewById(R.id.outfitImage)
         val dateView: TextView = itemView.findViewById(R.id.textDate)
+        val loadingIcon: ProgressBar = itemView.findViewById(R.id.loadingIcon)
     }
 
 }

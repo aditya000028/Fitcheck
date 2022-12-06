@@ -5,6 +5,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cmpt362.fitcheck.R
@@ -37,7 +38,7 @@ class FriendsFeedActivity : AppCompatActivity() {
         val recyclerview = findViewById<RecyclerView>(R.id.recyclerView)
 
         // Create linear layout manager
-        recyclerview.layoutManager = LinearLayoutManager(this)
+        recyclerview.layoutManager = GridLayoutManager(this,2)
 
         // ArrayList of class ItemsViewModel
         val data = ArrayList<ItemsViewModel>()
