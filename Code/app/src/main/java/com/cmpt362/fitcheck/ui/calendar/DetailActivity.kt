@@ -44,7 +44,6 @@ class DetailActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
-
         val year: Int = intent.getIntExtra(YEAR_KEY, 2022)
         var month: Int = intent.getIntExtra(MONTH_KEY, 10)
         month += 1
@@ -73,37 +72,18 @@ class DetailActivity: AppCompatActivity() {
         }
 
         Firebase.getPhoto(year, month, day, imageView, notesText, chipGroup, this, userID)
+    }
 
-        fun convertToString(month: Int): String {
-            var monthString = "default"
-            when (month) {
-                1 -> monthString = "Jan"
-                2 -> monthString = "Feb"
-                3 -> monthString = "Mar"
-                4 -> monthString = "Apr"
-                5 -> monthString = "May"
-                6 -> monthString = "June"
-                7 -> monthString = "July"
-                8 -> monthString = "Aug"
-                9 -> monthString = "Sept"
-                10 -> monthString = "Oct"
-                11 -> monthString = "Nov"
-                12 -> monthString = "Dec"
-            }
-            return monthString
-        }
+    fun onDone(view: View) {
+        this@DetailActivity.finish()
+    }
 
-        fun onDone(view: View) {
-            this@DetailActivity.finish()
-        }
-
-        fun onEdit(view: View) {
-            val myIntent = Intent(this, EditActivity::class.java)
-            myIntent.putExtra("year", yearIntent)
-            myIntent.putExtra("month", monthIntent)
-            myIntent.putExtra("day", dayIntent)
-            startActivity(myIntent)
-            finish()
-        }
+    fun onEdit(view: View) {
+        val myIntent = Intent(this, EditActivity::class.java)
+        myIntent.putExtra("year", yearIntent)
+        myIntent.putExtra("month", monthIntent)
+        myIntent.putExtra("day", dayIntent)
+        startActivity(myIntent)
+        finish()
     }
 }

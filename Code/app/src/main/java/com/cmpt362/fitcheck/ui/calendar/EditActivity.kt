@@ -37,13 +37,11 @@ class EditActivity : AppCompatActivity() {
 
         val year: Int = intent.getIntExtra("year", 0)
         var month: Int = intent.getIntExtra("month", 0)
-        month += 1
+//        month += 1
         val day: Int = intent.getIntExtra("day", 0)
 
         dateText = findViewById(R.id.dateTextView)
         dateText.text = convertToString(month) + " $day, $year"
-
-
 
         val tagReference = Firebase.getTag()
 
@@ -73,7 +71,11 @@ class EditActivity : AppCompatActivity() {
             }
             return@OnKeyListener false
         })
-        Firebase.getPhoto(year, month, day, imageView, notesText, chipGroup, this)
+
+        // Get user id if viewing a friends detail view
+        val userID = intent.getStringExtra(DetailActivity.USER_ID_KEY)
+
+        Firebase.getPhoto(year, month, day, imageView, notesText, chipGroup, this, userID)
     }
 
     private fun addChipToGroup(tag: String) {
