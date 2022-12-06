@@ -7,6 +7,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.children
 import com.cmpt362.fitcheck.R
 import com.cmpt362.fitcheck.firebase.Firebase
 import com.google.android.material.chip.Chip
@@ -146,8 +147,12 @@ class EditActivity : AppCompatActivity() {
             override fun onCancelled(databaseError: DatabaseError) {}
         }
 
-
-        for(item in tagArray){
+        var chipArray: ArrayList<String> = arrayListOf()
+        chipGroup.children.forEach {
+            val chip = it as Chip
+            chipArray.add(chip.text.toString())
+        }
+        for(item in chipArray){
             // if the tag DOES NOT exist in the database then add it
             if(databaseTagArray.indexOf(item) == -1) {
                 val newData = tagReference.child("tags").push()
@@ -155,7 +160,7 @@ class EditActivity : AppCompatActivity() {
             }
         }
 
-        for(item in tagArray) {
+        for(item in chipArray) {
             tagReference.child(item).addListenerForSingleValueEvent(eventListenerImage)
             //if url doesn't exist in tag database
             if(databaseUriArray.indexOf(imageView.tag.toString()) == -1) {
@@ -166,7 +171,7 @@ class EditActivity : AppCompatActivity() {
 
 
         val notes = notesText.text.toString()
-        Firebase.updateNotesAndTags(year, month, day, notes, fromArrayToString(tagArray))
+        Firebase.updateNotesAndTags(year, month, day, notes, fromArrayToString(chipArray))
         Toast.makeText(this, "Update Saved", Toast.LENGTH_SHORT).show()
         finish()
     }
