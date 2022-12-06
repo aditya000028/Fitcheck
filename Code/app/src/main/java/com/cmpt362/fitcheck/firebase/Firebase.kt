@@ -278,6 +278,13 @@ object Firebase {
                             friendsUids.add(dataSnapshot.key!!)
                         }
                     }
+
+                    // need to update the live data if there are no longer any more friend uids
+                    if (friendsUids.isEmpty()) {
+                        friendsLiveData.postValue(friends)
+                        return
+                    }
+
                     friendsUids.forEach { uid ->
                         usersReference.child(uid).get().addOnCompleteListener {
                             if (it.isSuccessful) {
@@ -352,7 +359,7 @@ object Firebase {
                         }
                     }
 
-                    // need to update the live data if there are no longer any more received uids
+                    // need to update the live data if there are no longer any more sent uids
                     if (sentRequestsUids.isEmpty()) {
                         sentRequestsLiveData.postValue(sentRequestsUsers)
                         return
