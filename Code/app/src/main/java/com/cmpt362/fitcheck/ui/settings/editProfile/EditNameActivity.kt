@@ -12,7 +12,7 @@ import com.cmpt362.fitcheck.R
 import com.cmpt362.fitcheck.firebase.Firebase
 import com.cmpt362.fitcheck.ui.friends.viewModels.ProfileViewModel
 
-class EditProfileActivity : AppCompatActivity() {
+class EditNameActivity : AppCompatActivity() {
 
     private lateinit var editFirstNameText: EditText
     private lateinit var editLastNameText: EditText
@@ -24,7 +24,7 @@ class EditProfileActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.edit_profile_activity)
+        setContentView(R.layout.edit_name_activity)
 
         initVariables()
     }
@@ -63,7 +63,7 @@ class EditProfileActivity : AppCompatActivity() {
             profile.lastName = editLastNameText.text.toString()
             Firebase.addUserToDatabase(profile)
 
-            Toast.makeText(this, getString(R.string.profile_saved), Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.name_saved), Toast.LENGTH_SHORT).show()
             finish()
         }
     }

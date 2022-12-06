@@ -12,6 +12,7 @@ import com.cmpt362.fitcheck.Util
 import com.cmpt362.fitcheck.firebase.Firebase
 import com.cmpt362.fitcheck.models.Settings
 import com.cmpt362.fitcheck.ui.authentication.LoginActivity
+import com.cmpt362.fitcheck.ui.friends.viewModels.ProfileViewModel
 import com.cmpt362.fitcheck.ui.settings.notifications.NotificationHandler
 import com.cmpt362.fitcheck.ui.settings.notifications.NotificationsViewModel
 import com.cmpt362.fitcheck.ui.settings.notifications.TimePickerDialog
@@ -25,6 +26,8 @@ class SettingsFragment : PreferenceFragmentCompat(), TimePickerDialog.TimePicker
     private lateinit var dailyUploadReminderTimeToggle: SwitchPreferenceCompat
     private lateinit var makeProfilePublicToggle: SwitchPreferenceCompat
     private var dailyReminderTimeInMilli: Long = -1
+    private lateinit var profilePreference: Preference
+    private lateinit var profileViewModel: ProfileViewModel
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
@@ -32,6 +35,8 @@ class SettingsFragment : PreferenceFragmentCompat(), TimePickerDialog.TimePicker
     }
 
     private fun initializePreferencesBehaviour() {
+        profilePreference = findPreference(getString(R.string.profile))!!
+
         logoutPreference = findPreference(getString(R.string.logout))!!
         logoutPreference.setOnPreferenceClickListener {
             Firebase.signOut()
@@ -99,6 +104,15 @@ class SettingsFragment : PreferenceFragmentCompat(), TimePickerDialog.TimePicker
             uploadTimePreference.summary = Util.timeInMilliToString(requireContext(), dailyReminderTimeInMilli)
             uploadTimePreference.isEnabled = dailyUploadReminderTimeToggle.isChecked
             makeProfilePublicToggle.isChecked = it?.profileIsPublic == true
+        }
+
+        profileViewModel = ViewModelProvider(this)[ProfileViewModel::class.java]
+        if (profileViewModel.user.value == null) {
+            profileViewModel.loadUser(Firebase.getUserId()!!)
+        }
+
+        profileViewModel.user.observe(this) {
+            profilePreference.summary = "${it.firstName} ${it.lastName}"
         }
     }
 

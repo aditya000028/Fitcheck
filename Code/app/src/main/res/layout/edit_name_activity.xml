@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.settings.editProfile.EditProfileActivity"
+    tools:context=".ui.settings.editProfile.EditNameActivity"
     android:orientation="vertical"
     android:layout_margin="@dimen/general_layout_margin">
 
@@ -15,14 +15,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/edit_profile"
+            android:text="@string/edit_name"
             android:textSize="@dimen/sub_settings_header_size"
             android:layout_marginVertical="@dimen/heading_to_subheading_vertical_margin">
         </TextView>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/edit_profile_instructions">
+            android:text="@string/edit_name_instructions">
         </TextView>
 
     </LinearLayout>
@@ -92,7 +92,7 @@
         android:enabled="false"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/save_profile"
+        android:text="@string/save_name"
         android:onClick="onSaveName">
     </Button>
 

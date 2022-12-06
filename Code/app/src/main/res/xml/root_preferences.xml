@@ -4,11 +4,11 @@
     <PreferenceCategory app:title="@string/account_info_header">
         <Preference
             app:key="@string/profile"
-            app:title="@string/profile"
-            app:summary="@string/profile_summary">
+            app:title="@string/edit_name"
+            app:summary="@string/not_set">
             <intent
                 android:targetPackage="com.cmpt362.fitcheck"
-                android:targetClass="com.cmpt362.fitcheck.ui.settings.editProfile.EditProfileActivity">
+                android:targetClass="com.cmpt362.fitcheck.ui.settings.editProfile.EditNameActivity">
             </intent>
         </Preference>
     </PreferenceCategory>
