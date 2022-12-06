@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.settings.editProfile.EditNameActivity"
+    android:orientation="vertical"
+    android:layout_margin="@dimen/general_layout_margin">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/edit_name"
+            android:textSize="@dimen/sub_settings_header_size"
+            android:layout_marginVertical="@dimen/heading_to_subheading_vertical_margin">
+        </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/edit_name_instructions">
+        </TextView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/heading_to_content_vertical_margin"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/first_name">
+            </TextView>
+            <EditText
+                android:id="@+id/editFirstName"
+                android:layout_width="@dimen/full_screen_edit_text_width"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/label_to_content_vertical_margin"
+                android:hint="@string/first_name"
+                android:autofillHints="name"
+                android:inputType="textPersonName">
+            </EditText>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/last_name">
+            </TextView>
+            <EditText
+                android:id="@+id/editLastName"
+                android:layout_width="@dimen/full_screen_edit_text_width"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/label_to_content_vertical_margin"
+                android:hint="@string/last_name"
+                android:inputType="textPersonName"
+                android:autofillHints="name">
+            </EditText>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/changeNameErrorMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/red_error">
+        </TextView>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/saveProfileButton"
+        android:layout_width="fill_parent"
+        android:enabled="false"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/save_name"
+        android:onClick="onSaveName">
+    </Button>
+
+</LinearLayout>

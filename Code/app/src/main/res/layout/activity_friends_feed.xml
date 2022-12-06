@@ -21,16 +21,40 @@
             android:text="@string/user"
             android:textSize="28sp"
             android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal">
 
         <Button
-            android:id="@+id/friendshipBtn"
+            android:id="@+id/friendship_deny_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="80dp"
-            android:layout_gravity="center_vertical"
-            android:text="@string/unfriend">
+            android:text="Deny Request"
+            android:layout_marginEnd="10dp">
         </Button>
+        <Button
+            android:id="@+id/friendship_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </Button>
+
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/private_user_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:text="This user is currently private. \nTo view their Fits you need to become friends"
+        />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

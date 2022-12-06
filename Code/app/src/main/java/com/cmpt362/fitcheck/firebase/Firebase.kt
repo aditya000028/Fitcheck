@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
@@ -45,6 +46,7 @@ object Firebase {
     private const val PHOTOS_REFERENCE_NAME = "photos"
     private const val SETTINGS_REFERENCE_NAME = "settings"
     private const val NOTES_METADATA_NAME = "Notes"
+    private const val LOCATION_METADATA_NAME = "Location"
     private const val TAGS_METADATA_NAME = "Tags"
 
     private val auth: FirebaseAuth = Firebase.auth
@@ -107,7 +109,7 @@ object Firebase {
      * under user's id and then current date.
      * Return the UploadTask object so Listeners can be added.
      */
-    fun addPhoto(file: Uri, notes: String, tags: String): UploadTask? {
+    fun addPhoto(file: Uri, notes: String, location: String, tags: String): UploadTask? {
         // Check that userId is not null
         val uid = getUserId()
         if (uid != null) {
@@ -121,6 +123,7 @@ object Firebase {
             // Add custom metadata
             val metadata = storageMetadata {
                 setCustomMetadata(NOTES_METADATA_NAME, notes)
+                setCustomMetadata(LOCATION_METADATA_NAME, location)
                 setCustomMetadata(TAGS_METADATA_NAME, tags)
             }
 
@@ -135,7 +138,7 @@ object Firebase {
      * Downloads photo from cloud storage based on year, month, day given
      * and places photo in given ImageView.
      */
-    fun getPhoto(year: Int, month: Int, day: Int, imageView: ImageView, notesText: TextView, tagsGroup: ChipGroup, context: Context, userID: String?) {
+    fun getPhoto(year: Int, month: Int, day: Int, imageView: ImageView, notesText: TextView, locationText: TextView, tagsGroup: ChipGroup, context: Context, userID: String?) {
         // Check that userId is not null
         var uid = getUserId()
         if (userID != null){
@@ -166,6 +169,9 @@ object Firebase {
                 val notes = metadata.getCustomMetadata(NOTES_METADATA_NAME)
                 notesText.text = notes
 
+                val location = metadata.getCustomMetadata(LOCATION_METADATA_NAME)
+                locationText.text = location
+
                 val tags = metadata.getCustomMetadata(TAGS_METADATA_NAME)
                 if(tags != null){
                     val arrayOfTags = fromStringToArrayList(tags)
@@ -183,7 +189,7 @@ object Firebase {
      * and places photo in given ImageView.
      * If no photo exists, replace image with no_fit_found image
      */
-    fun getFriendsPhoto(uid: String, year: Int, month: Int, day: Int, imageView: ImageView, context: Context) {
+    fun getFriendsPhoto(uid: String, year: Int, month: Int, day: Int, imageView: ImageView, loadingIcon: ProgressBar, context: Context) {
         // Check that userId is not null
         if (uid != null) {
             // Get and format given date
@@ -197,12 +203,18 @@ object Firebase {
             photoRef.downloadUrl.addOnSuccessListener {Uri->
                 val imageURL = Uri.toString()
 
+                loadingIcon.visibility = View.GONE
+                imageView.visibility = View.VISIBLE
+
                 // Download photo and place in ImageView
                 Glide.with(context /* context */)
                     .load(imageURL)
                     .into(imageView)
 
             } .addOnFailureListener{
+                loadingIcon.visibility = View.GONE
+                imageView.visibility = View.VISIBLE
+
                 Glide.with(context /* context */)
                     .load(R.drawable.no_fit_found)
                     .into(imageView)
@@ -317,6 +329,13 @@ object Firebase {
                             friendsUids.add(dataSnapshot.key!!)
                         }
                     }
+
+                    // need to update the live data if there are no longer any more friend uids
+                    if (friendsUids.isEmpty()) {
+                        friendsLiveData.postValue(friends)
+                        return
+                    }
+
                     friendsUids.forEach { uid ->
                         usersReference.child(uid).get().addOnCompleteListener {
                             if (it.isSuccessful) {
@@ -391,7 +410,7 @@ object Firebase {
                         }
                     }
 
-                    // need to update the live data if there are no longer any more received uids
+                    // need to update the live data if there are no longer any more sent uids
                     if (sentRequestsUids.isEmpty()) {
                         sentRequestsLiveData.postValue(sentRequestsUsers)
                         return
@@ -437,14 +456,17 @@ object Firebase {
     }
 
     fun getUser(userLiveData: MutableLiveData<User>, uid: String) {
-        usersReference.child(uid).get().addOnCompleteListener {
-            if (it.isSuccessful) {
-                val targetUser = it.result.getValue<User>()
-                userLiveData.postValue(targetUser)
-            } else {
-                println("debug: unable to get use with uid $uid")
+        usersReference.child(uid).addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val user = snapshot.getValue<User>()
+                userLiveData.postValue(user)
             }
-        }
+
+            override fun onCancelled(error: DatabaseError) {
+                println("debug: unable to get user")
+            }
+
+        })
     }
 
     fun sendFriendRequest(targetUserId: String) {
@@ -477,8 +499,8 @@ object Firebase {
         settingsReference.child(getUserId()!!).setValue(settings)
     }
 
-    fun getUserSettings(settingsLiveData: MutableLiveData<Settings>) {
-        settingsReference.child(getUserId()!!).addValueEventListener(object: ValueEventListener {
+    fun getUserSettings(settingsLiveData: MutableLiveData<Settings>, uid: String) {
+        settingsReference.child(uid).addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val settings = snapshot.getValue<Settings>()
                 settingsLiveData.postValue(settings)

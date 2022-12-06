@@ -6,6 +6,8 @@
     <uses-feature android:name="android.hardware.camera" />
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
         android:allowBackup="true"
@@ -17,7 +19,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Fitcheck"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.settings.editProfile.EditNameActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <receiver android:name=".ui.settings.notifications.NotificationReceiver" />
+
         <activity
             android:name=".ui.friends.FriendsFeedActivity"
             android:exported="false">
@@ -87,10 +94,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.friends.ProfileActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"></activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"

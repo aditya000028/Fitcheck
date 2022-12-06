@@ -14,8 +14,16 @@ class ProfileViewModel: ViewModel() {
     private val _friendshipStatus = MutableLiveData<Int?>()
     val friendshipStatus: LiveData<Int?> = _friendshipStatus
 
-    fun loadProfile(targetUID: String) {
-        Firebase.getFriendshipStatus(_friendshipStatus, targetUID)
+    fun loadUser(targetUID: String) {
         Firebase.getUser(_user, targetUID)
+    }
+
+    fun loadFriendships(targetUID: String) {
+        Firebase.getFriendshipStatus(_friendshipStatus, targetUID)
+    }
+
+    fun loadProfile(targetUID: String) {
+        loadUser(targetUID)
+        loadFriendships(targetUID)
     }
 }

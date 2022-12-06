@@ -12,19 +12,22 @@ import com.cmpt362.fitcheck.Util
 import com.cmpt362.fitcheck.firebase.Firebase
 import com.cmpt362.fitcheck.models.Settings
 import com.cmpt362.fitcheck.ui.authentication.LoginActivity
+import com.cmpt362.fitcheck.ui.friends.viewModels.ProfileViewModel
 import com.cmpt362.fitcheck.ui.settings.notifications.NotificationHandler
-import com.cmpt362.fitcheck.ui.settings.notifications.NotificationsViewModel
+import com.cmpt362.fitcheck.ui.settings.notifications.SettingsViewModel
 import com.cmpt362.fitcheck.ui.settings.notifications.TimePickerDialog
 import java.util.*
 
 class SettingsFragment : PreferenceFragmentCompat(), TimePickerDialog.TimePickerDialogListener {
 
-    private lateinit var notificationsViewModel: NotificationsViewModel
+    private lateinit var settingsViewModel: SettingsViewModel
     private lateinit var logoutPreference: Preference
     private lateinit var uploadTimePreference: Preference
     private lateinit var dailyUploadReminderTimeToggle: SwitchPreferenceCompat
     private lateinit var makeProfilePublicToggle: SwitchPreferenceCompat
     private var dailyReminderTimeInMilli: Long = -1
+    private lateinit var profilePreference: Preference
+    private lateinit var profileViewModel: ProfileViewModel
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
@@ -32,6 +35,8 @@ class SettingsFragment : PreferenceFragmentCompat(), TimePickerDialog.TimePicker
     }
 
     private fun initializePreferencesBehaviour() {
+        profilePreference = findPreference(getString(R.string.profile))!!
+
         logoutPreference = findPreference(getString(R.string.logout))!!
         logoutPreference.setOnPreferenceClickListener {
             Firebase.signOut()
@@ -60,8 +65,8 @@ class SettingsFragment : PreferenceFragmentCompat(), TimePickerDialog.TimePicker
         makeProfilePublicToggle.setOnPreferenceChangeListener { _, newValue ->
             val profileIsPublic = newValue as Boolean
 
-            val newSetting = if (notificationsViewModel.settings.value != null) {
-                val setting = notificationsViewModel.settings.value
+            val newSetting = if (settingsViewModel.settings.value != null) {
+                val setting = settingsViewModel.settings.value
                 setting!!.profileIsPublic = profileIsPublic
                 setting
             } else {
@@ -81,8 +86,8 @@ class SettingsFragment : PreferenceFragmentCompat(), TimePickerDialog.TimePicker
             }
             uploadTimePreference.isEnabled = remindUser
 
-            val newSetting = if (notificationsViewModel.settings.value != null) {
-                val setting = notificationsViewModel.settings.value
+            val newSetting = if (settingsViewModel.settings.value != null) {
+                val setting = settingsViewModel.settings.value
                 setting!!.dailyReminderToggle = remindUser
                 setting
             } else {
@@ -92,20 +97,33 @@ class SettingsFragment : PreferenceFragmentCompat(), TimePickerDialog.TimePicker
             true
         }
 
-        notificationsViewModel = ViewModelProvider(this)[NotificationsViewModel::class.java]
-        notificationsViewModel.settings.observe(this) {
+        settingsViewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
+        if (settingsViewModel.settings.value == null){
+            settingsViewModel.loadUserSetting(Firebase.getUserId()!!)
+        }
+
+        settingsViewModel.settings.observe(this) {
             dailyUploadReminderTimeToggle.isChecked = it.dailyReminderToggle == true
             dailyReminderTimeInMilli = it.dailyReminderTime!!
             uploadTimePreference.summary = Util.timeInMilliToString(requireContext(), dailyReminderTimeInMilli)
             uploadTimePreference.isEnabled = dailyUploadReminderTimeToggle.isChecked
             makeProfilePublicToggle.isChecked = it?.profileIsPublic == true
         }
+
+        profileViewModel = ViewModelProvider(this)[ProfileViewModel::class.java]
+        if (profileViewModel.user.value == null) {
+            profileViewModel.loadUser(Firebase.getUserId()!!)
+        }
+
+        profileViewModel.user.observe(this) {
+            profilePreference.summary = "${it.firstName} ${it.lastName}"
+        }
     }
 
     override fun onTimeSet(dialog: DialogFragment, time: Calendar) {
         if (dailyReminderTimeInMilli != time.timeInMillis) {
-            val newSettings = if (notificationsViewModel.settings.value != null) {
-                val modifiedSettings = notificationsViewModel.settings.value
+            val newSettings = if (settingsViewModel.settings.value != null) {
+                val modifiedSettings = settingsViewModel.settings.value
                 modifiedSettings!!.dailyReminderTime = time.timeInMillis
                 modifiedSettings
             } else {
