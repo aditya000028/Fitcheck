@@ -28,6 +28,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.UploadTask
 import java.io.File
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class AddPhotoActivity : AppCompatActivity(), LocationListener {
@@ -156,7 +158,6 @@ class AddPhotoActivity : AppCompatActivity(), LocationListener {
             }
         }
 
-
         // Check that photo was taken
         if (photoTaken == 1) {
             // Get any notes from user
@@ -188,10 +189,14 @@ class AddPhotoActivity : AppCompatActivity(), LocationListener {
             Toast.makeText(this, R.string.take_picture_message, Toast.LENGTH_SHORT).show()
         }
 
+        val userId = Firebase.getUserId()!!
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val currentDate = LocalDateTime.now().format(formatter)
+        val path = "$userId/$currentDate"
         for(item in tagArray){
             //at this point all items in tagArray exist in database
             val newData = tagReference.child(item).push()
-            newData.setValue(tempImgUri.toString())
+            newData.setValue(path)
         }
     }
 

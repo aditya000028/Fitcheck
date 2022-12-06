@@ -1,6 +1,7 @@
 package com.cmpt362.fitcheck.firebase
 
 import android.content.Context
+import android.media.Image
 import android.net.Uri
 import android.view.View
 import android.widget.ImageView
@@ -181,7 +182,19 @@ object Firebase {
                 }
             }
         }
+    }
 
+    fun getSearchPhoto(path: String, imageView: ImageView, context: Context){
+        val photoRef = storageRef.child(path)
+
+        photoRef.downloadUrl.addOnSuccessListener {Uri->
+            val imageURL = Uri.toString()
+
+            // Download photo and place in ImageView
+            Glide.with(context /* context */)
+                .load(imageURL)
+                .into(imageView)
+        }
     }
 
     /**
