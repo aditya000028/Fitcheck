@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cmpt362.fitcheck.R
 import com.cmpt362.fitcheck.firebase.Firebase
@@ -48,7 +48,7 @@ class FriendsFeedActivity : AppCompatActivity() {
         recyclerview = findViewById(R.id.recyclerView)
 
         // Create linear layout manager
-        recyclerview.layoutManager = LinearLayoutManager(this)
+        recyclerview.layoutManager = GridLayoutManager(this,2)
 
         // ArrayList of class ItemsViewModel
         val data = ArrayList<ItemsViewModel>()
