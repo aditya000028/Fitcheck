@@ -15,6 +15,8 @@ import com.google.android.material.chip.ChipGroup
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 
 class EditActivity : AppCompatActivity() {
@@ -162,12 +164,21 @@ class EditActivity : AppCompatActivity() {
             }
         }
 
+        val userID = intent.getStringExtra(DetailActivity.USER_ID_KEY)
+        val yearData: Int = intent.getIntExtra("year", 0)
+        var monthData: Int = intent.getIntExtra("month", 0)
+        val dayData: Int = intent.getIntExtra("day", 0)
+        val date = LocalDate.of(yearData, monthData, dayData)
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val dateStr = date.format(formatter)
+        val path: String = "$userID/$dateStr"
+
         for(item in chipArray) {
             tagReference.child(item).addListenerForSingleValueEvent(eventListenerImage)
             //if url doesn't exist in tag database
-            if(databaseUriArray.indexOf(imageView.tag.toString()) == -1) {
+            if(databaseUriArray.indexOf(path) == -1) {
                 val newData = tagReference.child(item).push()
-                newData.setValue(imageView.tag.toString())
+                newData.setValue(path)
             }
         }
 
