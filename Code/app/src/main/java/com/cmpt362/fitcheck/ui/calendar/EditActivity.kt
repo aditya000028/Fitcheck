@@ -37,7 +37,6 @@ class EditActivity : AppCompatActivity() {
 
         val year: Int = intent.getIntExtra("year", 0)
         var month: Int = intent.getIntExtra("month", 0)
-//        month += 1
         val day: Int = intent.getIntExtra("day", 0)
 
         dateText = findViewById(R.id.dateTextView)
@@ -116,6 +115,9 @@ class EditActivity : AppCompatActivity() {
      * When save button is click, save the upload and finish the activity
      */
     fun onSaveUpload(view: View){
+        val year: Int = intent.getIntExtra("year", 0)
+        var month: Int = intent.getIntExtra("month", 0)
+        val day: Int = intent.getIntExtra("day", 0)
         val tagReference = Firebase.getTag()
         val eventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -137,7 +139,7 @@ class EditActivity : AppCompatActivity() {
         }
 
         val notes = notesText.text.toString()
-        Firebase.updateNotesAndTags(notes, fromArrayToString(tagArray))
+        Firebase.updateNotesAndTags(year, month, day, notes, fromArrayToString(tagArray))
         Toast.makeText(this, "Update Saved", Toast.LENGTH_SHORT).show()
         finish()
     }

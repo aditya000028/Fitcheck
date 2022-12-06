@@ -210,16 +210,17 @@ object Firebase {
         }
     }
 
-    fun updateNotesAndTags(notes: String, tags: String) {
+    fun updateNotesAndTags(year: Int, month: Int, day: Int, notes: String, tags: String) {
         // Check that userId is not null
         val uid = getUserId()
         if (uid != null) {
             // Get and format current date
+            val date = LocalDate.of(year, month, day)
             val formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)
-            val currentDate = LocalDateTime.now().format(formatter)
+            val dateStr = date.format(formatter)
 
             // Store in user id -> date
-            val photoRef = storageRef.child(uid).child(currentDate)
+            val photoRef = storageRef.child(uid).child(dateStr)
 
             // Add custom metadata
             val metadata = storageMetadata {
