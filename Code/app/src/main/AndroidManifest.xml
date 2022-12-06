@@ -18,9 +18,13 @@
         android:roundIcon="@drawable/round_app_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Fitcheck"
-        tools:targetApi="31"
-        android:screenOrientation="portrait">
+        tools:targetApi="31">
+        <activity
+            android:name=".ui.settings.editProfile.EditNameActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <receiver android:name=".ui.settings.notifications.NotificationReceiver" />
+
         <activity
             android:name=".ui.friends.FriendsFeedActivity"
             android:exported="false">

@@ -410,14 +410,17 @@ object Firebase {
     }
 
     fun getUser(userLiveData: MutableLiveData<User>, uid: String) {
-        usersReference.child(uid).get().addOnCompleteListener {
-            if (it.isSuccessful) {
-                val targetUser = it.result.getValue<User>()
-                userLiveData.postValue(targetUser)
-            } else {
-                println("debug: unable to get use with uid $uid")
+        usersReference.child(uid).addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val user = snapshot.getValue<User>()
+                userLiveData.postValue(user)
             }
-        }
+
+            override fun onCancelled(error: DatabaseError) {
+                println("debug: unable to get user")
+            }
+
+        })
     }
 
     fun sendFriendRequest(targetUserId: String) {
