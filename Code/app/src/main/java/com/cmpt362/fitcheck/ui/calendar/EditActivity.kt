@@ -164,7 +164,7 @@ class EditActivity : AppCompatActivity() {
             }
         }
 
-        val userID = intent.getStringExtra(DetailActivity.USER_ID_KEY)
+        val userID = Firebase.getUserId()
         val yearData: Int = intent.getIntExtra("year", 0)
         var monthData: Int = intent.getIntExtra("month", 0)
         val dayData: Int = intent.getIntExtra("day", 0)
