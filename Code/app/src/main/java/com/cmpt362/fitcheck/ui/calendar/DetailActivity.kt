@@ -30,6 +30,7 @@ class DetailActivity: AppCompatActivity() {
     private lateinit var titleText: TextView
     private lateinit var imageView: ImageView
     private lateinit var notesText: TextView
+    private lateinit var locationText: TextView
     private lateinit var tagsText: AutoCompleteTextView
     private lateinit var chipGroup: ChipGroup
     private lateinit var editButtonView: Button
@@ -49,6 +50,7 @@ class DetailActivity: AppCompatActivity() {
 
         imageView = findViewById(R.id.outfitImage)
         notesText = findViewById(R.id.notesText)
+        locationText = findViewById(R.id.locationText)
         chipGroup  = findViewById(R.id.detailChipGroup)
 
         // Get user id if viewing a friends detail view
@@ -63,7 +65,7 @@ class DetailActivity: AppCompatActivity() {
             titleText.text = "${fullName}'s Fit On:"
         }
 
-        Firebase.getPhoto(year, month, day, imageView, notesText, chipGroup, this, userID)
+        Firebase.getPhoto(year, month, day, imageView, notesText, locationText, chipGroup, this, userID)
     }
 
     fun onDone(view: View){

@@ -45,6 +45,7 @@ object Firebase {
     private const val PHOTOS_REFERENCE_NAME = "photos"
     private const val SETTINGS_REFERENCE_NAME = "settings"
     private const val NOTES_METADATA_NAME = "Notes"
+    private const val LOCATION_METADATA_NAME = "Location"
     private const val TAGS_METADATA_NAME = "Tags"
 
     private val auth: FirebaseAuth = Firebase.auth
@@ -107,7 +108,7 @@ object Firebase {
      * under user's id and then current date.
      * Return the UploadTask object so Listeners can be added.
      */
-    fun addPhoto(file: Uri, notes: String, tags: String): UploadTask? {
+    fun addPhoto(file: Uri, notes: String, location: String, tags: String): UploadTask? {
         // Check that userId is not null
         val uid = getUserId()
         if (uid != null) {
@@ -121,6 +122,7 @@ object Firebase {
             // Add custom metadata
             val metadata = storageMetadata {
                 setCustomMetadata(NOTES_METADATA_NAME, notes)
+                setCustomMetadata(LOCATION_METADATA_NAME, location)
                 setCustomMetadata(TAGS_METADATA_NAME, tags)
             }
 
@@ -135,7 +137,7 @@ object Firebase {
      * Downloads photo from cloud storage based on year, month, day given
      * and places photo in given ImageView.
      */
-    fun getPhoto(year: Int, month: Int, day: Int, imageView: ImageView, notesText: TextView, tagsGroup: ChipGroup, context: Context, userID: String?) {
+    fun getPhoto(year: Int, month: Int, day: Int, imageView: ImageView, notesText: TextView, locationText: TextView, tagsGroup: ChipGroup, context: Context, userID: String?) {
         // Check that userId is not null
         var uid = getUserId()
         if (userID != null){
@@ -164,6 +166,9 @@ object Firebase {
                 // Get metadata and put entry notes into notes TextView
                 val notes = metadata.getCustomMetadata(NOTES_METADATA_NAME)
                 notesText.text = notes
+
+                val location = metadata.getCustomMetadata(LOCATION_METADATA_NAME)
+                locationText.text = location
 
                 val tags = metadata.getCustomMetadata(TAGS_METADATA_NAME)
                 if(tags != null){
