@@ -53,6 +53,7 @@ class AddPhotoActivity : AppCompatActivity(), LocationListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_photo)
 
+        locationStr = ""
         locationText = findViewById(R.id.locationText)
 
         checkPermission()
