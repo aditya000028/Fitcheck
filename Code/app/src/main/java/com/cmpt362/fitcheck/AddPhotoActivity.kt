@@ -191,15 +191,26 @@ class AddPhotoActivity : AppCompatActivity(), LocationListener {
             Toast.makeText(this, R.string.take_picture_message, Toast.LENGTH_SHORT).show()
         }
 
-        val userId = Firebase.getUserId()!!
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        val currentDate = LocalDateTime.now().format(formatter)
-        val path = "$userId/$currentDate"
+
         val eventListenerPhoto = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+                databasePhotoPath.clear()
                 for (ds: DataSnapshot in dataSnapshot.children) {
                     val keyValue = ds.getValue(String::class.java)
                     databasePhotoPath.add(keyValue!!)
+                }
+
+                val userId = Firebase.getUserId()!!
+                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                val currentDate = LocalDateTime.now().format(formatter)
+                val path = "$userId/$currentDate"
+
+                for(tag in tagArray){
+                    //at this point all items in tagArray exist in database
+                    if(databasePhotoPath.indexOf(path) == -1) {
+                        val newData = tagReference.child(tag).push()
+                        newData.setValue(path)
+                    }
                 }
             }
             override fun onCancelled(databaseError: DatabaseError) {}
@@ -207,12 +218,6 @@ class AddPhotoActivity : AppCompatActivity(), LocationListener {
 
         for(tag in tagArray){
             tagReference.child(tag).addListenerForSingleValueEvent(eventListenerPhoto)
-            //at this point all items in tagArray exist in database
-            if(databasePhotoPath.indexOf(tag) == -1) {
-                val newData = tagReference.child(tag).push()
-                newData.setValue(path)
-            }
-
         }
     }
 

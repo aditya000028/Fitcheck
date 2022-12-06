@@ -130,6 +130,11 @@ class EditActivity : AppCompatActivity() {
         var month: Int = intent.getIntExtra("month", 0)
         val day: Int = intent.getIntExtra("day", 0)
         val tagReference = Firebase.getTag()
+        var chipArray: ArrayList<String> = arrayListOf()
+        chipGroup.children.forEach {
+            val chip = it as Chip
+            chipArray.add(chip.text.toString())
+        }
         val eventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (ds: DataSnapshot in dataSnapshot.children) {
@@ -143,19 +148,37 @@ class EditActivity : AppCompatActivity() {
 
         val eventListenerImage = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+                databaseUriArray.clear()
                 for (ds: DataSnapshot in dataSnapshot.children) {
                     val keyValue = ds.getValue(String::class.java)
+                    println("key value $keyValue")
                     databaseUriArray.add(keyValue!!)
+                    println("database array in side event $databaseUriArray")
+                }
+
+                val userID = Firebase.getUserId()
+                val yearData: Int = intent.getIntExtra("year", 0)
+                var monthData: Int = intent.getIntExtra("month", 0)
+                val dayData: Int = intent.getIntExtra("day", 0)
+                val date = LocalDate.of(yearData, monthData, dayData)
+                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                val dateStr = date.format(formatter)
+                val path = "$userID/$dateStr"
+
+                for(tag in chipArray) {
+                    //if path doesn't exist in tag database
+                    println("given path $path")
+                    println("database array $databaseUriArray")
+                    if(databaseUriArray.indexOf(path) == -1) {
+                        val newData = tagReference.child(tag).push()
+                        newData.setValue(path)
+                    }
                 }
             }
             override fun onCancelled(databaseError: DatabaseError) {}
         }
 
-        var chipArray: ArrayList<String> = arrayListOf()
-        chipGroup.children.forEach {
-            val chip = it as Chip
-            chipArray.add(chip.text.toString())
-        }
+
         for(item in chipArray){
             // if the tag DOES NOT exist in the database then add it
             if(databaseTagArray.indexOf(item) == -1) {
@@ -164,22 +187,8 @@ class EditActivity : AppCompatActivity() {
             }
         }
 
-        val userID = Firebase.getUserId()
-        val yearData: Int = intent.getIntExtra("year", 0)
-        var monthData: Int = intent.getIntExtra("month", 0)
-        val dayData: Int = intent.getIntExtra("day", 0)
-        val date = LocalDate.of(yearData, monthData, dayData)
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        val dateStr = date.format(formatter)
-        val path: String = "$userID/$dateStr"
-
-        for(item in chipArray) {
-            tagReference.child(item).addListenerForSingleValueEvent(eventListenerImage)
-            //if url doesn't exist in tag database
-            if(databaseUriArray.indexOf(path) == -1) {
-                val newData = tagReference.child(item).push()
-                newData.setValue(path)
-            }
+        for(tag in chipArray) {
+            tagReference.child(tag).addListenerForSingleValueEvent(eventListenerImage)
         }
 
 
