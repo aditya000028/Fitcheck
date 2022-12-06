@@ -22,14 +22,45 @@
             android:textSize="28sp"
             android:textStyle="bold" />
 
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="end|center_vertical"-->
+<!--            android:orientation="vertical">-->
+
+<!--            <Button-->
+<!--                android:id="@+id/friendship_deny_button"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Deny Request" />-->
+
+<!--            <Button-->
+<!--                android:id="@+id/friendship_button"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Accept Request" />-->
+<!--        </LinearLayout>-->
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal">
+
         <Button
-            android:id="@+id/friendshipBtn"
+            android:id="@+id/friendship_deny_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="80dp"
-            android:layout_gravity="center_vertical"
-            android:text="@string/unfriend">
+            android:text="Deny Request"
+            android:layout_marginEnd="10dp">
         </Button>
+        <Button
+            android:id="@+id/friendship_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </Button>
+
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

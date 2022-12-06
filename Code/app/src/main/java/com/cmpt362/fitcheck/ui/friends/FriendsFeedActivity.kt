@@ -1,9 +1,11 @@
 package com.cmpt362.fitcheck.ui.friends
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,8 +21,11 @@ class FriendsFeedActivity : AppCompatActivity() {
     private lateinit var profileViewModel: ProfileViewModel
     private lateinit var userName: TextView
     private lateinit var friendshipButton: Button
+    private lateinit var friendshipDenyButton: Button
     private lateinit var targetUserUID: String
     private lateinit var fullName: String
+
+    private lateinit var recyclerview: RecyclerView
 
     companion object {
         const val USER_ID_KEY = "USER_ID_KEY"
@@ -34,7 +39,7 @@ class FriendsFeedActivity : AppCompatActivity() {
         initializeVariables()
 
         // Get recyclerView
-        val recyclerview = findViewById<RecyclerView>(R.id.recyclerView)
+        recyclerview = findViewById(R.id.recyclerView)
 
         // Create linear layout manager
         recyclerview.layoutManager = LinearLayoutManager(this)
@@ -64,7 +69,10 @@ class FriendsFeedActivity : AppCompatActivity() {
 
     private fun initializeVariables() {
         userName = findViewById(R.id.textUser)
-        friendshipButton = findViewById(R.id.friendshipBtn)
+        friendshipButton = findViewById(R.id.friendship_button)
+        friendshipDenyButton = findViewById(R.id.friendship_deny_button)
+
+        friendshipDenyButton.visibility = View.GONE
 
         targetUserUID = intent.extras!!.getString(USER_ID_KEY)!!
         fullName = intent.extras!!.getString(USER_FULL_NAME_KEY)!!
@@ -73,11 +81,74 @@ class FriendsFeedActivity : AppCompatActivity() {
 
         profileViewModel = ViewModelProvider(this)[ProfileViewModel::class.java]
 
+        // Update the full name of the target User if they make a change
+        profileViewModel.user.observe(this) {
+            userName.text =  "${it.firstName} ${it.lastName}";
+        }
+
         profileViewModel.friendshipStatus.observe(this) {
-            friendshipButton.setOnClickListener {
-                Firebase.unfriend(targetUserUID)
-            }
+//            friendshipButton.setOnClickListener {
+//                Firebase.unfriend(targetUserUID)
+//            }
+            updateFriendshipButton(it)
+            displayPhotos(it)
         }
         profileViewModel.loadProfile(targetUserUID)
+    }
+
+    private fun updateFriendshipButton(friendshipStatus: Int?) {
+        when (friendshipStatus) {
+            // currently friends
+            FriendshipStatus.FRIENDS.ordinal -> {
+                friendshipDenyButton.visibility = View.GONE
+                friendshipButton.text = "Unfriend"
+                friendshipButton.isEnabled = true
+                friendshipButton.isClickable = true
+                friendshipButton.setOnClickListener {
+                    Firebase.unfriend(targetUserUID)
+                }
+            }
+            // currently sent a friend request
+            FriendshipStatus.FRIEND_REQUEST_SENT.ordinal -> {
+                friendshipButton.text = "Request Sent"
+                friendshipButton.isEnabled = false
+                friendshipButton.isClickable = false
+            }
+            // currently received a friend request
+            FriendshipStatus.FRIEND_REQUEST_RECEIVED.ordinal -> {
+                friendshipDenyButton.visibility = View.VISIBLE
+                friendshipDenyButton.setOnClickListener {
+                    Firebase.denyFriendRequest(targetUserUID)
+                }
+                friendshipButton.text = "Accept Request"
+                friendshipButton.setOnClickListener {
+                    Firebase.acceptFriendRequest(targetUserUID)
+                }
+            // currently not friends
+            } else -> {
+                friendshipDenyButton.visibility = View.GONE
+                friendshipButton.text = "Add friend"
+                friendshipButton.isEnabled = true
+                friendshipButton.isClickable = true
+                friendshipButton.setOnClickListener {
+                    Firebase.sendFriendRequest(targetUserUID)
+                }
+            }
+        }
+    }
+
+    private fun displayPhotos(friendshipStatus: Int?){
+        // if friends then can show photos
+        if (friendshipStatus == FriendshipStatus.FRIENDS.ordinal){
+            if (!recyclerview.isVisible){
+                recyclerview.visibility = View.VISIBLE
+            }
+        }
+        // otherwise don't show photos
+        else {
+            if (recyclerview.isVisible){
+                recyclerview.visibility = View.GONE
+            }
+        }
     }
 }
