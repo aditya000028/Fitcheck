@@ -14,9 +14,9 @@ CMPT 362 Project
 <a download="app-release.apk" href="/app-release.apk" title="App APK Here">App Apk Here
 </a>
 
-Team Effor Breakdown:
+## Team Effort Breakdown:
 
-Vikram & Aditya
+**Vikram & Aditya**
 - Have friends implemented 
   - Search users
   - Add friends/send requests
@@ -33,7 +33,7 @@ Vikram & Aditya
 - Research adding/searching friends
 
 
-Alyssa & Janet
+**Alyssa & Janet**
 - Photos with metadata
   - Save photos with their metadata to cloud storage
   - Retrieve photos, data  and display in a detail view
